@@ -30,9 +30,9 @@ class TestWordCount():
             print("Missing File: missing.txt")
             assert True
     
-    # def test_read_next_line_from_file(self):
-    #     fname = "words.txt"
-    #     wc = WordCount()
-    #     fh = wc.openfile(fname)
-    #     line = wc.read_next_line(fh)
-    #     assert len(line) >= 0
+    def test_read_next_line_from_file(self):
+        fname = "words.txt"
+        wc = WordCount()
+        fh = wc.openfile(fname)
+        line = wc.read_next_line(fh)
+        assert len(line) >= 0

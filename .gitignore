@@ -2,3 +2,5 @@
 /.vscode
 /code3
 /venv
+CH1/__pycache__
+tests/CH1/__pycache__
