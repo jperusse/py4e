@@ -1,9 +1,8 @@
-/.pytest_cache
-/.vscode
-/code3
-/venv
+.pytest_cache
+.vscode
+code3
+venv
 CH1/__pycache__
+tests/__pycache__
 tests/CH1/__pycache__
-tests/__pycache__/__init__.cpython-39.pyc
-CH1/__pycache__/word_count.cpython-39.pyc
 CH1/__pycache__/word_count.cpython-39.pyc
