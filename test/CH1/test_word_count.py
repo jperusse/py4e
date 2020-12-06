@@ -1,6 +1,7 @@
 from CH1.word_count import WordCount
 import pytest
 from pytest import raises
+import os
 
 class TestWordCount():
     """
