@@ -1,15 +1,15 @@
 
 inperr = "Error, please enter numberic input"
 
-try :
+try:
     hours = float(input("Enter hours: "))
-except :
+except:
     print(inperr)
     quit()    
 
-try :
+try:
     rate = float(input("Enter Rate: "))
-except :
+except:
     print(inperr)
     quit()  
 
@@ -19,7 +19,7 @@ if hours <= maxhours :
     pay = hours * rate
 
 # Calculate total pay including overtime
-else :
+else:
     ot_hours = hours - maxhours
     ot_rate = rate * 1.5
     pay = (maxhours * rate) + (ot_hours * ot_rate)
