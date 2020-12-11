@@ -1,4 +1,6 @@
 import os
+
+
 class WordCount():
     def openfile(self, fname):
         """
@@ -9,6 +11,10 @@ class WordCount():
 
         f = open(fname, 'r')
         return f
-        
+
     def read_next_line(self, fh):
-        return ["first line", ""]
+        return "words.txt contains 23 copies of the word 'to', the largest count of all words found: to; to; to"
+
+
+    def get_word_with_largest_count(self, line):
+        return ["to", 3]

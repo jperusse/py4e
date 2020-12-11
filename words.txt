@@ -1,4 +1,5 @@
-words.txt contains 16 copies of 'to', the largest count of all words found.
+words.txt contains 23 copies of the word 'to', the largest count of all words found: to to to
+3 copies of 'to' in the first line; and 4 copies in the second line; to to to to
 
 Writing programs or programming is a very creative
 and rewarding activity  You can write programs for
