@@ -3,15 +3,10 @@ inperr = "Error, please enter numberic input"
 
 try:
     hours = float(input("Enter hours: "))
-except:
-    print(inperr)
-    quit()    
-
-try:
     rate = float(input("Enter Rate: "))
 except:
     print(inperr)
-    quit()  
+    quit()    
 
 maxhours = 40
 # Calculate pay, no overtime

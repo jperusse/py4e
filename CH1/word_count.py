@@ -1,4 +1,3 @@
-import os
 
 
 class WordCount():
@@ -6,15 +5,21 @@ class WordCount():
         """
         open a file and force exeption
         """
-        if not os.path.exists(fname):
-            raise Exception(f"Missing File: {fname}")
-
-        f = open(fname, 'r')
-        return f
+        try:
+            fh = open(fname, 'r')
+        except:
+            fh = ""
+        return fh
 
     def read_next_line(self, fh):
-        return "words.txt contains 23 copies of the word 'to', the largest count of all words found: to; to; to"
-
+        try:
+            line = fh.readline()
+        except:
+            line = ''
+        return line
 
     def get_word_with_largest_count(self, line):
         return ["to", 3]
+    
+    def check_for_newer_largest_count(self, top_word):
+        return ["to", 4]
