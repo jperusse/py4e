@@ -7,7 +7,7 @@ class TestWordCount():
     Test all methods from WordCount
     """
     fname = "words.txt"
-    firstline = "words.txt contains 23 copies of the word 'to', the largest count of all words found: to; to; to"
+    firstline = "words.txt contains 23 copies of the word 'to', the largest count of all words found: to to to\n"
     next_line = ""
 
     @pytest.fixture(autouse=True)
@@ -25,9 +25,10 @@ class TestWordCount():
 
     def test_get_word_with_largest_count(self):
         top_word = self.wc.get_word_with_largest_count(self.next_line)
-        assert top_word == ["to", 3]
+        assert type(top_word) == type(dict())
+        assert top_word['to'] == 3
 
     def test_check_for_newer_largest_count(self):
         top_word = self.wc.get_word_with_largest_count(self.next_line)
         top_word = self.wc.check_for_newer_largest_count(top_word)
-        assert top_word == ["to", 4]
+        assert top_word['to'] == 4

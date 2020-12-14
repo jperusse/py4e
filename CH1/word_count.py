@@ -19,7 +19,8 @@ class WordCount():
         return line
 
     def get_word_with_largest_count(self, line):
-        return ["to", 3]
+        
+        return {'to': 3}
     
     def check_for_newer_largest_count(self, top_word):
-        return ["to", 4]
+        return {"to": 4}
