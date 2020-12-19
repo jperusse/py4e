@@ -4,5 +4,5 @@ x read a line
 x opening a missing file is caught
 x get word with highest count from line 1
 x read 2 lines and save the word with largest count from both
-- read all lines and save word with highest count
-- print word with highest count and its count
+x read all lines and save word with highest count
+x print word with highest count and its count

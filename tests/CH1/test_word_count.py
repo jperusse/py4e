@@ -26,10 +26,17 @@ class TestWordCount():
 
     def test_get_word_with_largest_count(self):
         top_word = self.wc.get_word_with_largest_count(self.next_line)
-        assert type(top_word) == type(dict())
-        assert top_word['to'] == 3
+        # assert type(top_word) == type(dict())
+        assert top_word == {'to': 3}
+        
+    def test_dict_elem(self):
+        value = self.wc.dict_elem({'to': 3})
+        assert value == 3
+
 
     def test_read_2nd_line_and_check_for_largest_count(self):
         top_word = self.wc.get_word_with_largest_count(self.next_line)
-        top_word = self.wc.check_for_newer_largest_count(top_word)
-        assert top_word['to'] == 4
+        another_line = self.wc.read_next_line(self.fh)
+        top_word_another_line = self.wc.get_word_with_largest_count(another_line)
+        top_word = self.wc.check_for_newer_largest_count(top_word, top_word_another_line)
+        assert top_word == {'to':4}
