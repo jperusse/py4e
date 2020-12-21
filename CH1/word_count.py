@@ -1,4 +1,7 @@
 class WordCount():
+    
+    all_words = dict()
+
     def openfile(self, fname):
         """
         open a file and force exeption
@@ -9,27 +12,20 @@ class WordCount():
             fh = ""
         return fh
 
-    def read_next_line(self, fh):
-        try:
-            line = fh.readline()
-        except:
-            line = ''
-        return line
 
     def get_word_with_largest_count(self, line):
         new_line = line.strip()
         word_list = new_line.split(sep=' ')
-        dic = dict()
         for word in word_list:
-            if word in dic:
-                dic[word] = dic[word] + 1
+            if word in self.all_words:
+                self.all_words[word] = self.all_words[word] + 1
             else:
-                dic[word] = 1
+                self.all_words[word] = 1
         biggest = {}
-        for word in dic:
-            if biggest == {} or dic[word] > biggest_dic[biggest]:
+        for word in self.all_words:
+            if biggest == {} or self.all_words[word] > biggest_dic[biggest]:
                 biggest = word
-                biggest_dic = {word: dic[word]}
+                biggest_dic = {word: self.all_words[word]}
         return biggest_dic
 
 
@@ -49,16 +45,28 @@ class WordCount():
 print('Begin')
 
 wc = WordCount()
-fhand = wc.openfile('words.txt')
+# fhand = wc.openfile('words.txt')
+fhand = wc.openfile('mbox.txt')
 biggest_word = {}
-for line in fhand:
-    next_line = wc.read_next_line(fhand)
+count = 0
+top_word = ''
+for next_line in fhand:
+    count = count + 1
+    # print(count)
+    next_line = next_line.strip()
+    if next_line == '': continue
+    
     top_word = wc.get_word_with_largest_count(next_line)
+    # print(next_line)
     if biggest_word == {}:
         biggest_word = top_word
     else:
-        biggest_word = wc.check_for_newer_largest_count(top_word, biggest_word)
+        # biggest_word = wc.check_for_newer_largest_count(top_word, biggest_word)
+        # print(biggest_word)
+        pass
 
+
+# print(wc.all_words)
 print('The word with largest count is:', biggest_word)
 
 print('Done')
