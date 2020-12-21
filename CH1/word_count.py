@@ -1,3 +1,4 @@
+
 class WordCount():
     
     all_words = dict()
@@ -42,11 +43,12 @@ class WordCount():
         else:
             return top_word
 
+
 print('Begin')
 
 wc = WordCount()
 # fhand = wc.openfile('words.txt')
-fhand = wc.openfile('mbox.txt')
+fhand = wc.openfile('words.txt')
 biggest_word = {}
 count = 0
 top_word = ''
@@ -61,9 +63,8 @@ for next_line in fhand:
     if biggest_word == {}:
         biggest_word = top_word
     else:
-        # biggest_word = wc.check_for_newer_largest_count(top_word, biggest_word)
+        biggest_word = wc.check_for_newer_largest_count(top_word, biggest_word)
         # print(biggest_word)
-        pass
 
 
 # print(wc.all_words)
