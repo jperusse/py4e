@@ -1,7 +1,8 @@
 
 
 fname = 'romeo.txt'
-sorted_wl = ['Arise', 'But', 'It', 'Juliet', 'Who', 'already', 'and', 'breaks', 'east', 'envious', 'fair', 'grief', 'is', 'kill', 'light', 'moon', 'pale', 'sick', 'soft', 'sun', 'the', 'through', 'what', 'window', 'with', 'yonder']
+sorted_wl = ['Arise', 'But', 'It', 'Juliet', 'Who', 'already', 'and', 'breaks', 'east', 'envious', 'fair', 'grief', 'is', 'kill', \
+    'light', 'moon', 'pale', 'sick', 'soft', 'sun', 'the', 'through', 'what', 'window', 'with', 'yonder']
 
 try:
     fh = open(fname, 'r')
@@ -16,7 +17,8 @@ for line in fh:
         if word not in unique_words:
             unique_words.append(word)
 
+print('Unique word list:\n', unique_words)
 unique_words.sort()
 assert unique_words == sorted_wl
-print('Sorted list \n', unique_words)
+print('Sorted list:\n', unique_words)
             
