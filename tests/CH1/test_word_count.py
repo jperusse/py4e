@@ -36,7 +36,7 @@ class TestWordCount():
         assert top_word == {'to': 3}
         
     def test_dict_elem(self):
-        value = self.wc.dict_elem({'to': 3})
+        value = self.wc.dict_elem_value({'to': 3})
         assert value == 3
 
 

@@ -15,13 +15,9 @@ class WordCount():
 
 
     def get_word_with_largest_count(self, line):
-        new_line = line.strip()
-        word_list = new_line.split(sep=' ')
+        word_list = line.split()
         for word in word_list:
-            if word in self.all_words:
-                self.all_words[word] = self.all_words[word] + 1
-            else:
-                self.all_words[word] = 1
+            self.all_words[word] = self.all_words.get(word, 0) + 1
         biggest = {}
         for word in self.all_words:
             if biggest == {} or self.all_words[word] > biggest_dic[biggest]:
@@ -30,14 +26,14 @@ class WordCount():
         return biggest_dic
 
 
-    def dict_elem(self, word):
-        word_key = list(word)[0]
-        word_value = word[word_key]
+    def dict_elem_value(self, dict_elem):
+        word_key = list(dict_elem)[0]
+        word_value = dict_elem[word_key]
         return word_value
 
     def check_for_newer_largest_count(self, word, top_word):
-        word_value = self.dict_elem(word)
-        top_word_value = self.dict_elem(top_word)
+        word_value = self.dict_elem_value(word)
+        top_word_value = self.dict_elem_value(top_word)
         if word_value > top_word_value:
             return word
         else:
@@ -47,9 +43,8 @@ class WordCount():
 print('Begin')
 
 wc = WordCount()
-# fhand = wc.openfile('words.txt')
 fhand = wc.openfile('words.txt')
-biggest_word = {}
+biggest_word = dict()
 count = 0
 top_word = ''
 for next_line in fhand:
