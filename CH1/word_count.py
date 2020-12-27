@@ -63,6 +63,6 @@ for next_line in fhand:
 
 
 # print(wc.all_words)
-print('The word with largest count is:', biggest_word)
+print('The word with largest count is:', biggest_word.items())
 
 print('Done')
