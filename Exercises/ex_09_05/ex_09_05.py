@@ -9,19 +9,21 @@ except:
 
 print('File opened', file)
 
-addesses = dict()
+domains = dict()
 for line in fh:
     words = line.split()
 
     if len(words) < 2 or words[0] != 'From': continue
 
+    # print(words)
+
     addess = words[1]
-    addesses[addess] = addesses.get(addess, 0) + 1
+    split_address = addess.split(sep='@')
+    if len(split_address) < 2: continue
 
-big_key = None
+    # print(split_address)
+    domain = split_address[1]
 
-for key,value in addesses.items():
-    if big_key is None or value > big_value:
-        big_key = key
-        big_value = value
-print(big_key, big_value)
+    domains[domain] = domains.get(domain, 0) + 1
+
+print(domains)
