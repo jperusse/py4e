@@ -1,29 +1,25 @@
-file = 'mbox.txt'
-# file = 'mbox-short.txt'
+files = 'mbox.txt', 'mbox-short.txt', 'mbox-short2.txt'
+for file in files:
+    try:
+        fh = open(file, 'r')
+    except:
+        print('File not found: ' + file)
+        quit()
 
-try:
-    fh = open(file, 'r')
-except:
-    print('File not found: ' + file)
-    quit()
+    print('File opened', file)
 
-print('File opened', file)
+    domains = dict()
+    for line in fh:
+        words = line.split()
 
-domains = dict()
-for line in fh:
-    words = line.split()
+        if len(words) < 2 or words[0] != 'From' or words[1].find('@') == -1: continue
 
-    if len(words) < 2 or words[0] != 'From': continue
+        addess = words[1]
+        uname, domain = addess.split(sep='@')
+        # print("'" + uname + "'", "'" + domain + "'")
+        if domain == '': continue
 
-    # print(words)
+        domains[domain] = domains.get(domain, 0) + 1
 
-    addess = words[1]
-    split_address = addess.split(sep='@')
-    if len(split_address) < 2: continue
+    print(domains, '\n')
 
-    # print(split_address)
-    domain = split_address[1]
-
-    domains[domain] = domains.get(domain, 0) + 1
-
-print(domains)
