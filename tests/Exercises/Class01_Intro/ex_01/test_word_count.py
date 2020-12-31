@@ -1,5 +1,5 @@
 
-from Exercises.Class01_Intro.CH1.word_count import WordCount
+from Exercises.Class01_Intro.ex_01.word_count import WordCount
 import pytest
 
 
