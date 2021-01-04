@@ -8,6 +8,7 @@ class TestExerciseUtils():
     fname = "words.txt"
     firstline = "words.txt contains 23 copies of the word 'to', the largest count of all words found: to to to"
     next_line = ""
+    exu = ExerciesUtils()
 
     def read_next_line(self, fh):
         try:
@@ -18,12 +19,12 @@ class TestExerciseUtils():
 
     @pytest.fixture(autouse=True)
     def ReadFirstLine(self):
-        self.fh = self.ex.openfile(self.fname)
+        self.fh = self.exu.openfile(self.fname, 'r')
         self.next_line = self.read_next_line(self.fh)
 
     def test_openfile_raises_file_not_found(self):
-        fh = self.wc.openfile("missing")
-        assert fh == ""
+        fh = self.exu.openfile("missing", 'r')
+        assert fh == None
 
     def test_read_next_line_from_file(self):
         assert self.next_line.strip() == self.firstline
