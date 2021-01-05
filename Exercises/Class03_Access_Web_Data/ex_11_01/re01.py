@@ -1,26 +1,12 @@
-import re
+# Search for lines that contain 'From'
 
-# from Exercises._Common.utils import ExerciesUtils
+# from Exercises._Common.utils import ExerciseUtils
 
+fname = 'mbox-short.txt'
+search_str = 'From:'
 
-def run_search(fname, search_str):
-    """
-    docstring
-    """
-    print('Searching for ', "'" + search_str + "'", ' in ', fname)
-
-    # exu = ExerciesUtils()
-    count = 0
-    hand = open(fname, 'r')
-    for line in hand:
-        line = line.rstrip()
-        if re.search('From:', line):
-            count += 1
-            print(line)
-
-    return count
-
-
+exu = ExerciseUtils()
 print('run_search Enter')
-run_search('mbox-short.txt', 'From:')
+print('Searching for ', "'" + search_str + "'", ' in ', fname)
+exu.run_search(fname, search_str)
 print('run_search Exit')

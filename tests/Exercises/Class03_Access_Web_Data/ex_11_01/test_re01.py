@@ -1,8 +1,10 @@
-from Exercises.Class03_Access_Web_Data.ex_11_01.re01 import run_search
+from Exercises._Common.utils import ExerciseUtils
+
 
 def test_search_using_re():
     """
     using search from re module
     """
-    count = run_search('mbox-short.txt', 'From:')
+    exu = ExerciseUtils()
+    count = exu.run_search('mbox-short.txt', 'From:')
     assert count == 27

@@ -1,5 +1,6 @@
-from Exercises._Common.utils import ExerciesUtils
+from Exercises._Common.utils import ExerciseUtils
 import pytest
+
 
 class TestExerciseUtils():
     """
@@ -8,7 +9,7 @@ class TestExerciseUtils():
     fname = "words.txt"
     firstline = "words.txt contains 23 copies of the word 'to', the largest count of all words found: to to to"
     next_line = ""
-    exu = ExerciesUtils()
+    exu = ExerciseUtils()
 
     def read_next_line(self, fh):
         try:
@@ -24,7 +25,16 @@ class TestExerciseUtils():
 
     def test_openfile_raises_file_not_found(self):
         fh = self.exu.openfile("missing", 'r')
-        assert fh == None
+        assert fh == ""
 
     def test_read_next_line_from_file(self):
         assert self.next_line.strip() == self.firstline
+
+    def test_run_search_is_empty(self):
+        assert self.exu.run_search("mbox-short.txt", "") == 0
+
+    def test_run_search_is_found(self):
+        assert self.exu.run_search("mbox-short.txt", "From") == 54
+
+    def test_run_search_is_not_found(self):
+        assert self.exu.run_search("mbox-short.txt", "JIMBO-missing") == 0
