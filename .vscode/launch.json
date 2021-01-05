@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "internalConsole",
-            "stopOnEntry": true,
+            "stopOnEntry": false,
         }
     ]
 }
