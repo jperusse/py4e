@@ -17,7 +17,7 @@ class ExerciseUtils():
             fh = ""
         return fh
 
-    def run_search1(self, fname, search_str):
+    def run_search1(self, fname, search_str, debug):
         """
         Use re.search to count number of lines containing search_str in fname
         """
@@ -30,6 +30,22 @@ class ExerciseUtils():
             line = line.rstrip()
             if re.search(search_str, line):
                 count += 1
-                print(line)
+                if debug: print(line)
+        
+        print(count, ' lines found')
 
         return count
+
+
+print("re01 - Search for lines that contain 'From'")
+exu = ExerciseUtils()
+count = exu.run_search1('mbox-short.txt', 'From:', False)
+assert count == 27
+
+
+
+print("re02 - Search for lines that start with 'From'")
+exu = ExerciseUtils()
+count = exu.run_search1('mbox-short.txt', '^From:', False)
+assert count == 27
+

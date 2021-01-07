@@ -31,10 +31,10 @@ class TestExerciseUtils():
         assert self.next_line.strip() == self.firstline
 
     def test_run_search1_is_empty(self):
-        assert self.exu.run_search1("mbox-short.txt", "") == 0
+        assert self.exu.run_search1("mbox-short.txt", "", False) == 0
 
     def test_run_search1_is_found(self):
-        assert self.exu.run_search1("mbox-short.txt", "From") == 54
+        assert self.exu.run_search1("mbox-short.txt", "From", False) == 54
 
     def test_run_search1_is_not_found(self):
-        assert self.exu.run_search1("mbox-short.txt", "JIMBO-missing") == 0
+        assert self.exu.run_search1("mbox-short.txt", "JIMBO-missing", False) == 0
