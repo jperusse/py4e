@@ -1,4 +1,4 @@
-from Exercises._Common.utils import ExerciseUtils
+from Exercises.Class03_Access_Web_Data.utils import ExerciseUtils
 import pytest
 
 
@@ -30,11 +30,11 @@ class TestExerciseUtils():
     def test_read_next_line_from_file(self):
         assert self.next_line.strip() == self.firstline
 
-    def test_run_search_is_empty(self):
-        assert self.exu.run_search("mbox-short.txt", "") == 0
+    def test_run_search1_is_empty(self):
+        assert self.exu.run_search1("mbox-short.txt", "") == 0
 
-    def test_run_search_is_found(self):
-        assert self.exu.run_search("mbox-short.txt", "From") == 54
+    def test_run_search1_is_found(self):
+        assert self.exu.run_search1("mbox-short.txt", "From") == 54
 
-    def test_run_search_is_not_found(self):
-        assert self.exu.run_search("mbox-short.txt", "JIMBO-missing") == 0
+    def test_run_search1_is_not_found(self):
+        assert self.exu.run_search1("mbox-short.txt", "JIMBO-missing") == 0

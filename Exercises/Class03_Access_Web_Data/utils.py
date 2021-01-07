@@ -17,7 +17,7 @@ class ExerciseUtils():
             fh = ""
         return fh
 
-    def run_search(self, fname, search_str):
+    def run_search1(self, fname, search_str):
         """
         Use re.search to count number of lines containing search_str in fname
         """
