@@ -32,20 +32,33 @@ class ExerciseUtils():
                 count += 1
                 if debug: print(line)
         
-        print(count, ' lines found')
+        print(count, " lines found for regex '" + search_str + "'")
 
         return count
 
 
-print("re01 - Search for lines that contain 'From'")
+# print("re01 - Search for lines that contain 'From'")
+# exu = ExerciseUtils()
+# count = exu.run_search1('mbox-short.txt', 'From:', False)
+# assert count == 27
+
+# print("re02 - Search for lines that start with 'From'")
+# exu = ExerciseUtils()
+# count = exu.run_search1('mbox-short.txt', '^From:', False)
+# assert count == 27
+
+# print("re03 - Search for lines that start with 'F', followed by 2 characters, followed by 'm:'")
+# exu = ExerciseUtils()
+# count = exu.run_search1('mbox-short.txt', '^F..m:', False)
+# assert count == 27
+
+# print("re04 - Search for lines that start with From and have an '@' sign")
+# exu = ExerciseUtils()
+# count = exu.run_search1('mbox-short.txt', '^From:.+@', False)
+# assert count == 27
+
+print("re05 - Search for lines that start with From and have an '@' sign")
 exu = ExerciseUtils()
-count = exu.run_search1('mbox-short.txt', 'From:', False)
-assert count == 27
-
-
-
-print("re02 - Search for lines that start with 'From'")
-exu = ExerciseUtils()
-count = exu.run_search1('mbox-short.txt', '^From:', False)
+count = exu.run_search1('mbox-short.txt', '^From:.+@', False)
 assert count == 27
 

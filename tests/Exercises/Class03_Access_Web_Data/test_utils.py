@@ -35,6 +35,10 @@ class TestExerciseUtils():
 
     def test_run_search1_is_found(self):
         assert self.exu.run_search1("mbox-short.txt", "From", False) == 54
+        assert self.exu.run_search1("mbox-short.txt", "From:", False) == 27
+        assert self.exu.run_search1("mbox-short.txt", "^From:", False) == 27
+        assert self.exu.run_search1("mbox-short.txt", "^F..m:", False) == 27
+        assert self.exu.run_search1('mbox-short.txt', '^From:.+@', False) == 27
 
     def test_run_search1_is_not_found(self):
         assert self.exu.run_search1("mbox-short.txt", "JIMBO-missing", False) == 0
