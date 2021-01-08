@@ -36,6 +36,25 @@ class ExerciseUtils():
 
         return count
 
+    def run_findall(self, fname, search_str, debug):
+        """
+        Use re.findall to extract a list with matching elements to count number of lines containing search_str in fname
+        """
+        count = 0
+        hand = self.openfile(fname, 'r')
+        if search_str == "" or hand == "":
+            return count
+
+        for line in hand:
+            line = line.rstrip()
+            if re.findall(search_str, line) is not []:
+                count += 1
+                if debug: print(line)
+        
+        print(count, " lines found for regex '" + search_str + "'")
+
+        return count
+
 
 # print("re01 - Search for lines that contain 'From'")
 # exu = ExerciseUtils()
@@ -57,8 +76,8 @@ class ExerciseUtils():
 # count = exu.run_search1('mbox-short.txt', '^From:.+@', False)
 # assert count == 27
 
-print("re05 - Search for lines that start with From and have an '@' sign")
+print("re05 - Search for an address")
 exu = ExerciseUtils()
-count = exu.run_search1('mbox-short.txt', '^From:.+@', False)
-assert count == 27
+count = exu.run_findall('mbox-short5.txt', '\\S+@\\S+', True)
+assert count == 5
 

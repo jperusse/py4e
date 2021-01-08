@@ -1,5 +1,5 @@
-from Exercises.Class03_Access_Web_Data.utils import ExerciseUtils
 import pytest
+from Exercises.Class03_Access_Web_Data.utils import ExerciseUtils
 
 
 class TestExerciseUtils():
