@@ -47,9 +47,10 @@ class ExerciseUtils():
 
         for line in hand:
             line = line.rstrip()
-            if re.findall(search_str, line) is not []:
+            lst = re.findall(search_str, line)
+            if lst != []:
                 count += 1
-                if debug: print(line)
+                if debug: print(lst)
         
         print(count, " lines found for regex '" + search_str + "'")
 
@@ -80,4 +81,6 @@ print("re05 - Search for an address")
 exu = ExerciseUtils()
 count = exu.run_findall('mbox-short5.txt', '\\S+@\\S+', True)
 assert count == 5
+
+
 
