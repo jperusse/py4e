@@ -48,7 +48,6 @@ class TestExerciseUtils():
         assert self.exu.run_findall("mbox-short5.txt", "", False) == 0
 
     def test_run_findall_is_found(self):
-        assert self.exu.run_findall("mbox-short5.txt", "\\S+@\\S+", False) == 5
         # Sample each of the special regex characters
         assert self.exu.run_findall("mbox-short5.txt", "^From",         True) == 1  # Matches the beginning of a line
         assert self.exu.run_findall("mbox-short5.txt", ";$",            True) == 3  # Matches the end of the line

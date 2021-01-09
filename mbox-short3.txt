@@ -1,3 +1,15 @@
+--(stuart@mothra:pts/2)----------------------------------------------------------------------(/home/stuart/src/sakai_2-4-x/polls)--
+--(0933:Thu,03 Jan 08:$)-- svn merge -r35792:35793 https://source.sakaiproject.org/svn/polls/trunk .
+C    tool/src/java/org/sakaiproject/poll/tool/params/PollToolBean.java
+C    tool/src/bundle/org/sakaiproject/poll/bundle/Messages.properties
+Skipped missing target: 'tool/src/webapp/classes'
+A    tool/src/webapp/WEB-INF/classes
+A    tool/src/webapp/WEB-INF/classes/log4j.properties
+--(stuart@mothra:pts/2)----------------------------------------------------------------------(/home/stuart/src/sakai_2-4-x/polls)--
+--(0934:Thu,03 Jan 08:$)-- ^merge^log
+svn log -r35792:35793 https://source.sakaiproject.org/svn/polls/trunk .
+
+
         s        From: stephen.marquard@uct.ac.za
 
 From stephen.marquard@uct.ac.za Sat Jan  5 09:14:16 2008
