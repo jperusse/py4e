@@ -51,9 +51,9 @@ class TestExerciseUtils():
         assert self.exu.run_findall("mbox-short5.txt", "\\S+@\\S+", False) == 5
         # Sample each of the special regex characters
         assert self.exu.run_findall("mbox-short5.txt", "^From",     True) == 1  # Matches the beginning of a line
-        # assert self.exu.run_findall("mbox-short5.txt", ";$",        True) == 5  # Matches the end of the line
-        # assert self.exu.run_findall("mbox-short5.txt", "F...:",     True) == 5  # Matches any character
-        # assert self.exu.run_findall("mbox-short5.txt", "\\s+for",   True) == 5  # Matches whitespace
+        assert self.exu.run_findall("mbox-short5.txt", ";$",        True) == 3  # Matches the end of the line
+        assert self.exu.run_findall("mbox-short5.txt", "F...",      True) == 1  # Matches any character
+        assert self.exu.run_findall("mbox-short5.txt", "\\s+for",   True) == 2  # Matches whitespace
         # assert self.exu.run_findall("mbox-short5.txt", "\\S+-Path", True) == 5  # Matches non-whitespace character
         # assert self.exu.run_findall("mbox-short5.txt", ".*for",     True) == 5  # Repeats a character zero or more times
         # assert self.exu.run_findall("mbox-short5.txt", "\\s*?for",  True) == 5  # zero or more characters (not-greedy)
