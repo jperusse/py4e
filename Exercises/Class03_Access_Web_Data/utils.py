@@ -48,7 +48,7 @@ class ExerciseUtils():
         for line in hand:
             line = line.rstrip()
             lst = re.findall(search_str, line)
-            if lst != []:
+            if len(lst) > 0:
                 count += 1
                 if debug: print(lst)
         
