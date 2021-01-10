@@ -8,4 +8,4 @@ files = ["mbox.txt", "mbox-short.txt"]
 exu = ExerciseUtils()
 for file in files:
     count, avg = exu.run_findall_avg(file, "^New Revision: ([0-9]+)", True)
-    print("Average is " + str(int(count)) + " for file " + file)
+    print("Found ", str(count), " Average is " + str(avg) + " for file " + file)
