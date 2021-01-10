@@ -32,7 +32,7 @@ class ExerciseUtils():
                 count += 1
                 if debug: print(line)
         
-        print(count, " lines found for regex '" + search_str + "'")
+        print(fname + " had " + str(count) + " lines that matched '" + search_str + "'")
 
         return count
 
@@ -51,6 +51,7 @@ class ExerciseUtils():
         for line in hand:
             line = line.rstrip()
             lst = re.findall(search_str, line)
+
             if len(lst) > 0:
                 count += 1
                 if debug:
@@ -60,56 +61,93 @@ class ExerciseUtils():
 
         return count
 
+    def run_findall_avg(self, fname, search_str, debug):
+        """
+        Use re.findall to extract a list with matching elements to count number of lines containing search_str in fname
+        """
+        count = 0
+        total = 0
+        hand = self.openfile(fname, 'r')
+        if search_str == "" or hand == "":
+            return [0, 0]
 
-print("re01 - Search for lines that contain 'From'")
-exu = ExerciseUtils()
-count = exu.run_search1('mbox-short.txt', 'From:', False)
-assert count == 27
+        if debug:
+            wh = self.openfile("mbox_trace.txt", "w")
 
-print("re02 - Search for lines that start with 'From'")
-exu = ExerciseUtils()
-count = exu.run_search1('mbox-short.txt', '^From:', False)
-assert count == 27
+        for line in hand:
+            line = line.rstrip()
+            lst = re.findall(search_str, line)
 
-print("re03 - Search for lines that start with 'F', followed by 2 characters, followed by 'm:'")
-exu = ExerciseUtils()
-count = exu.run_search1('mbox-short.txt', '^F..m:', False)
-assert count == 27
 
-print("re04 - Search for lines that start with From and have an '@' sign")
-exu = ExerciseUtils()
-count = exu.run_search1('mbox-short.txt', '^From:.+@', False)
-assert count == 27
+            if len(lst) > 0:
+                value = lst[0]
+                try:
+                    value = int(value)
+                except:
+                    continue
 
-print("re05 - Search for an address")
-exu = ExerciseUtils()
-count = exu.run_findall('mbox-short5.txt', '\\S+@\\S+', False)
-assert count == 5
+                count += 1
+                total = total + value
+                if debug:
+                    print(lst, file=wh)
+        
+        if count > 0:
+            avg = total // count # use integer division
+        else:
+            avg = 0
 
-print("re06 - Search for lines that have an at sign between characters")
-exu = ExerciseUtils()
-count = exu.run_findall('mbox-short.txt', '\\S+@\\S+', False)
-assert count == 336
+        return [count, avg]
 
-print("re07 - Search for lines that have an at sign between characters")
-exu = ExerciseUtils()
-count = exu.run_findall('mbox.txt', '[a-zA-Z0-9][a-zA-Z0-9.]*@[a-zA-Z][a-zA-Z.]*', False)
-assert count == 22009
 
-print("re10 - Search for lines that start with 'X' followed by any non whitespace characters and ':' followed by a space and any number. The number can include a decimal.")
-exu = ExerciseUtils()
-count = exu.run_search1('mbox-short.txt', 'X\\S*: [0-9.]+', False)
-assert count == 54
+# print("re01 - Search for lines that contain 'From'")
+# exu = ExerciseUtils()
+# count = exu.run_search1('mbox-short.txt', 'From:', False)
+# assert count == 27
 
-print("re11 - Search for lines that start with 'X' followed by any non whitespace characters and ':' followed by a space and any number. The number can include a decimal.")
-exu = ExerciseUtils()
-count = exu.run_findall('mbox-short.txt', 'X\\S*: ([0-9.]+)', False)
-assert count == 54
+# print("re02 - Search for lines that start with 'From'")
+# exu = ExerciseUtils()
+# count = exu.run_search1('mbox-short.txt', '^From:', False)
+# assert count == 27
 
-print("re13 - Search for lines that start with From and a character followed by a two digit number between 00 and 99 followed by ':'. Then print the number if it is greater than zero.")
-exu = ExerciseUtils()
-count = exu.run_findall('mbox-short.txt', '^From .* ([0-9][0-9]):', False)
-assert count == 27
+# print("re03 - Search for lines that start with 'F', followed by 2 characters, followed by 'm:'")
+# exu = ExerciseUtils()
+# count = exu.run_search1('mbox-short.txt', '^F..m:', False)
+# assert count == 27
+
+# print("re04 - Search for lines that start with From and have an '@' sign")
+# exu = ExerciseUtils()
+# count = exu.run_search1('mbox-short.txt', '^From:.+@', False)
+# assert count == 27
+
+# print("re05 - Search for an address")
+# exu = ExerciseUtils()
+# count = exu.run_findall('mbox-short5.txt', '\\S+@\\S+', False)
+# assert count == 5
+
+# print("re06 - Search for lines that have an at sign between characters")
+# exu = ExerciseUtils()
+# count = exu.run_findall('mbox-short.txt', '\\S+@\\S+', False)
+# assert count == 336
+
+# print("re07 - Search for lines that have an at sign between characters")
+# exu = ExerciseUtils()
+# count = exu.run_findall('mbox.txt', '[a-zA-Z0-9][a-zA-Z0-9.]*@[a-zA-Z][a-zA-Z.]*', False)
+# assert count == 22009
+
+# print("re10 - Search for lines that start with 'X' followed by any non whitespace characters and ':' followed by a space and any number. The number can include a decimal.")
+# exu = ExerciseUtils()
+# count = exu.run_search1('mbox-short.txt', 'X\\S*: [0-9.]+', False)
+# assert count == 54
+
+# print("re11 - Search for lines that start with 'X' followed by any non whitespace characters and ':' followed by a space and any number. The number can include a decimal.")
+# exu = ExerciseUtils()
+# count = exu.run_findall('mbox-short.txt', 'X\\S*: ([0-9.]+)', False)
+# assert count == 54
+
+# print("re13 - Search for lines that start with From and a character followed by a two digit number between 00 and 99 followed by ':'. Then print the number if it is greater than zero.")
+# exu = ExerciseUtils()
+# count = exu.run_findall('mbox-short.txt', '^From .* ([0-9][0-9]):', False)
+# assert count == 27
 
 
 

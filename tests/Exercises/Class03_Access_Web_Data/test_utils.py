@@ -54,14 +54,34 @@ class TestExerciseUtils():
         assert self.exu.run_findall("mbox-short5.txt", "F...",          True) == 1  # Matches any character
         assert self.exu.run_findall("mbox-short5.txt", "\\s+for",       True) == 2  # Matches whitespace
         assert self.exu.run_findall("mbox-short5.txt", "\\S+-Path",     True) == 1  # Matches non-whitespace character
-        assert self.exu.run_findall("mbox-short5.txt", "\\s*[0-9]",     True) == 3  # Repeats a character zero or more times
-        assert self.exu.run_findall("mbox-short5.txt", "\\s*?[0-9]",    True) == 3  # Repeats a character zero or more times (not-greedy)
-        assert self.exu.run_findall("mbox-short5.txt", "\\s+[0-9]+",    True) == 1  # Repeats a character one or more times
-        assert self.exu.run_findall("mbox-short5.txt", "\\s+?[0-9]+?",  True) == 1  # Repeats a character one or more times (not-greedy)
-        assert self.exu.run_findall("mbox-short5.txt", "[aeiou]",       True) == 8  # Matches a single character in the listed set
-        assert self.exu.run_findall("mbox-short5.txt", "[^aeiou;]",     True) == 10  # Matches a single character not in the listed set
-        assert self.exu.run_findall("mbox-short5.txt", "[a-z]",         True) == 8  # The set of characters can include a range
+        assert self.exu.run_findall("mbox-short5.txt", "\\s*[0-9]",     True) == 9  # Repeats a character zero or more times
+        assert self.exu.run_findall("mbox-short5.txt", "\\s*?[0-9]",    True) == 9  # Repeats a character zero or more times (not-greedy)
+        assert self.exu.run_findall("mbox-short5.txt", "\\s+[0-9]+",    True) == 7  # Repeats a character one or more times
+        assert self.exu.run_findall("mbox-short5.txt", "\\s+?[0-9]+?",  True) == 7  # Repeats a character one or more times (not-greedy)
+        assert self.exu.run_findall("mbox-short5.txt", "[aeiou]",       True) == 14 # Matches a single character in the listed set
+        assert self.exu.run_findall("mbox-short5.txt", "[^aeiou;]",     True) == 16 # Matches a single character not in the listed set
+        assert self.exu.run_findall("mbox-short5.txt", "[a-z]",         True) == 14  # The set of characters can include a range
         assert self.exu.run_findall("mbox-short5.txt", "\\S+@(\\S+)",   True) == 5  # Indicates where string extraction is to start and end
 
     def test_run_findall_is_not_found(self):
         assert self.exu.run_findall("mbox-short5.txt", "JIMBO-missing", False) == 0
+
+    def test_run_findall_avg_is_empty(self):
+        count, avg =  self.exu.run_findall_avg("mbox-short.txt", "", True)
+        assert count == 0
+        assert avg == 0
+
+    def test_run_findall_avg_is_found(self):
+        # Sample each of the special regex characters
+        count, avg =  self.exu.run_findall_avg("mbox-short6.txt", "^From", True)  # skipped because string is not an number
+        assert count == 0
+        assert avg == 0
+
+        count, avg =  self.exu.run_findall_avg("mbox-short6.txt", "Counting: ([0-9])", True)
+        assert count == 12
+        assert avg == 2
+
+    def test_run_findall_avg_is_not_found(self):
+        count, avg =  self.exu.run_findall_avg("mbox-short6.txt", "JIMBO-missing", False)
+        assert count == 0
+        assert avg == 0
