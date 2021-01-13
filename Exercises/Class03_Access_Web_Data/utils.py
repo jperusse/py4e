@@ -32,6 +32,14 @@ class ExerciseUtils():
 
         return [page]
 
+    def getwords(self, fhand):
+        count = dict()
+        for line in fhand:
+            lines = line.split()
+            for word in lines:
+                count[word] = count.get(word, 0) + 1
+        return count
+
     def init_socket(self, url_page):
         url_prefix = "http://"
         url_base = "data.pr4e.org"

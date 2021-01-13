@@ -23,12 +23,21 @@ from utils import ExerciseUtils
 # piclen = exu.save_picture(pic, "stuff.jpg")
 # assert piclen > 0
 
-print("urllib1 - use urllib to treat a web page like a file")
+# print("urllib1 - use urllib to treat a web page like a file")
+# exu = ExerciseUtils()
+# fh = exu.open_url("romeo.txt")
+# assert fh != ""
+
+# page = exu.get_url_page(fh)
+# assert len(page) > 0
+
+# print(page)
+
+print("urlwords - ")
 exu = ExerciseUtils()
 fh = exu.open_url("romeo.txt")
-assert fh != ""
-
 page = exu.get_url_page(fh)
-assert len(page) > 0
+count = exu.getwords(page)
+assert len(count) == 26
+print(count)
 
-print(page)

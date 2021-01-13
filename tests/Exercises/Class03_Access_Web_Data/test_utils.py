@@ -178,4 +178,16 @@ class TestExerciseUtils():
         page = self.exu.get_url_page(fh)
         assert len(page) > 0
 
+    def test_getwords(self):
+        fh = self.exu.open_url("romeo.txt")
+        assert fh != ""
+
+        page = self.exu.get_url_page(fh)
+        assert len(page) > 0
+
+        count = self.exu.getwords(page)
+        assert len(count) == 26
+        print(count)
+
+
         
