@@ -33,7 +33,7 @@ from utils import ExerciseUtils
 
 # print(page)
 
-print("urlwords - ")
+print("urlwords - compute the frequency of each word in the file")
 exu = ExerciseUtils()
 fh = exu.open_url("romeo.txt")
 page = exu.get_url_page(fh)
