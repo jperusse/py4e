@@ -1,5 +1,6 @@
 import re
 import socket
+import time
 
 
 class ExerciseUtils():
@@ -56,6 +57,7 @@ class ExerciseUtils():
             data = mysock.recv(512)
             if len(data) < 1:
                 break
+
             page_data = data.decode()
             page.append(page_data)
             print(page_data, end='')
@@ -82,7 +84,8 @@ class ExerciseUtils():
             if len(data) < 1:
                 break
 
-            # time.sleep(0.25)
+            time.sleep(0.25) # wait to give recv a chance to get all bytes
+
             count = count + len(data)
             print(len(data), count)
             picture = picture + data
@@ -197,78 +200,3 @@ class ExerciseUtils():
             avg = 0
 
         return [count, avg]
-
-
-print("re01 - Search for lines that contain 'From'")
-exu = ExerciseUtils()
-count = exu.run_search1('mbox-short.txt', 'From:', False)
-assert count == 27
-
-print("re02 - Search for lines that start with 'From'")
-exu = ExerciseUtils()
-count = exu.run_search1('mbox-short.txt', '^From:', False)
-assert count == 27
-
-print("re03 - Search for lines that start with 'F', followed by 2 characters, followed by 'm:'")
-exu = ExerciseUtils()
-count = exu.run_search1('mbox-short.txt', '^F..m:', False)
-assert count == 27
-
-print("re04 - Search for lines that start with From and have an '@' sign")
-exu = ExerciseUtils()
-count = exu.run_search1('mbox-short.txt', '^From:.+@', False)
-assert count == 27
-
-print("re05 - Search for an address")
-exu = ExerciseUtils()
-count = exu.run_findall('mbox-short5.txt', '\\S+@\\S+', False)
-assert count == 5
-
-print("re06 - Search for lines that have an at sign between characters")
-exu = ExerciseUtils()
-count = exu.run_findall('mbox-short.txt', '\\S+@\\S+', False)
-assert count == 336
-
-print("re07 - Search for lines that have an at sign between characters")
-exu = ExerciseUtils()
-count = exu.run_findall(
-    'mbox.txt', '[a-zA-Z0-9][a-zA-Z0-9.]*@[a-zA-Z][a-zA-Z.]*', False)
-assert count == 22009
-
-print("re10 - Search for lines that start with 'X' followed by any non whitespace characters and ':' followed by a space and any number. The number can include a decimal.")
-exu = ExerciseUtils()
-count = exu.run_search1('mbox-short.txt', 'X\\S*: [0-9.]+', False)
-assert count == 54
-
-print("re11 - Search for lines that start with 'X' followed by any non whitespace characters and ':' followed by a space and any number. The number can include a decimal.")
-exu = ExerciseUtils()
-count = exu.run_findall('mbox-short.txt', 'X\\S*: ([0-9.]+)', False)
-assert count == 54
-
-print("re13 - Search for lines that start with From and a character followed by a two digit number between 00 and 99 followed by ':'. Then print the number if it is greater than zero.")
-exu = ExerciseUtils()
-count = exu.run_findall('mbox-short.txt', '^From .* ([0-9][0-9]):', False)
-assert count == 27
-
-print("socket1 - World's simplest web browser")
-exu = ExerciseUtils()
-mysock, url = exu.init_socket("romeo.txt")
-
-page = exu.get_page(mysock, url)
-assert len(page) == 2
-
-mysock = exu.close_socket(mysock)  # normal socket
-assert mysock._closed
-
-print("urljpeg - get a jpeg document")
-exu = ExerciseUtils()
-mysock, url = exu.init_socket("cover3.jpg")
-
-pic = exu.get_jpeg(mysock, url)
-assert len(pic) == 230608
-
-mysock = exu.close_socket(mysock)  # normal socket
-assert mysock._closed
-
-rc = exu.save_picture(pic, "stuff.jpg")
-assert rc > 0

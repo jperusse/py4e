@@ -145,18 +145,6 @@ class TestExerciseUtils():
         page = self.exu.get_page(mysock, url)
         assert len(page) == 0
 
-    def test_get_picture(self):
-        mysock, url = self.exu.init_socket("cover3.jpg")
-
-        picture = self.exu.get_jpeg(mysock, url)
-        assert len(picture) == 230608
-
-        mysock = self.exu.close_socket(mysock)  # normal socket
-        assert mysock._closed
-
-        picture = self.exu.get_jpeg(mysock, url)
-        assert len(picture) == 0
-
     def test_get_jpeg(self):
         mysock, url = self.exu.init_socket("cover3.jpg")
 
@@ -165,7 +153,7 @@ class TestExerciseUtils():
 
         mysock = self.exu.close_socket(mysock)  # normal socket
         assert mysock._closed
-        
+
         rc = self.exu.save_picture(picture, "stuff.jpg")
         assert rc > 0
 
