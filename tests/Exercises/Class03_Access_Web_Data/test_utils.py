@@ -159,3 +159,9 @@ class TestExerciseUtils():
 
         picture = self.exu.get_jpeg(mysock, url)
         assert len(picture) == 0
+
+    def test_get_from_url(self):
+        fh = self.exu.open_url("romeo.txt")
+        assert not fh == ""
+
+        

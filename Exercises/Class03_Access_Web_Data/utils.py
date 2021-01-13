@@ -1,12 +1,21 @@
 import re
 import socket
 import time
+import urllib.request
 
 
 class ExerciseUtils():
     """
     Test methods common to PY4E exercises
     """
+
+    def open_url(self, url_page):
+        url_prefix = "http://"
+        url_base = "data.pr4e.org"
+        url = url_prefix + url_base + "/" + url_page
+        fh = urllib.request.urlopen(url)
+        assert not fh == ""
+        return fh
 
     def init_socket(self, url_page):
         url_prefix = "http://"
@@ -200,3 +209,4 @@ class ExerciseUtils():
             avg = 0
 
         return [count, avg]
+        
