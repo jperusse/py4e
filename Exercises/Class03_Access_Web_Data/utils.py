@@ -10,12 +10,27 @@ class ExerciseUtils():
     """
 
     def open_url(self, url_page):
+        if url_page == "":
+            return ""
+
         url_prefix = "http://"
         url_base = "data.pr4e.org"
         url = url_prefix + url_base + "/" + url_page
-        fh = urllib.request.urlopen(url)
-        assert not fh == ""
+        try:
+            fh = urllib.request.urlopen(url)
+        except:
+            print("Failed to open ", url)
+            return ""
+
         return fh
+
+    def get_url_page(self, fhand):
+        page = ""
+        for line in fhand:
+            print(line.decode().strip())
+            page = page + line.decode()
+
+        return [page]
 
     def init_socket(self, url_page):
         url_prefix = "http://"
@@ -209,4 +224,3 @@ class ExerciseUtils():
             avg = 0
 
         return [count, avg]
-        

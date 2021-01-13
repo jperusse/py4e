@@ -160,8 +160,22 @@ class TestExerciseUtils():
         picture = self.exu.get_jpeg(mysock, url)
         assert len(picture) == 0
 
-    def test_get_from_url(self):
+    def test_open_url(self):
         fh = self.exu.open_url("romeo.txt")
-        assert not fh == ""
+        assert fh != ""
+
+    def test_open_url_bad_url(self):
+        fh = self.exu.open_url("")
+        assert fh == ""
+
+        fh = self.exu.open_url("fred.txt")
+        assert fh == ""
+
+    def test_get_url_page(self):
+        fh = self.exu.open_url("romeo.txt")
+        assert fh != ""
+
+        page = self.exu.get_url_page(fh)
+        assert len(page) > 0
 
         
