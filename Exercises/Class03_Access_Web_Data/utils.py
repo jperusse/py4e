@@ -7,6 +7,14 @@ class ExerciseUtils():
     Test methods common to PY4E exercises
     """
 
+    def init_socket(self, url_page):
+        url_prefix = "http://"
+        url_base = "data.pr4e.org"
+        url = url_prefix + url_base + "/" + url_page
+        mysock = self.open_socket("data.pr4e.org", 80)  # normal socket
+        assert not mysock._closed
+        return mysock, url
+
     def open_socket(self, host, port):
         """
         open a socket for host on port
@@ -33,14 +41,14 @@ class ExerciseUtils():
 
     def get_page(self, mysock, url):
         """
-        get data from a socket
+        get  a text document from a socket
         """
         page = list()
 
         cmd = 'GET ' + url + ' HTTP/1.0\r\n\r\n'
         cmd = cmd.encode()
         try:
-            mysock.send(cmd)
+            mysock.sendall(cmd)
         except:
             print('SEND failed for ', url)
             return page
@@ -53,6 +61,49 @@ class ExerciseUtils():
             print(page_data, end='')
 
         return page
+
+    def get_jpeg(self, mysock, url):
+        """
+        get a jpeg document from a socket
+        """
+        count = 0
+        picture = b""
+
+        cmd = 'GET ' + url + ' HTTP/1.0\r\n\r\n'
+        cmd = cmd.encode()
+        try:
+            mysock.send(cmd)
+        except:
+            print('SEND failed for ', url)
+            return picture
+
+        while True:
+            data = mysock.recv(5120)
+            if len(data) < 1:
+                break
+
+            # time.sleep(0.25)
+            count = count + len(data)
+            print(len(data), count)
+            picture = picture + data
+
+        return picture
+
+    def save_picture(self, picture, file):
+        """
+        Strip headers from picture and save to file
+        """
+        # Look for the end of the header (2 CRLF)
+        pos = picture.find(b"\r\n\r\n")
+        print('Header length', pos)
+        print(picture[:pos].decode())
+
+        # Skip past the header and save the picture data
+        picture = picture[pos+4:]
+        fhand = open(file, "wb")
+        fhand.write(picture)
+        fhand.close()
+        return len(picture)
 
     def openfile(self, fname, mode):
         """
@@ -180,7 +231,8 @@ assert count == 336
 
 print("re07 - Search for lines that have an at sign between characters")
 exu = ExerciseUtils()
-count = exu.run_findall('mbox.txt', '[a-zA-Z0-9][a-zA-Z0-9.]*@[a-zA-Z][a-zA-Z.]*', False)
+count = exu.run_findall(
+    'mbox.txt', '[a-zA-Z0-9][a-zA-Z0-9.]*@[a-zA-Z][a-zA-Z.]*', False)
 assert count == 22009
 
 print("re10 - Search for lines that start with 'X' followed by any non whitespace characters and ':' followed by a space and any number. The number can include a decimal.")
@@ -198,17 +250,25 @@ exu = ExerciseUtils()
 count = exu.run_findall('mbox-short.txt', '^From .* ([0-9][0-9]):', False)
 assert count == 27
 
-print("socket1 - World's simplest web browswer")
+print("socket1 - World's simplest web browser")
 exu = ExerciseUtils()
-url_prefix = "http://"
-url_base = "data.pr4e.org"
-url_page = "romeo.txt"
-url = url_prefix + url_base + "/" + url_page
-mysock = exu.open_socket("data.pr4e.org", 80) # normal socket
-assert not mysock._closed
+mysock, url = exu.init_socket("romeo.txt")
 
 page = exu.get_page(mysock, url)
 assert len(page) == 2
 
-mysock = exu.close_socket(mysock) # normal socket
+mysock = exu.close_socket(mysock)  # normal socket
 assert mysock._closed
+
+print("urljpeg - get a jpeg document")
+exu = ExerciseUtils()
+mysock, url = exu.init_socket("cover3.jpg")
+
+pic = exu.get_jpeg(mysock, url)
+assert len(pic) == 230608
+
+mysock = exu.close_socket(mysock)  # normal socket
+assert mysock._closed
+
+rc = exu.save_picture(pic, "stuff.jpg")
+assert rc > 0
