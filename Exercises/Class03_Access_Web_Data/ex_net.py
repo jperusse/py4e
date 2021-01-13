@@ -20,5 +20,5 @@ assert len(pic) == 230608
 mysock = exu.close_socket(mysock)  # normal socket
 assert mysock._closed
 
-rc = exu.save_picture(pic, "stuff.jpg")
-assert rc > 0
+piclen = exu.save_picture(pic, "stuff.jpg")
+assert piclen > 0
