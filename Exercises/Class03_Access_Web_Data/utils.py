@@ -24,6 +24,21 @@ class ExerciseUtils():
 
         return fh
 
+    def open_url_small_img(self, url_page):
+        if url_page == "":
+            return ""
+
+        url_prefix = "http://"
+        url_base = "data.pr4e.org"
+        url = url_prefix + url_base + "/" + url_page
+        try:
+            img = urllib.request.urlopen(url).read()
+        except:
+            print("Failed to open ", url)
+            return ""
+
+        return img
+
     def get_url_page(self, fhand):
         page = ""
         for line in fhand:
@@ -116,7 +131,7 @@ class ExerciseUtils():
             if len(data) < 1:
                 break
 
-            time.sleep(0.25) # wait to give recv a chance to get all bytes
+            time.sleep(0.25)  # wait to give recv a chance to get all bytes
 
             count = count + len(data)
             print(len(data), count)
@@ -124,21 +139,24 @@ class ExerciseUtils():
 
         return picture
 
-    def save_picture(self, picture, file):
+    def stripheaders_img(self, img, file):
         """
-        Strip headers from picture and save to file
+        Strip headers from img and save to file
         """
         # Look for the end of the header (2 CRLF)
-        pos = picture.find(b"\r\n\r\n")
+        pos = img.find(b"\r\n\r\n")
         print('Header length', pos)
-        print(picture[:pos].decode())
+        print(img[:pos].decode())
 
-        # Skip past the header and save the picture data
-        picture = picture[pos+4:]
-        fhand = open(file, "wb")
-        fhand.write(picture)
-        fhand.close()
-        return len(picture)
+        # Skip past the header and save the img data
+        img = img[pos+4:]
+        return img
+
+    def write_file(self, file, mode, list):
+        fhand = self.openfile(file, mode)
+        fhand.write(list)
+        rc = fhand.close()
+        return rc
 
     def openfile(self, fname, mode):
         """

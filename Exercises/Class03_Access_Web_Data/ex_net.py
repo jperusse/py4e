@@ -33,11 +33,22 @@ from utils import ExerciseUtils
 
 # print(page)
 
-print("urlwords - compute the frequency of each word in the file")
+# print("urlwords - compute the frequency of each word in the file")
+# exu = ExerciseUtils()
+# fh = exu.open_url("romeo.txt")
+# page = exu.get_url_page(fh)
+# count = exu.getwords(page)
+# assert len(count) == 26
+# print(count)
+
+print("curl1 - get and image and write it to a file")
 exu = ExerciseUtils()
-fh = exu.open_url("romeo.txt")
-page = exu.get_url_page(fh)
-count = exu.getwords(page)
-assert len(count) == 26
-print(count)
+file = "cover3.jpg"
+img = exu.open_url_small_img(file)
+imglen = len(img)
+assert imglen == 230210
+print("Length of " + file + " is:", imglen)
+
+rc = exu.write_file("cover3.jpg", "wb", img)
+assert rc == None
 

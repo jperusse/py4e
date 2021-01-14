@@ -146,6 +146,7 @@ class TestExerciseUtils():
         assert len(page) == 0
 
     def test_get_jpeg(self):
+        ofile = "stuff.jpg"
         mysock, url = self.exu.init_socket("cover3.jpg")
 
         picture = self.exu.get_jpeg(mysock, url)
@@ -154,11 +155,11 @@ class TestExerciseUtils():
         mysock = self.exu.close_socket(mysock)  # normal socket
         assert mysock._closed
 
-        rc = self.exu.save_picture(picture, "stuff.jpg")
-        assert rc > 0
+        img = self.exu.stripheaders_img(picture, ofile)
+        assert len(img) == 230210
 
-        picture = self.exu.get_jpeg(mysock, url)
-        assert len(picture) == 0
+        rc = self.exu.write_file(ofile, "wb", img)
+        assert rc == None
 
     def test_open_url(self):
         fh = self.exu.open_url("romeo.txt")
@@ -189,5 +190,10 @@ class TestExerciseUtils():
         assert len(count) == 26
         print(count)
 
+    def test_getimg_and_save(self):
+        img = self.exu.open_url_small_img("cover3.jpg")
+        assert len(img) == 230210
 
-        
+        rc = self.exu.write_file("cover3.jpg", "wb", img)
+        assert rc == None
+
