@@ -47,6 +47,22 @@ class ExerciseUtils():
 
         return [page]
 
+    def get_url_large_img_and_save(self, img, ofile):
+        """
+        retrieve web page using a buffer for large files and save to disk
+        """
+        ofhand = open(ofile, 'wb')
+        size = 0
+        while True:
+            info = img.read(100000)
+            if len(info) < 1:
+                break
+            size = size + len(info)
+            ofhand.write(info)
+
+        ofhand.close()
+        return size
+
     def getwords(self, fhand):
         count = dict()
         for line in fhand:

@@ -190,10 +190,20 @@ class TestExerciseUtils():
         assert len(count) == 26
         print(count)
 
-    def test_getimg_and_save(self):
+    def test_open_url_small_img_and_save(self):
         img = self.exu.open_url_small_img("cover3.jpg")
         assert len(img) == 230210
 
         rc = self.exu.write_file("cover3.jpg", "wb", img)
         assert rc == None
+
+    def test_open_url_large_img_save(self):
+        file = "cover3.jpg"
+        img = self.exu.open_url(file)
+        assert img != ""
+
+        count = self.exu.get_url_large_img_and_save(img, file)
+        assert count == 230210
+        print(count, 'characters copied.')
+
 
