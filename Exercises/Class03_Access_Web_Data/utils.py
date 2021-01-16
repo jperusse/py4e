@@ -6,17 +6,16 @@ import urllib.request
 
 class ExerciseUtils():
     """
-    Methods common to PY4E exercises
+    Test methods common to PY4E exercises
     """
-    
-    url_base = "data.pr4e.org"
-
 
     def open_url(self, url_page):
         if url_page == "":
             return ""
 
-        url = self.buildurl(url_page)
+        url_prefix = "http://"
+        url_base = "data.pr4e.org"
+        url = url_prefix + url_base + "/" + url_page
         try:
             fh = urllib.request.urlopen(url)
         except:
@@ -29,7 +28,9 @@ class ExerciseUtils():
         if url_page == "":
             return ""
 
-        url = self.buildurl(url_page)
+        url_prefix = "http://"
+        url_base = "data.pr4e.org"
+        url = url_prefix + url_base + "/" + url_page
         try:
             img = urllib.request.urlopen(url).read()
         except:
@@ -71,15 +72,12 @@ class ExerciseUtils():
         return count
 
     def init_socket(self, url_page):
-        url = self.buildurl(url_page)
-        mysock = self.open_socket(self.url_base, 80)  # normal socket
+        url_prefix = "http://"
+        url_base = "data.pr4e.org"
+        url = url_prefix + url_base + "/" + url_page
+        mysock = self.open_socket("data.pr4e.org", 80)  # normal socket
         assert not mysock._closed
         return mysock, url
-
-    def buildurl(self, url_page):
-        url_prefix = "http://"
-        url = url_prefix + self.url_base + "/" + url_page
-        return url
 
     def open_socket(self, host, port):
         """
@@ -268,3 +266,19 @@ class ExerciseUtils():
             avg = 0
 
         return [count, avg]
+    
+    def save_picture(self, picture, file):
+        """
+        Strip headers from picture and save to file
+        """
+        # Look for the end of the header (2 CRLF)
+        pos = picture.find(b"\r\n\r\n")
+        print('Header length', pos)
+        print(picture[:pos].decode())
+
+        # Skip past the header and save the picture data
+        picture = picture[pos+4:]
+        fhand = open(file, "wb")
+        fhand.write(picture)
+        fhand.close()
+        return len(picture)
