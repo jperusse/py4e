@@ -1,4 +1,4 @@
-from utils import ExerciseUtils
+from ex_re_utils import ExerciseUtils
 
 print("re01 - Search for lines that contain 'From'")
 exu = ExerciseUtils()

@@ -1,4 +1,4 @@
-from utils import ExerciseUtils
+from ex_net_utils import ExerciseUtils
 
 print("socket1 - World's simplest web browser")
 exu = ExerciseUtils()
