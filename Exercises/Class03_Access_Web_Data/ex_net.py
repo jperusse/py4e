@@ -1,67 +1,91 @@
 from utils import ExerciseUtils
 
-print("socket1 - World's simplest web browser")
-exu = ExerciseUtils()
-mysock, url = exu.init_socket("romeo.txt")
 
-page = exu.get_page(mysock, url)
-assert len(page) == 2
+class AccessWebData():
+    """
+    Methods contructed for Class 3
+    """
 
-mysock = exu.close_socket(mysock)  # normal socket
-assert mysock._closed
+    url_text_doc = "romeo.txt"
+    url_jpg = "cover3.jpg"
+    local_jpg = "stuff.jpg"
 
-print("urljpeg - get a jpeg document")
-exu = ExerciseUtils()
-mysock, url = exu.init_socket("cover3.jpg")
+    def socket1(self):
+        print("socket1 - World's simplest web browser")
+        exu = ExerciseUtils()
+        mysock, url = exu.init_socket(self.url_text_doc)
 
-pic = exu.get_jpeg(mysock, url)
-assert len(pic) == 230608
+        page = exu.get_page(mysock, url)
+        assert len(page) == 2
 
-mysock = exu.close_socket(mysock)  # normal socket
-assert mysock._closed
+        mysock = exu.close_socket(mysock)  # normal socket
+        assert mysock._closed
 
-piclen = exu.save_picture(pic, "stuff.jpg")
-assert piclen > 0
+    def urljpeg(self):
+        print("urljpeg - get a jpeg document")
+        exu = ExerciseUtils()
+        mysock, url = exu.init_socket(self.url_jpg)
 
-print("urllib1 - use urllib to treat a web page like a file")
-exu = ExerciseUtils()
-fh = exu.open_url("romeo.txt")
-assert fh != ""
+        pic = exu.get_jpeg(mysock, url)
+        assert len(pic) == 230608
 
-page = exu.get_url_page(fh)
-assert len(page) > 0
+        mysock = exu.close_socket(mysock)  # normal socket
+        assert mysock._closed
 
-print(page)
+        piclen = exu.save_picture(pic, self.local_jpg)
+        assert piclen > 0
 
-print("urlwords - compute the frequency of each word in the file")
-exu = ExerciseUtils()
-fh = exu.open_url("romeo.txt")
-page = exu.get_url_page(fh)
-count = exu.getwords(page)
-assert len(count) == 26
-print(count)
+    def urllib1(self):
+        print("urllib1 - use urllib to treat a web page like a file")
+        exu = ExerciseUtils()
+        fh = exu.open_url(self.url_text_doc)
+        assert fh != ""
 
-print("curl1 - get and image and write it to a file")
-exu = ExerciseUtils()
-file = "cover3.jpg"
-img = exu.open_url_small_img(file)
-imglen = len(img)
-assert imglen == 230210
-print("Length of " + file + " is:", imglen)
+        page = exu.get_url_page(fh)
+        assert len(page) > 0
 
-rc = exu.write_file("cover3.jpg", "wb", img)
-assert rc == None
+        print(page)
 
-print("curl2 - get and image and write it to a file using a buffer to read any size file")
-exu = ExerciseUtils()
-file = "cover3.jpg"
-img = exu.open_url(file)
-assert img != ""
+    def urlwords(self):
+        print("urlwords - compute the frequency of each word in the file")
+        exu = ExerciseUtils()
+        fh = exu.open_url(self.url_text_doc)
+        page = exu.get_url_page(fh)
+        count = exu.getwords(page)
+        assert len(count) == 26
+        print(count)
 
-count = exu.get_url_large_img_and_save(img, file)
-assert count == 230210
-print(count, 'characters copied.')
+    def curl1(self):
+        print("curl1 - get and image and write it to a file")
+        exu = ExerciseUtils()
+        img = exu.open_url_small_img(self.url_jpg)
+        imglen = len(img)
+        assert imglen == 230210
+        print("Length of " + self.url_jpg + " is:", imglen)
 
-print("urlregex - Search for link values within URL input")
-exu = ExerciseUtils()
+        rc = exu.write_file(self.url_jpg, "wb", img)
+        assert rc == None
 
+    def curl2(self):
+        print("curl2 - get and image and write it to a file using a buffer to read any size file")
+        exu = ExerciseUtils()
+        img = exu.open_url(self.url_jpg)
+        assert img != ""
+
+        count = exu.get_url_large_img_and_save(img, self.url_jpg)
+        assert count == 230210
+        print(count, 'characters copied.')
+
+    def urlregex(self):
+        print("urlregex - Search for link values within URL input")
+        exu = ExerciseUtils()
+
+class3 = AccessWebData()
+
+class3.socket1()
+class3.urljpeg()
+class3.urllib1()
+class3.urlwords()
+class3.curl1()
+class3.curl2()
+class3.urlregex()
