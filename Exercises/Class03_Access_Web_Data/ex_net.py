@@ -36,7 +36,7 @@ class AccessWebData():
         assert piclen > 0
 
     def urllib1(self):
-        print("urllib1 - use urllib to treat a web page like a file")
+        print("urllib1 - use urllib to read a web page like a file")
         exu = ExerciseUtils()
         fh = exu.open_url(self.url_text_doc)
         assert fh != ""

@@ -8,6 +8,10 @@ class ExerciseUtils():
     """
     Test methods common to PY4E exercises
     """
+    url_prefix = "http://"
+    url_base = "data.pr4e.org"
+
+    mbox_trace = "mbox_trace.txt"
 
     #
     # Base utility methods
@@ -39,6 +43,7 @@ class ExerciseUtils():
 #
 # Regex methods
 #
+
     def run_search1(self, fname, search_str, debug):
         """
         Use re.search to count number of lines containing search_str in fname
@@ -70,7 +75,7 @@ class ExerciseUtils():
             return count
 
         if debug:
-            wh = self.openfile("mbox_trace.txt", "w")
+            wh = self.openfile(self.mbox_trace, "w")
 
         for line in hand:
             line = line.rstrip()
@@ -96,7 +101,7 @@ class ExerciseUtils():
             return [0, 0]
 
         if debug:
-            wh = self.openfile("mbox_trace.txt", "w")
+            wh = self.openfile(self.mbox_trace, "w")
 
         for line in hand:
             line = line.rstrip()
@@ -128,9 +133,7 @@ class ExerciseUtils():
         if url_page == "":
             return ""
 
-        url_prefix = "http://"
-        url_base = "data.pr4e.org"
-        url = url_prefix + url_base + "/" + url_page
+        url = self.buildurl(url_page)
         try:
             fh = urllib.request.urlopen(url)
         except:
@@ -143,9 +146,7 @@ class ExerciseUtils():
         if url_page == "":
             return ""
 
-        url_prefix = "http://"
-        url_base = "data.pr4e.org"
-        url = url_prefix + url_base + "/" + url_page
+        url = self.buildurl(url_page)
         try:
             img = urllib.request.urlopen(url).read()
         except:
@@ -154,7 +155,14 @@ class ExerciseUtils():
 
         return img
 
+    def buildurl(self, url_page):
+        url = self.url_prefix + self.url_base + "/" + url_page
+        return url
+
     def get_url_page(self, fhand):
+        '''
+        Get and decode a URL page returning it as a string
+        '''
         page = ""
         for line in fhand:
             print(line.decode().strip())
@@ -179,10 +187,8 @@ class ExerciseUtils():
         return size
 
     def init_socket(self, url_page):
-        url_prefix = "http://"
-        url_base = "data.pr4e.org"
-        url = url_prefix + url_base + "/" + url_page
-        mysock = self.open_socket("data.pr4e.org", 80)  # normal socket
+        url = self.buildurl(url_page)
+        mysock = self.open_socket(self.url_base, 80)  # normal socket
         assert not mysock._closed
         return mysock, url
 
@@ -274,7 +280,6 @@ class ExerciseUtils():
         # Skip past the header and save the img data
         img = img[pos+4:]
         return img
-
 
     def save_picture(self, picture, file):
         """
