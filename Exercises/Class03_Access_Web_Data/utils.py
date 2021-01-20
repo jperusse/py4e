@@ -3,6 +3,10 @@ import socket
 import time
 import urllib.request
 
+# requests is more advanced than urllib and does automatic decoding
+import requests
+from bs4 import BeautifulSoup
+
 
 class ExerciseUtils():
     """
@@ -129,6 +133,7 @@ class ExerciseUtils():
 #
 #   Network methods
 #
+
     def open_url(self, url_page):
         if url_page == "":
             return ""

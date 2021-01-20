@@ -54,43 +54,33 @@ class TestExerciseUtils():
 
     def test_run_findall_is_found(self):
         # Sample each of the special regex characters
-        # Matches the beginning of a line
+
         assert self.exu.run_findall(
-            self.mbox_short5, "^From",         True) == 1
-        # Matches the end of the line
+            self.mbox_short5, "^From",         True) == 1  # Matches the beginning of a line
         assert self.exu.run_findall(
-            self.mbox_short5, ";$",            True) == 3
+            self.mbox_short5, ";$",            True) == 3  # Matches the end of the line
         assert self.exu.run_findall(
             self.mbox_short5, "F...",          True) == 1  # Matches any character
         assert self.exu.run_findall(
             self.mbox_short5, "\\s+for",       True) == 2  # Matches whitespace
-        # Matches non-whitespace character
         assert self.exu.run_findall(
-            self.mbox_short5, "\\S+-Path",     True) == 1
-        # Repeats a character zero or more times
+            self.mbox_short5, "\\S+-Path",     True) == 1  # Matches non-whitespace character
         assert self.exu.run_findall(
-            self.mbox_short5, "\\s*[0-9]",     True) == 9
-        # Repeats a character zero or more times (not-greedy)
+            self.mbox_short5, "\\s*[0-9]",     True) == 9  # Repeats a character zero or more times
         assert self.exu.run_findall(
-            self.mbox_short5, "\\s*?[0-9]",    True) == 9
-        # Repeats a character one or more times
+            self.mbox_short5, "\\s*?[0-9]",    True) == 9  # Repeats a character zero or more times (not-greedy)
         assert self.exu.run_findall(
-            self.mbox_short5, "\\s+[0-9]+",    True) == 7
-        # Repeats a character one or more times (not-greedy)
+            self.mbox_short5, "\\s+[0-9]+",    True) == 7  # Repeats a character one or more times
         assert self.exu.run_findall(
-            self.mbox_short5, "\\s+?[0-9]+?",  True) == 7
-        # Matches a single character in the listed set
+            self.mbox_short5, "\\s+?[0-9]+?",  True) == 7  # Repeats a character one or more times (not-greedy)
         assert self.exu.run_findall(
-            self.mbox_short5, "[aeiou]",       True) == 14
-        # Matches a single character not in the listed set
+            self.mbox_short5, "[aeiou]",       True) == 14  # Matches a single character in the listed set
         assert self.exu.run_findall(
-            self.mbox_short5, "[^aeiou;]",     True) == 16
-        # The set of characters can include a range
+            self.mbox_short5, "[^aeiou;]",     True) == 16  # Matches a single character not in the listed set
         assert self.exu.run_findall(
-            self.mbox_short5, "[a-z]",         True) == 14
-        # Indicates where string extraction is to start and end
+            self.mbox_short5, "[a-z]",         True) == 14  # The set of characters can include a range
         assert self.exu.run_findall(
-            self.mbox_short5, "\\S+@(\\S+)",   True) == 5
+            self.mbox_short5, "\\S+@(\\S+)",   True) == 5  # Indicates where string extraction is to start and end
 
     def test_run_findall_is_not_found(self):
         assert self.exu.run_findall(
@@ -227,4 +217,3 @@ class TestExerciseUtils():
         url = self.exu.buildurl(url_doc)
         assert url == "http://data.pr4e.org/" + url_doc
         print(url)
-
