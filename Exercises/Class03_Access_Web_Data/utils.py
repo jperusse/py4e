@@ -227,13 +227,13 @@ class ExerciseUtils():
         """
         page = list()
 
-        cmd = 'GET ' + url + ' HTTP/1.0\r\n\r\n'
-        cmd = cmd.encode()
+        cmd = self.encode_get(url)
         try:
             mysock.sendall(cmd)
         except:
             print('SEND failed for ', url)
             return page
+
         while True:
             data = mysock.recv(512)
             if len(data) < 1:
@@ -245,6 +245,11 @@ class ExerciseUtils():
 
         return page
 
+    def encode_get(self, url):
+        cmd = 'GET ' + url + ' HTTP/1.0\r\n\r\n'
+        cmd = cmd.encode()
+        return cmd
+
     def get_jpeg(self, mysock, url):
         """
         get a jpeg document from a socket
@@ -252,8 +257,7 @@ class ExerciseUtils():
         count = 0
         picture = b""
 
-        cmd = 'GET ' + url + ' HTTP/1.0\r\n\r\n'
-        cmd = cmd.encode()
+        cmd = self.encode_get(url)
         try:
             mysock.send(cmd)
         except:

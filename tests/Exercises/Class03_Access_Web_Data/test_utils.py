@@ -114,15 +114,15 @@ class TestExerciseUtils():
         assert mysock == None
 
     def test_open_socket_bad_port(self):
-        mysock = self.exu.open_socket("data.pr4e.org", 0)
+        mysock = self.exu.open_socket(self.exu.url_base, 0)
         assert mysock == None
 
     def test_open_socket_for_good_host(self):
-        mysock = self.exu.open_socket("data.pr4e.org", 80)  # normal socket
+        mysock = self.exu.open_socket(self.exu.url_base, 80)  # normal socket
         assert mysock._closed == False
 
     def test_close_socket_for_good_host(self):
-        mysock = self.exu.open_socket("data.pr4e.org", 80)  # normal socket
+        mysock = self.exu.open_socket(self.exu.url_base, 80)  # normal socket
         assert mysock._closed == False
 
         mysock = self.exu.close_socket(mysock)  # normal socket
