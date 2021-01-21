@@ -252,3 +252,15 @@ class TestExerciseUtils():
         assert len(links) > 0
         assert type(links) == type([])
 
+    def test_findlinks_bs4(self):
+        ctx = self.exu.ignore_ssl_errors()
+        html = self.exu.open_url("https://docs.python.org", ctx)
+        assert len(html) > 0
+        assert type(html) == type(b'')
+
+        links = list()
+        regex = 'href="(http[s]?://.*?)"'.encode()
+        links = self.exu.findall_html(html, regex)
+        assert len(links) > 0
+        assert type(links) == type([])
+
