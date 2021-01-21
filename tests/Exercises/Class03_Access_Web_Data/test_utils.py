@@ -3,6 +3,8 @@ import re
 import pytest
 from Exercises.Class03_Access_Web_Data.utils import ExerciseUtils
 
+from unittest.mock import MagicMock
+import io
 
 class TestExerciseUtils():
     """
@@ -155,6 +157,35 @@ class TestExerciseUtils():
 
         rc = self.exu.write_file(ofile, "wb", img)
         assert rc == None
+
+    def test_get_html_no_input(self):
+        html = self.exu.get_html(False)
+        assert len(html) > 0
+
+    def test_get_html_input_good_url(self, monkeypatch):
+        monkeypatch.setattr('sys.stdin', io.StringIO(self.exu.url_default1))
+        html = self.exu.get_html(False)
+        assert len(html) > 0
+
+    def test_get_html_input_no_url(self, monkeypatch):
+        monkeypatch.setattr('sys.stdin', io.StringIO("\n"))
+        html = self.exu.get_html(True)
+        assert len(html) > 0
+
+    def test_get_html_input_bad_url(self, monkeypatch):
+        monkeypatch.setattr('sys.stdin', io.StringIO("badurl"))
+        html = self.exu.get_html(True)
+        assert len(html) == 0
+
+    def test_reglinks(self):
+        html = self.exu.get_html(False)
+        links = self.exu.regexlinks(html)
+        assert len(links) == 20
+
+    def test_bs4_tags(self):
+        html = self.exu.get_html(False)
+        tags = self.exu.bs4_tags(html)
+        assert len(tags) == 48
 
     def test_open_url(self):
         fh = self.exu.open_url("romeo.txt", None)

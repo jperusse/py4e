@@ -10,7 +10,6 @@ class AccessWebData():
     url_text_doc = "romeo.txt"
     url_jpg = "cover3.jpg"
     local_jpg = "stuff.jpg"
-    url_default1 = "https://docs.python.org"
 
     def socket1(self):
         print("socket1 - World's simplest web browser")
@@ -80,44 +79,18 @@ class AccessWebData():
 
     def urlregex(self, UserInput=False):
         print("urlregex - Search for link values within URL input")
-        exu, html = self.get_html(UserInput)
-
-        self.regexlinks(exu, html)
-
-    def get_html(self, UserInput):
         exu = ExerciseUtils()
-        ctx = exu.ignore_ssl_errors()
-        if UserInput:
-            url = input("Enter url(default:" + self.url_default1 + "): ")
-            if url == "":
-                url = self.url_default1
-        else:
-            url = self.url_default1
-        html = exu.open_url(url, ctx)
-        return exu, html
+        html = exu.get_html(UserInput)
+        exu.regexlinks(html)
 
-    def regexlinks(self, exu, html):
-        links = list()
-        regex = 'href="(http[s]?://.*?)"'.encode()
-        links = exu.findall_html(html, regex)
-        assert len(links) == 20
-        for link in links:
-            print(link.decode())
+
 
     def urllinks(self, UserInput=False):
         print("urllinks - Search for link values within URL page using BeatifulSoup to parse html")
-        exu, html = self.get_html(UserInput)
+        exu = ExerciseUtils()
+        html = exu.get_html(UserInput)
+        exu.bs4_tags(html)
 
-        self.bs4_tags(html)
-
-    def bs4_tags(self, html):
-        soup = BeautifulSoup(html, 'html.parser')
-
-        # Retrieve all of the anchor tags
-        tags = soup('a')
-        assert len(tags) == 48
-        for tag in tags:
-            print(tag.get('href', None))
 
 
 class3 = AccessWebData()

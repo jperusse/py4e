@@ -14,6 +14,7 @@ class ExerciseUtils():
     """
     url_prefix = "http://"
     url_base = "data.pr4e.org"
+    url_default1 = "https://docs.python.org"
 
     mbox_trace = "mbox_trace.txt"
 
@@ -133,6 +134,33 @@ class ExerciseUtils():
 #
 #   Network methods
 #
+    def get_html(self, UserInput):
+        ctx = self.ignore_ssl_errors()
+        if UserInput:
+            url = input("Enter url(default:" + self.url_default1 + "): ")
+            if url == "":
+                url = self.url_default1
+        else:
+            url = self.url_default1
+        html = self.open_url(url, ctx)
+        return html
+
+    def regexlinks(self, html):
+        links = list()
+        regex = 'href="(http[s]?://.*?)"'.encode()
+        links = self.findall_html(html, regex)
+        for link in links:
+            print(link.decode())
+        return links
+
+    def bs4_tags(self, html):
+        soup = BeautifulSoup(html, 'html.parser')
+
+        # Retrieve all of the anchor tags
+        tags = soup('a')
+        for tag in tags:
+            print(tag.get('href', None))
+        return tags
 
     def findall_html(self, html, regex):
         # bytes_regex = regex.encode()
