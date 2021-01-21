@@ -157,18 +157,36 @@ class TestExerciseUtils():
         assert rc == None
 
     def test_open_url(self):
-        fh = self.exu.open_url("romeo.txt")
+        fh = self.exu.open_url("romeo.txt", None)
         assert fh != ""
+        print(fh)
+
+        url = self.exu.url_prefix + self.exu.url_base
+        fh = self.exu.open_url(url, None)
+        assert fh != ""
+        print(fh)
+
+        ctx = self.exu.ignore_ssl_errors()
+        url = "https://docs.python.org"
+        html = self.exu.open_url(url, ctx)
+        assert html != ""
+        print(html)
 
     def test_open_url_bad_url(self):
-        fh = self.exu.open_url("")
-        assert fh == ""
+        empty = ""
+        missing = "fred.txt"
+        fh = self.exu.open_url(empty, None)
+        assert fh == empty
 
-        fh = self.exu.open_url("fred.txt")
-        assert fh == ""
+        fh = self.exu.open_url(missing, None)
+        assert fh == empty
+
+        ctx = self.exu.ignore_ssl_errors()
+        html = self.exu.open_url(missing, ctx)
+        assert html == empty
 
     def test_get_url_page(self):
-        fh = self.exu.open_url("romeo.txt")
+        fh = self.exu.open_url("romeo.txt", None)
         assert fh != ""
 
         page = self.exu.get_url_page(fh)
@@ -183,7 +201,7 @@ class TestExerciseUtils():
         print(count)
 
     def test_getwords_from_url(self):
-        fh = self.exu.open_url("romeo.txt")
+        fh = self.exu.open_url("romeo.txt", None)
         assert fh != ""
 
         page = self.exu.get_url_page(fh)
@@ -194,7 +212,7 @@ class TestExerciseUtils():
         print(count)
 
     def test_open_url_small_img_and_save(self):
-        img = self.exu.open_url_small_img("cover3.jpg")
+        img = self.exu.open_url_small_img("cover3.jpg", None)
         assert len(img) == 230210
 
         rc = self.exu.write_file("cover3.jpg", "wb", img)
@@ -202,7 +220,7 @@ class TestExerciseUtils():
 
     def test_open_url_large_img_save(self):
         file = "cover3.jpg"
-        img = self.exu.open_url(file)
+        img = self.exu.open_url(file, None)
         assert img != ""
 
         count = self.exu.get_url_large_img_and_save(img, file)
@@ -214,6 +232,23 @@ class TestExerciseUtils():
         Build a full URL from the document proided
         """
         url_doc = "romeo.txt"
-        url = self.exu.buildurl(url_doc)
+        url = self.exu.buildurl(self.exu.url_prefix, self.exu.url_base, url_doc)
         assert url == "http://data.pr4e.org/" + url_doc
         print(url)
+
+    def test_ignore_ssl_errors(self):
+        ctx = self.exu.ignore_ssl_errors()
+        assert ctx.check_hostname == False
+
+    def test_findlinks_regex(self):
+        ctx = self.exu.ignore_ssl_errors()
+        html = self.exu.open_url("https://docs.python.org", ctx)
+        assert len(html) > 0
+        assert type(html) == type(b'')
+
+        links = list()
+        regex = 'href="(http[s]?://.*?)"'.encode()
+        links = self.exu.findall_html(html, regex)
+        assert len(links) > 0
+        assert type(links) == type([])
+

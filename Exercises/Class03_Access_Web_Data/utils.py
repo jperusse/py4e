@@ -1,10 +1,10 @@
 import re
 import socket
+import ssl
 import time
 import urllib.request
 
-# requests is more advanced than urllib and does automatic decoding
-import requests
+import requests  # requests is more advanced than urllib and does automatic decoding
 from bs4 import BeautifulSoup
 
 
@@ -134,34 +134,71 @@ class ExerciseUtils():
 #   Network methods
 #
 
-    def open_url(self, url_page):
+    def findall_html(self, html, regex):
+        # bytes_regex = regex.encode()
+
+        # ctx = ssl.create_default_context()
+        # ctx.check_hostname = False
+        # ctx.verify_mode = ssl.CERT_NONE
+
+
+        # # lst = re.findall(b'href="(http[s]?://.*?)"', html)
+        # html = urllib.request.urlopen(url, context=ctx).read()
+
+        lst = re.findall(regex, html)
+
+        return lst
+
+    def ignore_ssl_errors(self):
+        """
+        Return an object used to ignore SSL errors when opening an HTTPS url
+        """
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+
+        return ctx
+
+    def open_url(self, url_page, ctx=None):
         if url_page == "":
             return ""
+        elif url_page.strip().startswith("http"):
+            url = url_page
+        else:
+           url = self.buildurl(self.url_prefix, self.url_base, url_page)
 
-        url = self.buildurl(url_page)
-        try:
-            fh = urllib.request.urlopen(url)
-        except:
-            print("Failed to open ", url)
-            return ""
+        if ctx == None:
+            try:
+                fh = urllib.request.urlopen(url)
+            except:
+                print("Failed to open ", url)
+                return ""
+
+        else:
+            try:
+                fh = urllib.request.urlopen(url, context=ctx).read()
+            except:
+                print("Failed to open ", url)
+                return ""
+
 
         return fh
 
-    def open_url_small_img(self, url_page):
+    def open_url_small_img(self, url_page, ctx):
         if url_page == "":
             return ""
 
-        url = self.buildurl(url_page)
+        url = self.buildurl(self.url_prefix, self.url_base, url_page)
         try:
-            img = urllib.request.urlopen(url).read()
+            img = urllib.request.urlopen(url, context=ctx).read()
         except:
             print("Failed to open ", url)
             return ""
 
         return img
 
-    def buildurl(self, url_page):
-        url = self.url_prefix + self.url_base + "/" + url_page
+    def buildurl(self, url_prefix, url_base, url_page):
+        url = url_prefix + url_base + "/" + url_page
         return url
 
     def get_url_page(self, fhand):
@@ -192,7 +229,7 @@ class ExerciseUtils():
         return size
 
     def init_socket(self, url_page):
-        url = self.buildurl(url_page)
+        url = self.buildurl(self.url_prefix, self.url_base, url_page)
         mysock = self.open_socket(self.url_base, 80)  # normal socket
         assert not mysock._closed
         return mysock, url
