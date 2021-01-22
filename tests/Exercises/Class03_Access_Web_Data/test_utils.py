@@ -6,6 +6,7 @@ from Exercises.Class03_Access_Web_Data.utils import ExerciseUtils
 from unittest.mock import MagicMock
 import io
 
+
 class TestExerciseUtils():
     """
     Test all common utility methods from PY4E exercises
@@ -158,33 +159,47 @@ class TestExerciseUtils():
         rc = self.exu.write_file(ofile, "wb", img)
         assert rc == None
 
-    def test_get_html_no_input(self):
-        html = self.exu.get_html(False)
+    def test_get_html_input_good_url(self):
+        html = self.exu.get_html(self.exu.url_default1)
         assert len(html) > 0
 
-    def test_get_html_input_good_url(self, monkeypatch):
-        monkeypatch.setattr('sys.stdin', io.StringIO(self.exu.url_default1))
-        html = self.exu.get_html(False)
+    def test_get_html_input_good_default_url(self, monkeypatch):
+        monkeypatch.setattr('sys.stdin', io.StringIO("\n"))
+        html = self.exu.get_html(None)
+        assert len(html) > 0
+
+    def test_get_html_input_good_default_url_no_parms(self, monkeypatch):
+        monkeypatch.setattr('sys.stdin', io.StringIO("\n"))
+        html = self.exu.get_html()
         assert len(html) > 0
 
     def test_get_html_input_no_url(self, monkeypatch):
         monkeypatch.setattr('sys.stdin', io.StringIO("\n"))
-        html = self.exu.get_html(True)
+        html = self.exu.get_html()
         assert len(html) > 0
 
-    def test_get_html_input_bad_url(self, monkeypatch):
+    def test_get_html_input_bad_url_entered(self, monkeypatch):
         monkeypatch.setattr('sys.stdin', io.StringIO("badurl"))
-        html = self.exu.get_html(True)
+        html = self.exu.get_html()
+        assert len(html) == 0
+
+    def test_get_html_input_bad_url_passed_in(self):
+        html = self.exu.get_html("badurl")
         assert len(html) == 0
 
     def test_reglinks(self):
-        html = self.exu.get_html(False)
+        html = self.exu.get_html(self.exu.url_default1)
         links = self.exu.regexlinks(html)
         assert len(links) == 20
 
     def test_bs4_tags(self):
-        html = self.exu.get_html(False)
+        html = self.exu.get_html(self.exu.url_default1)
         tags = self.exu.bs4_tags(html)
+        assert len(tags) == 48
+
+    def test_bs4_tags2(self):
+        html = self.exu.get_html(self.exu.url_default1)
+        tags = self.exu.bs4_tags2(html)
         assert len(tags) == 48
 
     def test_open_url(self):
@@ -263,7 +278,8 @@ class TestExerciseUtils():
         Build a full URL from the document proided
         """
         url_doc = "romeo.txt"
-        url = self.exu.buildurl(self.exu.url_prefix, self.exu.url_base, url_doc)
+        url = self.exu.buildurl(self.exu.url_prefix,
+                                self.exu.url_base, url_doc)
         assert url == "http://data.pr4e.org/" + url_doc
         print(url)
 
@@ -294,4 +310,3 @@ class TestExerciseUtils():
         links = self.exu.findall_html(html, regex)
         assert len(links) > 0
         assert type(links) == type([])
-

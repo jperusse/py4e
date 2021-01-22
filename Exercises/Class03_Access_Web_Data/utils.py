@@ -15,6 +15,7 @@ class ExerciseUtils():
     url_prefix = "http://"
     url_base = "data.pr4e.org"
     url_default1 = "https://docs.python.org"
+    url_default2 = "http://www.dr-chuck.com/page1.htm"
 
     mbox_trace = "mbox_trace.txt"
 
@@ -134,14 +135,13 @@ class ExerciseUtils():
 #
 #   Network methods
 #
-    def get_html(self, UserInput):
+    def get_html(self, url=None):
         ctx = self.ignore_ssl_errors()
-        if UserInput:
+        if url == None:
             url = input("Enter url(default:" + self.url_default1 + "): ")
             if url == "":
                 url = self.url_default1
-        else:
-            url = self.url_default1
+
         html = self.open_url(url, ctx)
         return html
 
@@ -160,6 +160,19 @@ class ExerciseUtils():
         tags = soup('a')
         for tag in tags:
             print(tag.get('href', None))
+        return tags
+
+    def bs4_tags2(self, html):
+        soup = BeautifulSoup(html, 'html.parser')
+
+        # Retrieve all of the anchor tags
+        tags = soup('a')
+        for tag in tags:
+            # Look at the parts of a tag
+            print('TAG:', tag)
+            print('URL:', tag.get('href', None))
+            print('Contents:', tag.contents[0])
+            print('Attrs:', tag.attrs)
         return tags
 
     def findall_html(self, html, regex):

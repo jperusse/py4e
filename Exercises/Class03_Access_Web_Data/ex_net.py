@@ -1,5 +1,6 @@
-from utils import ExerciseUtils
 from bs4 import BeautifulSoup
+
+from utils import ExerciseUtils
 
 
 class AccessWebData():
@@ -77,29 +78,33 @@ class AccessWebData():
         assert count == 230210
         print(count, 'characters copied.')
 
-    def urlregex(self, UserInput=False):
+    def urlregex(self):
         print("urlregex - Search for link values within URL input")
         exu = ExerciseUtils()
-        html = exu.get_html(UserInput)
-        exu.regexlinks(html)
+        html = exu.get_html(exu.url_default1)
+        links = exu.regexlinks(html)
 
-
-
-    def urllinks(self, UserInput=False):
+    def urllinks(self):
         print("urllinks - Search for link values within URL page using BeatifulSoup to parse html")
         exu = ExerciseUtils()
-        html = exu.get_html(UserInput)
-        exu.bs4_tags(html)
+        html = exu.get_html(exu.url_default1)
+        tags = exu.bs4_tags(html)
 
+    def urllinks2(self):
+        print("urllinks2 - Look at the parts of a tag")
+        exu = ExerciseUtils()
+        html = exu.get_html(exu.url_default2)
+        tags = exu.bs4_tags2(html)
 
 
 class3 = AccessWebData()
 
-class3.socket1()
-class3.urljpeg()
-class3.urllib1()
-class3.urlwords()
-class3.curl1()
-class3.curl2()
+# class3.socket1()
+# class3.urljpeg()
+# class3.urllib1()
+# class3.urlwords()
+# class3.curl1()
+# class3.curl2()
 class3.urlregex()
 class3.urllinks()
+class3.urllinks2()
