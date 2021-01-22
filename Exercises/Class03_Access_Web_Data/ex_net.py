@@ -14,7 +14,7 @@ class AccessWebData():
     def socket1(self):
         print("socket1 - World's simplest web browser")
         exu = ExerciseUtils()
-        mysock, url = exu.init_socket(exu.url_text_doc)
+        mysock, url = exu.init_socket_and_url(exu.url_prefix, exu.url_base, exu.url_text_doc)
 
         page = exu.get_page(mysock, url)
         assert len(page) == 2
@@ -25,8 +25,7 @@ class AccessWebData():
     def urljpeg(self):
         print("urljpeg - get a jpeg document")
         exu = ExerciseUtils()
-        mysock, url = exu.init_socket(self.url_jpg)
-
+        mysock, url = exu.init_socket_and_url(exu.url_prefix, exu.url_base, self.url_jpg)
         pic = exu.get_jpeg(mysock, url)
         assert len(pic) == 230608
 

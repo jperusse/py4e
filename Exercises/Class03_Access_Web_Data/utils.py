@@ -271,10 +271,9 @@ class ExerciseUtils():
         ofhand.close()
         return size
 
-    def init_socket(self, url_page):
-        url = self.buildurl(self.url_prefix, self.url_base, url_page)
-        mysock = self.open_socket(self.url_base, 80)  # normal socket
-        assert not mysock._closed
+    def init_socket_and_url(self, url_prefix, url_base, url_page):
+        url = self.buildurl(url_prefix, url_base, url_page)
+        mysock = self.open_socket(url_base, 80)  # normal socket
         return mysock, url
 
     def open_socket(self, host, port):

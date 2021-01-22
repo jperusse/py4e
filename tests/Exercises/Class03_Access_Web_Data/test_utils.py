@@ -131,13 +131,18 @@ class TestExerciseUtils():
         mysock = self.exu.close_socket(mysock)  # normal socket
         assert mysock._closed
 
-    def test_init_socket(self):
-        mysock, url = self.exu.init_socket(self.exu.url_text_doc)
+    def test_init_socket_and_url_using_default_url_pieces(self):
+        mysock, url = self.exu.init_socket_and_url(self.exu.url_prefix, self.exu.url_base, self.exu.url_text_doc)
         assert mysock._closed == False
         assert url == self.exu.url_prefix + self.exu.url_base + "/" + self.exu.url_text_doc
 
+    def test_init_socket_and_url_bad_base(self):
+        mysock, url = self.exu.init_socket_and_url(self.exu.url_prefix, self.exu.url_base, self.exu.url_text_doc)
+        assert mysock._closed == False
+        assert url == "self.exu.url_prefix" + self.exu.url_base + "/" + self.exu.url_text_doc
+
     def test_get_page(self):
-        mysock, url = self.exu.init_socket(self.exu.url_text_doc)
+        mysock, url = self.exu.init_socket_and_url(self.exu.url_prefix, self.exu.url_base, self.exu.url_text_doc)
 
         page = self.exu.get_page(mysock, url)
         assert len(page) == 2
@@ -150,8 +155,7 @@ class TestExerciseUtils():
 
     def test_get_jpeg(self):
         ofile = "stuff.jpg"
-        mysock, url = self.exu.init_socket("cover3.jpg")
-
+        mysock, url = self.exu.init_socket_and_url(self.exu.url_prefix, self.exu.url_base, "cover3.jpg")
         picture = self.exu.get_jpeg(mysock, url)
         assert len(picture) == 230608
 

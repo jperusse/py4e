@@ -2,7 +2,7 @@ from utils import ExerciseUtils
 
 print("socket1 - World's simplest web browser")
 exu = ExerciseUtils()
-mysock, url = exu.init_socket(exu.url_text_doc)
+mysock, url = exu.init_socket_and_url(exu.url_prefix, exu.url_base, exu.url_text_doc)
 
 page = exu.get_page(mysock, url)
 assert len(page) == 2
