@@ -16,6 +16,8 @@ class ExerciseUtils():
     url_base = "data.pr4e.org"
     url_default1 = "https://docs.python.org"
     url_default2 = "http://www.dr-chuck.com/page1.htm"
+    url_text_doc = "romeo.txt"
+
 
     mbox_trace = "mbox_trace.txt"
 

@@ -131,8 +131,13 @@ class TestExerciseUtils():
         mysock = self.exu.close_socket(mysock)  # normal socket
         assert mysock._closed
 
+    def test_init_socket(self):
+        mysock, url = self.exu.init_socket(self.exu.url_text_doc)
+        assert mysock._closed == False
+        assert url == self.exu.url_prefix + self.exu.url_base + "/" + self.exu.url_text_doc
+
     def test_get_page(self):
-        mysock, url = self.exu.init_socket("romeo.txt")
+        mysock, url = self.exu.init_socket(self.exu.url_text_doc)
 
         page = self.exu.get_page(mysock, url)
         assert len(page) == 2
@@ -203,7 +208,7 @@ class TestExerciseUtils():
         assert len(tags) == 48
 
     def test_open_url(self):
-        fh = self.exu.open_url("romeo.txt", None)
+        fh = self.exu.open_url(self.exu.url_text_doc, None)
         assert fh != ""
         print(fh)
 
@@ -232,14 +237,14 @@ class TestExerciseUtils():
         assert html == empty
 
     def test_get_url_page(self):
-        fh = self.exu.open_url("romeo.txt", None)
+        fh = self.exu.open_url(self.exu.url_text_doc, None)
         assert fh != ""
 
         page = self.exu.get_url_page(fh)
         assert len(page) > 0
 
     def test_getwords(self):
-        fh = self.exu.openfile("romeo.txt", "r")
+        fh = self.exu.openfile(self.exu.url_text_doc, "r")
         assert fh != ""
 
         count = self.exu.getwords(fh)
@@ -247,7 +252,7 @@ class TestExerciseUtils():
         print(count)
 
     def test_getwords_from_url(self):
-        fh = self.exu.open_url("romeo.txt", None)
+        fh = self.exu.open_url(self.exu.url_text_doc, None)
         assert fh != ""
 
         page = self.exu.get_url_page(fh)
@@ -277,7 +282,7 @@ class TestExerciseUtils():
         """
         Build a full URL from the document proided
         """
-        url_doc = "romeo.txt"
+        url_doc = self.exu.url_text_doc
         url = self.exu.buildurl(self.exu.url_prefix,
                                 self.exu.url_base, url_doc)
         assert url == "http://data.pr4e.org/" + url_doc
