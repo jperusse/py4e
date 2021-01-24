@@ -131,15 +131,15 @@ class TestExerciseUtils():
         mysock = self.exu.close_socket(mysock)  # normal socket
         assert mysock._closed
 
-    def test_init_socket_and_url_using_default_url_pieces(self):
+    def test_init_socket_and_url_using_defaults(self):
         mysock, url = self.exu.init_socket_and_url(self.exu.url_prefix, self.exu.url_base, self.exu.url_text_doc)
         assert mysock._closed == False
         assert url == self.exu.url_prefix + self.exu.url_base + "/" + self.exu.url_text_doc
 
     def test_init_socket_and_url_bad_base(self):
-        mysock, url = self.exu.init_socket_and_url(self.exu.url_prefix, self.exu.url_base, self.exu.url_text_doc)
-        assert mysock._closed == False
-        assert url == "self.exu.url_prefix" + self.exu.url_base + "/" + self.exu.url_text_doc
+        mysock, url = self.exu.init_socket_and_url(self.exu.url_prefix, "", self.exu.url_text_doc)
+        assert mysock == None
+        assert url == self.exu.url_prefix +  "/" + self.exu.url_text_doc
 
     def test_get_page(self):
         mysock, url = self.exu.init_socket_and_url(self.exu.url_prefix, self.exu.url_base, self.exu.url_text_doc)

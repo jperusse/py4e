@@ -313,12 +313,21 @@ class ExerciseUtils():
             print('SEND failed for ', url)
             return page
 
+        First_time = True
         while True:
             data = mysock.recv(512)
             if len(data) < 1:
                 break
 
             page_data = data.decode()
+
+            if First_time:
+                First_time = False
+                page_data_list = page_data.split()
+                if page_data_list[1] != "200":
+                    print("Opening socket failed with code:", page_data_list[1])
+                    break
+
             page.append(page_data)
             print(page_data, end='')
 
