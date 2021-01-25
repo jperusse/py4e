@@ -18,7 +18,6 @@ class ExerciseUtils():
     url_default2 = "http://www.dr-chuck.com/page1.htm"
     url_text_doc = "romeo.txt"
 
-
     mbox_trace = "mbox_trace.txt"
 
     #
@@ -51,6 +50,23 @@ class ExerciseUtils():
 #
 # Regex methods
 #
+
+    def split_url(self, url):
+        errmsg = "Bad URL"
+        url_list = [None, None, None, None]
+
+        if len(url) == 0:
+            print(errmsg)
+        else:
+            # valid URL pattern
+            url_list_new = url.split("/")
+            print("Trying URL:", url)
+            for idx in range(len(url_list_new)):
+                url_list[idx] = url_list_new[idx]
+            print(url_list)
+
+
+        return url_list[0], url_list[2], url_list[3]
 
     def run_search1(self, fname, search_str, debug):
         """
@@ -184,7 +200,6 @@ class ExerciseUtils():
         # ctx.check_hostname = False
         # ctx.verify_mode = ssl.CERT_NONE
 
-
         # # lst = re.findall(b'href="(http[s]?://.*?)"', html)
         # html = urllib.request.urlopen(url, context=ctx).read()
 
@@ -208,7 +223,7 @@ class ExerciseUtils():
         elif url_page.strip().startswith("http"):
             url = url_page
         else:
-           url = self.buildurl(self.url_prefix, self.url_base, url_page)
+            url = self.buildurl(self.url_prefix, self.url_base, url_page)
 
         if ctx == None:
             try:
@@ -223,7 +238,6 @@ class ExerciseUtils():
             except:
                 print("Failed to open ", url)
                 return ""
-
 
         return fh
 
@@ -325,7 +339,8 @@ class ExerciseUtils():
                 First_time = False
                 page_data_list = page_data.split()
                 if page_data_list[1] != "200":
-                    print("Opening socket failed with code:", page_data_list[1])
+                    print("Opening socket failed with code:",
+                          page_data_list[1])
                     break
 
             page.append(page_data)

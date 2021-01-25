@@ -112,6 +112,40 @@ class TestExerciseUtils():
         assert count == 0
         assert avg == 0
 
+    def test_split_url_bad_urls(self):
+        url_tuple = self.exu.split_url("")
+        assert url_tuple == (None, None, None)
+
+        url_prefix, url_base, url_page = self.exu.split_url("")
+        assert url_prefix == None and url_base == None and url_page == None
+
+        url_prefix, url_base, url_page = self.exu.split_url("f")
+        assert url_prefix == "f" and url_base == None and url_page == None
+
+        url_prefix, url_base, url_page = self.exu.split_url("fred")
+        assert url_prefix == "fred" and url_base == None and url_page == None
+
+        url_prefix, url_base, url_page = self.exu.split_url("http://")
+        assert url_prefix == "http:" and url_base == "" and url_page == None
+
+        url_prefix, url_base, url_page = self.exu.split_url("http://d")
+        assert url_prefix == "http:" and url_base == "d" and url_page == None
+
+        url_prefix, url_base, url_page = self.exu.split_url("http://data")
+        assert url_prefix == "http:" and url_base == "data" and url_page == None
+
+        url_prefix, url_base, url_page = self.exu.split_url("http://data.pr4e")
+        assert url_prefix == "http:" and url_base == "data.pr4e" and url_page == None
+
+        url_prefix, url_base, url_page = self.exu.split_url("http://data.pr4e.org")
+        assert url_prefix == "http:" and url_base == "data.pr4e.org" and url_page == None
+
+        url_prefix, url_base, url_page = self.exu.split_url("http://data.pr4e.org/")
+        assert url_prefix == "http:" and url_base == "data.pr4e.org" and url_page == ""
+
+        url_prefix, url_base, url_page = self.exu.split_url("http://data.pr4e.org/p")
+        assert url_prefix == "http:" and url_base == "data.pr4e.org" and url_page == "p"
+
     def test_open_socket_bad_host(self):
         mysock = self.exu.open_socket("", 80)
         assert mysock == None
@@ -132,17 +166,21 @@ class TestExerciseUtils():
         assert mysock._closed
 
     def test_init_socket_and_url_using_defaults(self):
-        mysock, url = self.exu.init_socket_and_url(self.exu.url_prefix, self.exu.url_base, self.exu.url_text_doc)
+        mysock, url = self.exu.init_socket_and_url(
+            self.exu.url_prefix, self.exu.url_base, self.exu.url_text_doc)
         assert mysock._closed == False
-        assert url == self.exu.url_prefix + self.exu.url_base + "/" + self.exu.url_text_doc
+        assert url == self.exu.url_prefix + \
+            self.exu.url_base + "/" + self.exu.url_text_doc
 
     def test_init_socket_and_url_bad_base(self):
-        mysock, url = self.exu.init_socket_and_url(self.exu.url_prefix, "", self.exu.url_text_doc)
+        mysock, url = self.exu.init_socket_and_url(
+            self.exu.url_prefix, "", self.exu.url_text_doc)
         assert mysock == None
-        assert url == self.exu.url_prefix +  "/" + self.exu.url_text_doc
+        assert url == self.exu.url_prefix + "/" + self.exu.url_text_doc
 
     def test_get_page(self):
-        mysock, url = self.exu.init_socket_and_url(self.exu.url_prefix, self.exu.url_base, self.exu.url_text_doc)
+        mysock, url = self.exu.init_socket_and_url(
+            self.exu.url_prefix, self.exu.url_base, self.exu.url_text_doc)
 
         page = self.exu.get_page(mysock, url)
         assert len(page) == 2
@@ -155,7 +193,8 @@ class TestExerciseUtils():
 
     def test_get_jpeg(self):
         ofile = "stuff.jpg"
-        mysock, url = self.exu.init_socket_and_url(self.exu.url_prefix, self.exu.url_base, "cover3.jpg")
+        mysock, url = self.exu.init_socket_and_url(
+            self.exu.url_prefix, self.exu.url_base, "cover3.jpg")
         picture = self.exu.get_jpeg(mysock, url)
         assert len(picture) == 230608
 
