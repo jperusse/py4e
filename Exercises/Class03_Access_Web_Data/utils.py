@@ -12,7 +12,7 @@ class ExerciseUtils():
     """
     Test methods common to PY4E exercises
     """
-    url_prefix = "http://"
+    url_prefix = "http:"
     url_base = "data.pr4e.org"
     url_default1 = "https://docs.python.org"
     url_default2 = "http://www.dr-chuck.com/page1.htm"
@@ -255,7 +255,7 @@ class ExerciseUtils():
         return img
 
     def buildurl(self, url_prefix, url_base, url_page):
-        url = url_prefix + url_base + "/" + url_page
+        url = url_prefix + "//" + url_base + "/" + url_page
         return url
 
     def get_url_page(self, fhand):

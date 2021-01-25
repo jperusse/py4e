@@ -137,13 +137,16 @@ class TestExerciseUtils():
         url_prefix, url_base, url_page = self.exu.split_url("http://data.pr4e")
         assert url_prefix == "http:" and url_base == "data.pr4e" and url_page == None
 
-        url_prefix, url_base, url_page = self.exu.split_url("http://data.pr4e.org")
+        url_prefix, url_base, url_page = self.exu.split_url(
+            "http://data.pr4e.org")
         assert url_prefix == "http:" and url_base == "data.pr4e.org" and url_page == None
 
-        url_prefix, url_base, url_page = self.exu.split_url("http://data.pr4e.org/")
+        url_prefix, url_base, url_page = self.exu.split_url(
+            "http://data.pr4e.org/")
         assert url_prefix == "http:" and url_base == "data.pr4e.org" and url_page == ""
 
-        url_prefix, url_base, url_page = self.exu.split_url("http://data.pr4e.org/p")
+        url_prefix, url_base, url_page = self.exu.split_url(
+            "http://data.pr4e.org/p")
         assert url_prefix == "http:" and url_base == "data.pr4e.org" and url_page == "p"
 
     def test_open_socket_bad_host(self):
@@ -169,14 +172,14 @@ class TestExerciseUtils():
         mysock, url = self.exu.init_socket_and_url(
             self.exu.url_prefix, self.exu.url_base, self.exu.url_text_doc)
         assert mysock._closed == False
-        assert url == self.exu.url_prefix + \
+        assert url == self.exu.url_prefix + "//" + \
             self.exu.url_base + "/" + self.exu.url_text_doc
 
     def test_init_socket_and_url_bad_base(self):
         mysock, url = self.exu.init_socket_and_url(
             self.exu.url_prefix, "", self.exu.url_text_doc)
         assert mysock == None
-        assert url == self.exu.url_prefix + "/" + self.exu.url_text_doc
+        assert url == self.exu.url_prefix + "///" + self.exu.url_text_doc
 
     def test_get_page(self):
         mysock, url = self.exu.init_socket_and_url(
@@ -255,7 +258,7 @@ class TestExerciseUtils():
         assert fh != ""
         print(fh)
 
-        url = self.exu.url_prefix + self.exu.url_base
+        url = self.exu.url_prefix + "//" + self.exu.url_base
         fh = self.exu.open_url(url, None)
         assert fh != ""
         print(fh)
