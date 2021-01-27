@@ -65,7 +65,6 @@ class ExerciseUtils():
                 url_list[idx] = url_list_new[idx]
             print(url_list)
 
-
         return url_list[0], url_list[2], url_list[3]
 
     def run_search1(self, fname, search_str, debug):
@@ -255,6 +254,12 @@ class ExerciseUtils():
         return img
 
     def buildurl(self, url_prefix, url_base, url_page):
+        if url_prefix == None:
+            url_prefix = ""
+        if url_base == None:
+            url_base = ""
+        if url_page == None:
+            url_page = ""
         url = url_prefix + "//" + url_base + "/" + url_page
         return url
 

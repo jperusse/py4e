@@ -2,7 +2,6 @@
     "python.pythonPath": "venv\\Scripts\\python.exe",
     // pytest --showlocals # show local variables in tracebacks
     // pytest -l           # show local variables (shortcut)
-
     // pytest --tb=auto    # (default) 'long' tracebacks for the first and last
     //                     #  entry, but 'short' style for the other entries
     // pytest --tb=long    # exhaustive, informative traceback formatting
