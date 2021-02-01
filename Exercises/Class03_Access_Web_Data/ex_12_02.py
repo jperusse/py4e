@@ -1,6 +1,6 @@
 import re
 
-from utils import ExerciseUtils
+from Exercises.Class03_Access_Web_Data.utils import ExerciseUtils
 
 def_url = "http://data.pr4e.org/romeo.txt"
 

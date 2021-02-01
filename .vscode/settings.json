@@ -12,7 +12,7 @@
     "python.testing.pytestArgs": [
         "tests",
         "-v",
-        // "-s",
+        "-s",
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.nosetestsEnabled": false,

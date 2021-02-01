@@ -1,10 +1,11 @@
+import os
 import re
 import socket
 import ssl
 import time
 import urllib.request
 
-import requests  # requests is more advanced than urllib and does automatic decoding
+# import requests  # requests is more advanced than urllib and does automatic decoding
 from bs4 import BeautifulSoup
 
 
@@ -24,21 +25,10 @@ class ExerciseUtils():
     # Base utility methods
     #
     def write_file(self, file, mode, list):
-        fhand = self.openfile(file, mode)
+        fhand = open(file, mode)
         fhand.write(list)
         rc = fhand.close()
         return rc
-
-    def openfile(self, fname, mode):
-        """
-        open a file and do error handling
-        """
-        try:
-            fh = open(fname, mode)
-        except:
-            # Couldn't open the file
-            fh = ""
-        return fh
 
     def getwords(self, fhand):
         count = dict()
@@ -72,10 +62,10 @@ class ExerciseUtils():
         Use re.search to count number of lines containing search_str in fname
         """
         count = 0
-        hand = self.openfile(fname, 'r')
-        if search_str == "" or hand == "":
+        if search_str == "" or not os.path.exists(fname):
             return count
 
+        hand = open(fname, 'r')
         for line in hand:
             line = line.rstrip()
             if re.search(search_str, line):
@@ -93,12 +83,13 @@ class ExerciseUtils():
         Use re.findall to extract a list with matching elements to count number of lines containing search_str in fname
         """
         count = 0
-        hand = self.openfile(fname, 'r')
+        wh = None
+        hand = open(fname, 'r')
         if search_str == "" or hand == "":
             return count
 
         if debug:
-            wh = self.openfile(self.mbox_trace, "w")
+            wh = open(self.mbox_trace, "w")
 
         for line in hand:
             line = line.rstrip()
@@ -110,7 +101,6 @@ class ExerciseUtils():
                     print(lst, file=wh)
 
         print(count, " lines found for regex '" + search_str + "'")
-
         return count
 
     def run_findall_avg(self, fname, search_str, debug):
@@ -119,12 +109,13 @@ class ExerciseUtils():
         """
         count = 0
         total = 0
-        hand = self.openfile(fname, 'r')
+        wh = None
+        hand = open(fname, 'r')
         if search_str == "" or hand == "":
             return [0, 0]
 
         if debug:
-            wh = self.openfile(self.mbox_trace, "w")
+            wh = open(self.mbox_trace, "w")
 
         for line in hand:
             line = line.rstrip()
@@ -352,6 +343,46 @@ class ExerciseUtils():
             print(page_data, end='')
 
         return page
+
+    def get_page_limit(self, mysock, url, limit):
+        """
+        get  a text document from a socket
+        """
+        count = 0
+
+        cmd = self.encode_get(url)
+        try:
+            mysock.sendall(cmd)
+        except:
+            print('SEND failed for ', url)
+            return None
+
+        first_time_flag = True
+        while True:
+            data = mysock.recv(512)
+            if len(data) < 1:
+                break
+
+            page_data = data.decode()
+
+            if first_time_flag:
+                first_time_flag = False
+                page_data_list = page_data.split()
+                if page_data_list[1] != "200":
+                    print("Opening socket failed with code:",
+                          page_data_list[1])
+                    break
+
+            for char in page_data:
+                count = count + 1
+                if count < limit:
+                    print(char, end="")
+                elif count == limit:
+                    print(char, end="")
+                    print("\n---- Done printing " + str(count) + " characters ----")
+
+
+        return count
 
     def encode_get(self, url):
         cmd = 'GET ' + url + ' HTTP/1.0\r\n\r\n'

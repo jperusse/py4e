@@ -1,10 +1,10 @@
+import io
+import os
 import re
+from unittest.mock import MagicMock
 
 import pytest
 from Exercises.Class03_Access_Web_Data.utils import ExerciseUtils
-
-from unittest.mock import MagicMock
-import io
 
 
 class TestExerciseUtils:
@@ -29,12 +29,11 @@ class TestExerciseUtils:
 
     @pytest.fixture(autouse=False)
     def ReadFirstLine(self):
-        self.fh = self.exu.openfile(self.fname, "r")
-        self.next_line = self.read_next_line(self.fh)
-
-    def test_openfile_raises_file_not_found(self, ReadFirstLine):
-        fh = self.exu.openfile("missing", "r")
-        assert fh == ""
+        if os.path.exists(self.fname):
+            self.fh = open(self.fname, "r")
+            self.next_line = self.read_next_line(self.fh)
+        else:
+            self.fh = ""
 
     def test_read_next_line_from_file(self, ReadFirstLine):
         assert self.next_line.strip() == self.firstline
@@ -168,14 +167,7 @@ class TestExerciseUtils:
             self.exu.url_prefix, self.exu.url_base, self.exu.url_text_doc
         )
         assert mysock._closed == False
-        assert (
-            url
-            == self.exu.url_prefix
-            + "//"
-            + self.exu.url_base
-            + "/"
-            + self.exu.url_text_doc
-        )
+        assert (url == self.exu.url_prefix + "//" + self.exu.url_base + "/" + self.exu.url_text_doc)
 
     def test_init_socket_and_url_bad_base(self):
         mysock, url = self.exu.init_socket_and_url(
@@ -200,143 +192,161 @@ class TestExerciseUtils:
         page = self.exu.get_page(mysock, url)
         assert len(page) == 0
 
-    # def test_get_page_limit(self):
-    #     mysock, url = self.exu.init_socket_and_url(
-    #         self.exu.url_prefix, self.exu.url_base, self.exu.url_text_doc
-    #     )
+    def test_get_page_using_bad_parms(self):
+        mysock, url = self.exu.init_socket_and_url(self.exu.url_prefix, self.exu.url_base, self.exu.url_text_doc)
 
-    #     page = exu.get_page_limit(mysock, url, 3000)
-    #     assert len(page) == 3000
+        page = self.exu.get_page(None, url)
+        assert len(page) == 0
 
-    #     mysock = self.exu.close_socket(mysock)  # normal socket
-    #     assert mysock._closed
+        page = self.exu.get_page(mysock, "")
+        assert len(page) == 0
+
+    def test_get_page_limit(self):
+        for limit in [1, 2, 3000]:
+            total_chars = self.get_page_limit(self.exu.url_prefix, self.exu.url_base, self.mbox_short, limit)  # normal socket
+            assert total_chars == 95000
+
+    def test_get_page_limit_bad_url(self):
+        total_chars = self.get_page_limit(self.exu.url_prefix, "", self.mbox_short, 3000)  # normal socket
+        assert total_chars == None
+
+    def get_page_limit(self, url_prefix, url_base, url_page, limit):
+        mysock, url = self.exu.init_socket_and_url(url_prefix, url_base, url_page)
+        print("\n")
+        total_chars = self.exu.get_page_limit(mysock, url, limit)
+        print("\n")
+        print("Total characters found:", total_chars)
+        return total_chars
+
+        mysock = self.exu.close_socket(mysock)  # normal socket
 
     def test_get_jpeg(self):
         ofile = "stuff.jpg"
         mysock, url = self.exu.init_socket_and_url(self.exu.url_prefix, self.exu.url_base, "cover3.jpg")
-        picture=self.exu.get_jpeg(mysock, url)
+        picture = self.exu.get_jpeg(mysock, url)
         assert len(picture) == 230608
 
-        mysock=self.exu.close_socket(mysock)  # normal socket
+        mysock = self.exu.close_socket(mysock)  # normal socket
         assert mysock._closed
 
-        img=self.exu.stripheaders_img(picture, ofile)
+        img = self.exu.stripheaders_img(picture, ofile)
         assert len(img) == 230210
 
-        rc=self.exu.write_file(ofile, "wb", img)
+        rc = self.exu.write_file(ofile, "wb", img)
         assert rc is None
 
     def test_get_html_input_good_url(self):
-        html=self.exu.get_html(self.exu.url_default1)
+        html = self.exu.get_html(self.exu.url_default1)
         assert len(html) == 9960
 
     def test_get_html_input_good_default_url(self, monkeypatch):
         monkeypatch.setattr("sys.stdin", io.StringIO("\n"))
-        html=self.exu.get_html(None)
+        html = self.exu.get_html(None)
         assert len(html) > 0
 
     def test_get_html_input_good_default_url_no_parms(self, monkeypatch):
         monkeypatch.setattr("sys.stdin", io.StringIO("\n"))
-        html=self.exu.get_html()
+        html = self.exu.get_html()
         assert len(html) > 0
 
     def test_get_html_input_no_url(self, monkeypatch):
         monkeypatch.setattr("sys.stdin", io.StringIO("\n"))
-        html=self.exu.get_html()
+        html = self.exu.get_html()
         assert len(html) > 0
 
     def test_get_html_input_bad_url_entered(self, monkeypatch):
         monkeypatch.setattr("sys.stdin", io.StringIO("badurl"))
-        html=self.exu.get_html()
+        html = self.exu.get_html()
         assert len(html) == 0
 
     def test_get_html_input_bad_url_passed_in(self):
-        html=self.exu.get_html("badurl")
+        html = self.exu.get_html("badurl")
         assert len(html) == 0
 
     def test_reglinks(self):
-        html=self.exu.get_html(self.exu.url_default1)
-        links=self.exu.regexlinks(html)
+        html = self.exu.get_html(self.exu.url_default1)
+        links = self.exu.regexlinks(html)
         assert len(links) == 20
 
     def test_bs4_tags(self):
-        html=self.exu.get_html(self.exu.url_default1)
-        tags=self.exu.bs4_tags(html)
+        html = self.exu.get_html(self.exu.url_default1)
+        tags = self.exu.bs4_tags(html)
         assert len(tags) == 48
 
     def test_bs4_tags2(self):
-        html=self.exu.get_html(self.exu.url_default1)
-        tags=self.exu.bs4_tags2(html)
+        html = self.exu.get_html(self.exu.url_default1)
+        tags = self.exu.bs4_tags2(html)
         assert len(tags) == 48
 
     def test_open_url(self):
-        fh=self.exu.open_url(self.exu.url_text_doc, None)
+        fh = self.exu.open_url(self.exu.url_text_doc, None)
         assert fh != ""
         print(fh)
 
-        url=self.exu.url_prefix + "//" + self.exu.url_base
-        fh=self.exu.open_url(url, None)
+        url = self.exu.url_prefix + "//" + self.exu.url_base
+        fh = self.exu.open_url(url, None)
         assert fh != ""
         print(fh)
 
-        ctx=self.exu.ignore_ssl_errors()
-        url="https://docs.python.org"
-        html=self.exu.open_url(url, ctx)
+        ctx = self.exu.ignore_ssl_errors()
+        url = "https://docs.python.org"
+        html = self.exu.open_url(url, ctx)
         assert html != ""
         print(html)
 
     def test_open_url_bad_url(self):
-        empty=""
-        missing="fred.txt"
-        fh=self.exu.open_url(empty, None)
+        empty = ""
+        missing = "fred.txt"
+        fh = self.exu.open_url(empty, None)
         assert fh == empty
 
-        fh=self.exu.open_url(missing, None)
+        fh = self.exu.open_url(missing, None)
         assert fh == empty
 
-        ctx=self.exu.ignore_ssl_errors()
-        html=self.exu.open_url(missing, ctx)
+        ctx = self.exu.ignore_ssl_errors()
+        html = self.exu.open_url(missing, ctx)
         assert html == empty
 
     def test_get_url_page(self):
-        fh=self.exu.open_url(self.exu.url_text_doc, None)
+        fh = self.exu.open_url(self.exu.url_text_doc, None)
         assert fh != ""
 
-        page=self.exu.get_url_page(fh)
+        page = self.exu.get_url_page(fh)
         assert len(page) > 0
 
     def test_getwords(self):
-        fh=self.exu.openfile(self.exu.url_text_doc, "r")
+
+        fh = open(self.exu.url_text_doc, "r")
         assert fh != ""
 
-        count=self.exu.getwords(fh)
+        count = self.exu.getwords(fh)
         assert len(count) == 26
         print(count)
 
     def test_getwords_from_url(self):
-        fh=self.exu.open_url(self.exu.url_text_doc, None)
+        fh = self.exu.open_url(self.exu.url_text_doc, None)
         assert fh != ""
 
-        page=self.exu.get_url_page(fh)
+        page = self.exu.get_url_page(fh)
         assert len(page) > 0
 
-        count=self.exu.getwords(page)
+        count = self.exu.getwords(page)
         assert len(count) == 26
         print(count)
 
     def test_open_url_small_img_and_save(self):
-        img=self.exu.open_url_small_img("cover3.jpg", None)
+        img = self.exu.open_url_small_img("cover3.jpg", None)
         assert len(img) == 230210
 
-        rc=self.exu.write_file("cover3.jpg", "wb", img)
+        rc = self.exu.write_file("cover3.jpg", "wb", img)
         assert rc is None
 
     def test_open_url_large_img_save(self):
-        file="cover3.jpg"
-        img=self.exu.open_url(file, None)
+        file = "cover3.jpg"
+        img = self.exu.open_url(file, None)
         assert img != ""
 
-        count=self.exu.get_url_large_img_and_save(img, file)
+        count = self.exu.get_url_large_img_and_save(img, file)
         assert count == 230210
         print(count, "characters copied.")
 
@@ -344,8 +354,8 @@ class TestExerciseUtils:
         """
         Build a full URL from the document provided
         """
-        url_doc=self.exu.url_text_doc
-        url=self.exu.buildurl(self.exu.url_prefix,
+        url_doc = self.exu.url_text_doc
+        url = self.exu.buildurl(self.exu.url_prefix,
                                 self.exu.url_base, url_doc)
         assert url == "http://data.pr4e.org/" + url_doc
         print(url)
@@ -354,50 +364,50 @@ class TestExerciseUtils:
         """
         Build a full URL from the document provided
         """
-        url=self.exu.buildurl("", "", "")
+        url = self.exu.buildurl("", "", "")
         assert url == "///"
-        url=self.exu.buildurl(None, None, None)
+        url = self.exu.buildurl(None, None, None)
         assert url == "///"
 
-        url=self.exu.buildurl("f", "", "")
+        url = self.exu.buildurl("f", "", "")
         assert url == "f///"
 
-        url=self.exu.buildurl("http:", "", "")
+        url = self.exu.buildurl("http:", "", "")
         assert url == "http:///"
 
-        url=self.exu.buildurl("http:", None, None)
+        url = self.exu.buildurl("http:", None, None)
         assert url == "http:///"
 
-        url=self.exu.buildurl("http:", "data", None)
+        url = self.exu.buildurl("http:", "data", None)
         assert url == "http://data/"
 
-        url=self.exu.buildurl("http:", "data.pr4e.org", "p")
+        url = self.exu.buildurl("http:", "data.pr4e.org", "p")
         assert url == "http://data.pr4e.org/p"
 
     def test_ignore_ssl_errors(self):
-        ctx=self.exu.ignore_ssl_errors()
+        ctx = self.exu.ignore_ssl_errors()
         assert ctx.check_hostname == False
 
     def test_findlinks_regex(self):
-        ctx=self.exu.ignore_ssl_errors()
-        html=self.exu.open_url("https://docs.python.org", ctx)
+        ctx = self.exu.ignore_ssl_errors()
+        html = self.exu.open_url("https://docs.python.org", ctx)
         assert len(html) > 0
         assert isinstance(html, type(b""))
 
-        links=list()
-        regex='href="(http[s]?://.*?)"'.encode()
-        links=self.exu.findall_html(html, regex)
+        links = list()
+        regex = 'href="(http[s]?://.*?)"'.encode()
+        links = self.exu.findall_html(html, regex)
         assert len(links) > 0
         assert isinstance(links, type([]))
 
     def test_findlinks_bs4(self):
-        ctx=self.exu.ignore_ssl_errors()
-        html=self.exu.open_url("https://docs.python.org", ctx)
+        ctx = self.exu.ignore_ssl_errors()
+        html = self.exu.open_url("https://docs.python.org", ctx)
         assert len(html) > 0
         assert isinstance(html, type(b""))
 
-        links=list()
-        regex='href="(http[s]?://.*?)"'.encode()
-        links=self.exu.findall_html(html, regex)
+        links = list()
+        regex = 'href="(http[s]?://.*?)"'.encode()
+        links = self.exu.findall_html(html, regex)
         assert len(links) > 0
         assert isinstance(links, type([]))
