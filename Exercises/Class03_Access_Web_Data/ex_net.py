@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 
-from Exercises.Class03_Access_Web_Data.utils import ExerciseUtils
+from utils import ExerciseUtils
 
 
 class AccessWebData():
@@ -98,11 +98,11 @@ class AccessWebData():
 class3 = AccessWebData()
 
 class3.socket1()
-# class3.urljpeg()
-# class3.urllib1()
-# class3.urlwords()
-# class3.curl1()
-# class3.curl2()
-# class3.urlregex()
-# class3.urllinks()
-# class3.urllinks2()
+class3.urljpeg()
+class3.urllib1()
+class3.urlwords()
+class3.curl1()
+class3.curl2()
+class3.urlregex()
+class3.urllinks()
+class3.urllinks2()

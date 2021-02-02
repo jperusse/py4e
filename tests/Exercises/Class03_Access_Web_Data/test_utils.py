@@ -201,19 +201,20 @@ class TestExerciseUtils:
         page = self.exu.get_page(mysock, "")
         assert len(page) == 0
 
-    def test_get_page_limit(self):
+    def test_print_page_limit(self):
         for limit in [1, 2, 3000]:
-            total_chars = self.get_page_limit(self.exu.url_prefix, self.exu.url_base, self.mbox_short, limit)  # normal socket
+            total_chars = self.print_page_limit(self.exu.url_prefix, self.exu.url_base,
+                                                self.mbox_short, limit)  # normal socket
             assert total_chars == 95000
 
-    def test_get_page_limit_bad_url(self):
-        total_chars = self.get_page_limit(self.exu.url_prefix, "", self.mbox_short, 3000)  # normal socket
+    def test_print_page_limit_bad_url(self):
+        total_chars = self.print_page_limit(self.exu.url_prefix, "", self.mbox_short, 3000)  # normal socket
         assert total_chars == None
 
-    def get_page_limit(self, url_prefix, url_base, url_page, limit):
+    def print_page_limit(self, url_prefix, url_base, url_page, limit):
         mysock, url = self.exu.init_socket_and_url(url_prefix, url_base, url_page)
         print("\n")
-        total_chars = self.exu.get_page_limit(mysock, url, limit)
+        total_chars = self.exu.print_page_socket(mysock, url, limit)
         print("\n")
         print("Total characters found:", total_chars)
         return total_chars
@@ -313,6 +314,10 @@ class TestExerciseUtils:
 
         page = self.exu.get_url_page(fh)
         assert len(page) > 0
+
+    def test_print_page_urllib(self):
+        char_count = self.exu.print_page_urllib(self.mbox_short, 3000)
+        assert char_count == 94626
 
     def test_getwords(self):
 

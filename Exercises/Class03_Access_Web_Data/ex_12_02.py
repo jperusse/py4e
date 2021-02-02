@@ -1,8 +1,8 @@
 import re
 
-from Exercises.Class03_Access_Web_Data.utils import ExerciseUtils
+from utils import ExerciseUtils
 
-def_url = "http://data.pr4e.org/romeo.txt"
+def_url = "http://data.pr4e.org/mbox-short.txt"
 
 print("socket1 - World's simplest web browser for any url and displays up to 3000 characters")
 print("  Format of url must be http(s)://urlbase/page")
@@ -22,8 +22,7 @@ else:
     mysock, url = exu.init_socket_and_url(url_prefix, url_base, url_page)
     if mysock != None:
 
-        page = exu.get_page_limit(mysock, url, 3000)
-        assert len(page) == 3000
+        total_chars = exu.print_page_socket(mysock, url, 3000)
+        print("Total characters found:", total_chars)
 
         mysock = exu.close_socket(mysock)  # normal socket
-        assert mysock._closed

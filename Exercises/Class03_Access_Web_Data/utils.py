@@ -17,6 +17,8 @@ class ExerciseUtils():
     url_base = "data.pr4e.org"
     url_default1 = "https://docs.python.org"
     url_default2 = "http://www.dr-chuck.com/page1.htm"
+    url_default3 = "http://data.pr4e.org/mbox-short.txt"
+
     url_text_doc = "romeo.txt"
 
     mbox_trace = "mbox_trace.txt"
@@ -344,9 +346,9 @@ class ExerciseUtils():
 
         return page
 
-    def get_page_limit(self, mysock, url, limit):
+    def print_page_socket(self, mysock, url, limit):
         """
-        get  a text document from a socket
+        Print a document from a URL and socket and limit the number of characters printed.
         """
         count = 0
 
@@ -373,15 +375,33 @@ class ExerciseUtils():
                           page_data_list[1])
                     break
 
-            for char in page_data:
-                count = count + 1
-                if count < limit:
-                    print(char, end="")
-                elif count == limit:
-                    print(char, end="")
-                    print("\n---- Done printing " + str(count) + " characters ----")
+            count = self.print_page_data(page_data, count, limit)
 
+        return count
 
+    def print_page_urllib(self, url, limit):
+        """
+        Print a document from a URL file handle using urllib and limit the number of characters printed.
+        """
+        count = 0
+
+        fh = self.open_url(url, None)
+
+        page_data = self.get_url_page(fh)
+
+        for line in page_data:
+            count = self.print_page_data(line, count, limit)
+
+        return count
+
+    def print_page_data(self, page_data, count, limit):
+        for char in page_data:
+            count = count + 1
+            if count < limit:
+                print(char, end="")
+            elif count == limit:
+                print(char, end="")
+                print("\n---- Done printing " + str(count) + " characters ----")
         return count
 
     def encode_get(self, url):
