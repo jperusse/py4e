@@ -271,13 +271,24 @@ class TestExerciseUtils:
 
     def test_bs4_tags(self):
         html = self.exu.get_html(self.exu.url_default1)
-        tags = self.exu.bs4_tags(html)
+        tags = self.exu.bs4_tags(html, "a", pflags=[False, True, False, False])
+        assert len(tags) == 48
+ 
+        html = self.exu.get_html(self.exu.url_default1)
+        tags = self.exu.bs4_tags(html, "a", pflags=[False, False, False, False])
         assert len(tags) == 48
 
-    def test_bs4_tags2(self):
         html = self.exu.get_html(self.exu.url_default1)
-        tags = self.exu.bs4_tags2(html)
+        tags = self.exu.bs4_tags(html, "a")
         assert len(tags) == 48
+
+        html = self.exu.get_html(self.exu.url_default1)
+        tags = self.exu.bs4_tags(html, "p")
+        assert len(tags) == 26
+
+        html = self.exu.get_html(self.exu.url_default1)
+        tags = self.exu.bs4_tags(html, "z")
+        assert len(tags) == 0
 
     def test_open_url(self):
         fh = self.exu.open_url(self.exu.url_text_doc, None)

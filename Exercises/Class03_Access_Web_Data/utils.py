@@ -163,27 +163,28 @@ class ExerciseUtils():
             print(link.decode())
         return links
 
-    def bs4_tags(self, html):
-        soup = BeautifulSoup(html, 'html.parser')
+    def bs4_tags(self, html, tag_type, pflags=[True, True, True, True]):
+        tags = list()
+        valid_tags = ["a", "p"]
+        if tag_type in valid_tags:
+            soup = BeautifulSoup(html, 'html.parser')
 
-        # Retrieve all of the anchor tags
-        tags = soup('a')
-        for tag in tags:
-            print(tag.get('href', None))
+            # Retrieve all of the anchor tags
+            tags = soup(tag_type)
+            for tag in tags:
+                self.tag_func(tag, pflags)
         return tags
 
-    def bs4_tags2(self, html):
-        soup = BeautifulSoup(html, 'html.parser')
-
-        # Retrieve all of the anchor tags
-        tags = soup('a')
-        for tag in tags:
-            # Look at the parts of a tag
+    def tag_func(self, tag, pflags):
+        # Look at the parts of a tag
+        if pflags[0]:
             print('TAG:', tag)
+        if pflags[1]:
             print('URL:', tag.get('href', None))
+        if pflags[2]:
             print('Contents:', tag.contents[0])
+        if pflags[3]:
             print('Attrs:', tag.attrs)
-        return tags
 
     def findall_html(self, html, regex):
         # bytes_regex = regex.encode()

@@ -86,13 +86,13 @@ class AccessWebData():
         print("urllinks - Search for link values within URL page using BeatifulSoup to parse html")
         exu = ExerciseUtils()
         html = exu.get_html(exu.url_default1)
-        tags = exu.bs4_tags(html)
+        tags = exu.bs4_tags(html,'a',pflags=[False,True,False,False])
 
     def urllinks2(self):
         print("urllinks2 - Look at the parts of a tag")
         exu = ExerciseUtils()
         html = exu.get_html(exu.url_default2)
-        tags = exu.bs4_tags2(html)
+        tags = exu.bs4_tags(html,'a')
 
 
 class3 = AccessWebData()

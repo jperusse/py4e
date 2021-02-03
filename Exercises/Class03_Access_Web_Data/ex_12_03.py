@@ -1,5 +1,3 @@
-import re
-
 from utils import ExerciseUtils
 
 def_url = "http://data.pr4e.org/mbox-short.txt"
@@ -21,4 +19,3 @@ else:
     char_count = exu.print_page_urllib(url, 3000)
     assert char_count == 94626
     print("Total characters found:", char_count)
-
