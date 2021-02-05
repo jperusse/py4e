@@ -18,6 +18,8 @@ class ExerciseUtils():
     url_default1 = "https://docs.python.org"
     url_default2 = "http://www.dr-chuck.com/page1.htm"
     url_default3 = "http://data.pr4e.org/mbox-short.txt"
+    url_default4 = "http://data.pr4e.org/"
+    # url_default4 = "https://www.py4e.com/html3/12-network"
 
     url_text_doc = "romeo.txt"
 
