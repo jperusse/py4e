@@ -11,7 +11,7 @@
     // pytest --tb=no      # no traceback at all
     "python.testing.pytestArgs": [
         "tests",
-        "-v",
+        // "-v",
         "-s",
     ],
     "python.testing.unittestEnabled": false,

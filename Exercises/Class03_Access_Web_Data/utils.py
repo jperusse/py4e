@@ -349,11 +349,12 @@ class ExerciseUtils():
 
         return page
 
-    def print_page_socket(self, mysock, url, limit):
+    def print_page_socket(self, mysock, url, limit, skipheaders=False):
         """
         Print a document from a URL and socket and limit the number of characters printed.
         """
         count = 0
+        # skipheaders_local = skipheaders
 
         cmd = self.encode_get(url)
         try:
@@ -377,6 +378,13 @@ class ExerciseUtils():
                     print("Opening socket failed with code:",
                           page_data_list[1])
                     break
+            
+            if skipheaders:
+                idx = page_data.find("\r\n\r\n")
+                page_data = page_data[idx + 4:]
+                skipheaders = False
+
+
 
             count = self.print_page_data(page_data, count, limit)
 
