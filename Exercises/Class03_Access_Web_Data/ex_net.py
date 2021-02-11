@@ -1,5 +1,4 @@
-from bs4 import BeautifulSoup
-
+# from bs4 import BeautifulSoup
 from utils import ExerciseUtils
 
 
@@ -14,7 +13,8 @@ class AccessWebData():
     def socket1(self):
         print("socket1 - World's simplest web browser")
         exu = ExerciseUtils()
-        mysock, url = exu.init_socket_and_url(exu.url_prefix, exu.url_base, exu.url_text_doc)
+        mysock, url = exu.init_socket_and_url(exu.url_prefix, exu.url_base,
+                                              exu.url_text_doc)
 
         page = exu.get_page(mysock, url)
         assert len(page) == 2
@@ -25,7 +25,8 @@ class AccessWebData():
     def urljpeg(self):
         print("urljpeg - get a jpeg document")
         exu = ExerciseUtils()
-        mysock, url = exu.init_socket_and_url(exu.url_prefix, exu.url_base, self.url_jpg)
+        mysock, url = exu.init_socket_and_url(exu.url_prefix, exu.url_base,
+                                              self.url_jpg)
         pic = exu.get_jpeg(mysock, url)
         assert len(pic) == 230608
 
@@ -64,10 +65,11 @@ class AccessWebData():
         print("Length of " + self.url_jpg + " is:", imglen)
 
         rc = exu.write_file(self.url_jpg, "wb", img)
-        assert rc == None
+        assert rc is None
 
     def curl2(self):
-        print("curl2 - get and image and write it to a file using a buffer to read any size file")
+        print("curl2 - get and image and write it to a file using a buffer to\
+              read any size file")
         exu = ExerciseUtils()
         img = exu.open_url(self.url_jpg, None)
         assert img != ""
@@ -80,19 +82,23 @@ class AccessWebData():
         print("urlregex - Search for link values within URL input")
         exu = ExerciseUtils()
         html = exu.get_html(exu.url_default1)
-        links = exu.regexlinks(html)
+        exu.regexlinks(html)
 
     def urllinks(self):
-        print("urllinks - Search for link values within URL page using BeatifulSoup to parse html")
+        print("urllinks - Search for link values within URL page using\
+              BeatifulSoup to parse html")
         exu = ExerciseUtils()
         html = exu.get_html(exu.url_default1)
-        tags = exu.bs4_tags(html,'a',pflags=[False,True,False,False])
+        exu.bs4_tags(html, 'a', pflags=[False, True, False, False])
 
     def urllinks2(self):
         print("urllinks2 - Look at the parts of a tag")
         exu = ExerciseUtils()
         html = exu.get_html(exu.url_default2)
-        tags = exu.bs4_tags(html,'a')
+        exu.bs4_tags(html, 'a')
+
+    def xml1(self):
+        pass
 
 
 class3 = AccessWebData()
@@ -106,3 +112,4 @@ class3.curl2()
 class3.urlregex()
 class3.urllinks()
 class3.urllinks2()
+class3.xml1()
