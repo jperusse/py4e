@@ -15,14 +15,4 @@ if url == "":
 
 exu = ExerciseUtils()
 url_prefix, url_base, url_page = exu.split_url(url)
-if url_base == "" or url_base == None:
-    print("Bad URL")
-else:
-    print("opening socket to:", url)
-    mysock, url = exu.init_socket_and_url(url_prefix, url_base, url_page)
-    if mysock != None:
-
-        page = exu.get_page(mysock, url)
-
-        mysock = exu.close_socket(mysock)  # normal socket
-        assert mysock._closed
+total_chars = exu.print_page_limit(url_prefix, url_base, url_page, 3000, skipheaders=True)  # normal socket

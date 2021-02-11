@@ -203,32 +203,25 @@ class TestExerciseUtils:
 
     def test_print_page_socket(self):
         for limit in [1, 2, 3000]:
-            total_chars = self.print_page_limit(self.exu.url_prefix, self.exu.url_base,
+            total_chars = self.exu.print_page_limit(self.exu.url_prefix, self.exu.url_base,
                                                 self.mbox_short, limit)  # normal socket
             assert total_chars == 95000
 
     def test_print_page_socket_bad_url(self):
-        total_chars = self.print_page_limit(self.exu.url_prefix, "",
+        total_chars = self.exu.print_page_limit(self.exu.url_prefix, "",
                                             self.mbox_short, 3000, skipheaders=True)  # normal socket
         assert total_chars == None
 
     def test_print_page_socket_skipheaders_default(self):
-        total_chars = self.print_page_limit(self.exu.url_prefix, self.exu.url_base, self.exu.url_text_doc,
+        total_chars = self.exu.print_page_limit(self.exu.url_prefix, self.exu.url_base, self.exu.url_text_doc,
                                             3000)  # normal socket
         assert total_chars == 536
 
     def test_print_page_socket_skipheaders_override(self):
-        total_chars = self.print_page_limit(self.exu.url_prefix, self.exu.url_base, self.exu.url_text_doc,
+        total_chars = self.exu.print_page_limit(self.exu.url_prefix, self.exu.url_base, self.exu.url_text_doc,
                                             3000, skipheaders=True)  # normal socket
         assert total_chars == 167
 
-    def print_page_limit(self, url_prefix, url_base, url_page, limit, skipheaders=False):
-        mysock, url = self.exu.init_socket_and_url(url_prefix, url_base, url_page)
-        print("\n")
-        total_chars = self.exu.print_page_socket(mysock, url, limit, skipheaders)
-        print("\n")
-        print("Total characters found:", total_chars)
-        return total_chars
 
     def test_get_jpeg(self):
         ofile = "stuff.jpg"
