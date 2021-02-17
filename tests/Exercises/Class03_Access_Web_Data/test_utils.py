@@ -1,7 +1,5 @@
 import io
 import os
-import re
-from unittest.mock import MagicMock
 
 import pytest
 from Exercises.Class03_Access_Web_Data.utils import ExerciseUtils
@@ -210,7 +208,7 @@ class TestExerciseUtils:
     def test_print_page_socket_bad_url(self):
         total_chars = self.exu.print_page_limit(self.exu.url_prefix, "",
                                             self.mbox_short, 3000, skipheaders=True)  # normal socket
-        assert total_chars == None
+        assert total_chars == 0
 
     def test_print_page_socket_skipheaders_default(self):
         total_chars = self.exu.print_page_limit(self.exu.url_prefix, self.exu.url_base, self.exu.url_text_doc,

@@ -1,4 +1,4 @@
-# from bs4 import BeautifulSoup
+
 from utils import ExerciseUtils
 
 
@@ -98,18 +98,32 @@ class AccessWebData():
         exu.bs4_tags(html, 'a')
 
     def xml1(self):
-        pass
+        import xml.etree.ElementTree as ET
+
+        data = '''
+        <person>
+        <name>James</name>
+        <phone type="intl">+1 503 851 8418</phone>
+        <email hide="yes" />
+        </person>'''
+
+        tree = ET.fromstring(data)
+        print('Name:', tree.find('name').text)
+        print('Phone:', tree.find('phone').text)
+        print('Phone Attr:', tree.find('phone').get('type'))
+        print('Email Attr:', tree.find('email').get('hide'))
+
 
 
 class3 = AccessWebData()
 
-class3.socket1()
-class3.urljpeg()
-class3.urllib1()
-class3.urlwords()
-class3.curl1()
-class3.curl2()
-class3.urlregex()
-class3.urllinks()
-class3.urllinks2()
+# class3.socket1()
+# class3.urljpeg()
+# class3.urllib1()
+# class3.urlwords()
+# class3.curl1()
+# class3.curl2()
+# class3.urlregex()
+# class3.urllinks()
+# class3.urllinks2()
 class3.xml1()

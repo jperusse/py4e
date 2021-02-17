@@ -149,7 +149,7 @@ class ExerciseUtils():
 #
     def get_html(self, url=None):
         ctx = self.ignore_ssl_errors()
-        if url == None:
+        if url is None:
             url = input("Enter url(default:" + self.url_default1 + "): ")
             if url == "":
                 url = self.url_default1
@@ -220,7 +220,7 @@ class ExerciseUtils():
         else:
             url = self.buildurl(self.url_prefix, self.url_base, url_page)
 
-        if ctx == None:
+        if ctx is None:
             try:
                 fh = urllib.request.urlopen(url)
             except:
@@ -250,11 +250,11 @@ class ExerciseUtils():
         return img
 
     def buildurl(self, url_prefix, url_base, url_page):
-        if url_prefix == None:
+        if url_prefix is None:
             url_prefix = ""
-        if url_base == None:
+        if url_base is None:
             url_base = ""
-        if url_page == None:
+        if url_page is None:
             url_page = ""
         url = url_prefix + "//" + url_base + "/" + url_page
         return url
@@ -351,6 +351,11 @@ class ExerciseUtils():
 
     def print_page_limit(self, url_prefix, url_base, url_page, limit, skipheaders=False):
         mysock, url = self.init_socket_and_url(url_prefix, url_base, url_page)
+        total_chars = 0
+
+        if mysock is None:
+            return total_chars
+            
         print("\n")
         total_chars = self.print_page_socket(mysock, url, limit, skipheaders)
         print("\n")
@@ -359,7 +364,8 @@ class ExerciseUtils():
 
     def print_page_socket(self, mysock, url, limit, skipheaders=False):
         """
-        Print a document from a URL and socket and limit the number of characters printed.
+        Print a document from a URL and socket and limit the 
+        number of characters printed.
         """
         count = 0
         # skipheaders_local = skipheaders
@@ -367,7 +373,7 @@ class ExerciseUtils():
         cmd = self.encode_get(url)
         try:
             mysock.sendall(cmd)
-        except:
+        except():
             print('SEND failed for ', url)
             return None
 
