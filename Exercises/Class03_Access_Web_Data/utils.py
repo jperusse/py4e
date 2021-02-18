@@ -355,7 +355,7 @@ class ExerciseUtils():
 
         if mysock is None:
             return total_chars
-            
+
         print("\n")
         total_chars = self.print_page_socket(mysock, url, limit, skipheaders)
         print("\n")
@@ -487,3 +487,13 @@ class ExerciseUtils():
         fhand.write(picture)
         fhand.close()
         return len(picture)
+
+    def print_element_tree(self, html_field_list, html):
+        import xml.etree.ElementTree as ET
+        tree = ET.fromstring(html)
+        for tpl in html_field_list:
+            title, field, field_type, attr_name = tpl
+            if field_type == 'text':
+                print(title, tree.find(field).text)
+            elif field_type == 'attr':
+                print(title, tree.find(field).get(attr_name))

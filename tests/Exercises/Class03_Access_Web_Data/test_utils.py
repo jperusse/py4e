@@ -1,5 +1,7 @@
 import io
 import os
+import sys
+from unittest.mock import MagicMock
 
 import pytest
 from Exercises.Class03_Access_Web_Data.utils import ExerciseUtils
@@ -202,24 +204,23 @@ class TestExerciseUtils:
     def test_print_page_socket(self):
         for limit in [1, 2, 3000]:
             total_chars = self.exu.print_page_limit(self.exu.url_prefix, self.exu.url_base,
-                                                self.mbox_short, limit)  # normal socket
+                                                    self.mbox_short, limit)  # normal socket
             assert total_chars == 95000
 
     def test_print_page_socket_bad_url(self):
         total_chars = self.exu.print_page_limit(self.exu.url_prefix, "",
-                                            self.mbox_short, 3000, skipheaders=True)  # normal socket
+                                                self.mbox_short, 3000, skipheaders=True)  # normal socket
         assert total_chars == 0
 
     def test_print_page_socket_skipheaders_default(self):
         total_chars = self.exu.print_page_limit(self.exu.url_prefix, self.exu.url_base, self.exu.url_text_doc,
-                                            3000)  # normal socket
+                                                3000)  # normal socket
         assert total_chars == 536
 
     def test_print_page_socket_skipheaders_override(self):
         total_chars = self.exu.print_page_limit(self.exu.url_prefix, self.exu.url_base, self.exu.url_text_doc,
-                                            3000, skipheaders=True)  # normal socket
+                                                3000, skipheaders=True)  # normal socket
         assert total_chars == 167
-
 
     def test_get_jpeg(self):
         ofile = "stuff.jpg"
@@ -238,7 +239,7 @@ class TestExerciseUtils:
 
     def test_get_html_input_good_url(self):
         html = self.exu.get_html(self.exu.url_default1)
-        assert len(html) == 9960
+        assert len(html) == 9978
 
     def test_get_html_input_good_default_url(self, monkeypatch):
         monkeypatch.setattr("sys.stdin", io.StringIO("\n"))
@@ -427,3 +428,26 @@ class TestExerciseUtils:
         links = self.exu.findall_html(html, regex)
         assert len(links) > 0
         assert isinstance(links, type([]))
+
+    def test_print_element_tree(self, capsys):
+        print()
+        # capture all previous print statements
+        captured = capsys.readouterr()
+        assert captured.out == "\n"
+
+        html = '''
+        <person>
+        <name>James</name>
+        <phone type="intl">
+            +1 734 303 4456
+        </phone>
+        <email hide="yes" />
+        </person>'''
+        self.exu.print_element_tree([("Name:", "name", "text", "")], html)
+        captured = capsys.readouterr()
+        assert captured.out == "Name: James\n"
+
+        self.exu.print_element_tree([("Attr:", "email", "attr", "hide")], html)
+        captured = capsys.readouterr() # capture previous print statements
+        assert captured.out == "Attr: yes\n"
+

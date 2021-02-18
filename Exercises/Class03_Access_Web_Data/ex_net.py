@@ -98,20 +98,18 @@ class AccessWebData():
         exu.bs4_tags(html, 'a')
 
     def xml1(self):
-        import xml.etree.ElementTree as ET
-
         data = '''
         <person>
         <name>James</name>
-        <phone type="intl">+1 503 851 8418</phone>
+        <phone type="intl">
+            +1 503 851 8418
+        </phone>
         <email hide="yes" />
         </person>'''
 
-        tree = ET.fromstring(data)
-        print('Name:', tree.find('name').text)
-        print('Phone:', tree.find('phone').text)
-        print('Phone Attr:', tree.find('phone').get('type'))
-        print('Email Attr:', tree.find('email').get('hide'))
+        exu = ExerciseUtils()
+        exu.print_element_tree([("Name:", "name", "text", "")], data)
+        exu.print_element_tree([("Attr:", "email", "attr", "hide")], data)
 
 
 
