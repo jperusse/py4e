@@ -1,4 +1,3 @@
-
 from utils import ExerciseUtils
 
 
@@ -127,6 +126,8 @@ class AccessWebData():
         </stuff>'''
 
         exu = ExerciseUtils()
+        tree = ET.fromstring(input)
+
         field_list = [("Name:", "user", "text", ""), ("Attr:", "email", "attr", "hide")]
         exu.print_element_tree(field_list, input)
 

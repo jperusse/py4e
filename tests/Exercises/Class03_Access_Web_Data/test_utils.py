@@ -153,20 +153,25 @@ class TestExerciseUtils:
 
     def test_open_socket_for_good_host(self):
         mysock = self.exu.open_socket(self.exu.url_base, 80)  # normal socket
-        assert mysock._closed == False
+        assert mysock is not None
 
     def test_close_socket_for_good_host(self):
         mysock = self.exu.open_socket(self.exu.url_base, 80)  # normal socket
-        assert mysock._closed == False
+        assert mysock is not None
 
         mysock = self.exu.close_socket(mysock)  # normal socket
-        assert mysock._closed
+        assert mysock is not None
+
+    def test_close_socket_for_bad_host(self):
+        mysock = None
+        mysock = self.exu.close_socket(mysock)  # normal socket
+        assert mysock is None
 
     def test_init_socket_and_url_using_defaults(self):
         mysock, url = self.exu.init_socket_and_url(
             self.exu.url_prefix, self.exu.url_base, self.exu.url_text_doc
         )
-        assert mysock._closed == False
+        assert mysock is not None
         assert (url == self.exu.url_prefix + "//" + self.exu.url_base + "/" + self.exu.url_text_doc)
 
     def test_init_socket_and_url_bad_base(self):
@@ -187,7 +192,6 @@ class TestExerciseUtils:
         assert len(page) == 2
 
         mysock = self.exu.close_socket(mysock)  # normal socket
-        assert mysock._closed
 
         page = self.exu.get_page(mysock, url)
         assert len(page) == 0
@@ -229,7 +233,6 @@ class TestExerciseUtils:
         assert len(picture) == 230608
 
         mysock = self.exu.close_socket(mysock)  # normal socket
-        assert mysock._closed
 
         img = self.exu.stripheaders_img(picture, ofile)
         assert len(img) == 230210
@@ -429,13 +432,13 @@ class TestExerciseUtils:
         assert len(links) > 0
         assert isinstance(links, type([]))
 
-    def init_test_html1(self, capsys):
+    def init_test_xml1(self, capsys):
         print()
         # capture all previous print statements
         captured = capsys.readouterr()
         assert captured.out == "\n"
 
-        html = '''
+        xml = '''
         <person>
         <name>James</name>
         <phone type="intl">
@@ -443,60 +446,60 @@ class TestExerciseUtils:
         </phone>
         <email hide="yes" />
         </person>'''
-        return html
+        return xml
 
     def test_print_element_tree_text(self, capsys):
-        html = self.init_test_html1(capsys)
+        xml = self.init_test_xml1(capsys)
         field_list = [("Name:", "name", "text", "")]
-        count = self.exu.print_element_tree(field_list, html)
+        count = self.exu.print_element_tree(field_list, xml)
         assert count == 1
         captured = capsys.readouterr()
         assert captured.out == 'Number of tuples found:  1\nName: James\n'
 
     def test_print_element_tree_attr(self, capsys):
-        html = self.init_test_html1(capsys)
+        xml = self.init_test_xml1(capsys)
         field_list = [("Attr:", "email", "attr", "hide")]
-        count = self.exu.print_element_tree(field_list, html)
+        count = self.exu.print_element_tree(field_list, xml)
         assert count == 1
         captured = capsys.readouterr()
         assert captured.out == 'Number of tuples found:  1\nAttr: yes\n'
 
     def test_print_element_tree_text_and_attr(self, capsys):
-        html = self.init_test_html1(capsys)
+        xml = self.init_test_xml1(capsys)
         field_list = [("Name:", "name", "text", ""), ("Attr:", "email", "attr", "hide")]
-        count = self.exu.print_element_tree(field_list, html)
+        count = self.exu.print_element_tree(field_list, xml)
         assert count == 2
         captured = capsys.readouterr()
         assert captured.out == 'Number of tuples found:  2\nName: James\nAttr: yes\n'
 
     def test_print_element_tree_bad_field_data(self, capsys):
-        html = self.init_test_html1(capsys)
+        xml = self.init_test_xml1(capsys)
         field_list = [("Name:", "name", "text")]
-        count = self.exu.print_element_tree(field_list, html)
+        count = self.exu.print_element_tree(field_list, xml)
         assert count == 1
         captured = capsys.readouterr()
         assert captured.out == 'Number of tuples found:  1\nNumber of fields incorrect and will be ignored:  3\n'
 
     def test_print_element_tree_field_not_found_text(self, capsys):
-        html = self.init_test_html1(capsys)
+        xml = self.init_test_xml1(capsys)
         field_list = [("Name:", "missing", "text", "")]
-        count = self.exu.print_element_tree(field_list, html)
+        count = self.exu.print_element_tree(field_list, xml)
         assert count == 1
         captured = capsys.readouterr()
         assert captured.out == 'Number of tuples found:  1\nField not found:  missing\n'
 
     def test_print_element_tree_field_not_found_attr(self, capsys):
-        html = self.init_test_html1(capsys)
+        xml = self.init_test_xml1(capsys)
         field_list = [("Name:", "missing", "attr", "")]
-        count = self.exu.print_element_tree(field_list, html)
+        count = self.exu.print_element_tree(field_list, xml)
         assert count == 1
         captured = capsys.readouterr()
         assert captured.out == 'Number of tuples found:  1\nField not found:  missing\n'
 
     def test_print_element_tree_attr_not_found(self, capsys):
-        html = self.init_test_html1(capsys)
+        xml = self.init_test_xml1(capsys)
         field_list = [("Name:", "email", "attr", "hidden")]
-        count = self.exu.print_element_tree(field_list, html)
+        count = self.exu.print_element_tree(field_list, xml)
         assert count == 1
         captured = capsys.readouterr()
         assert captured.out == 'Number of tuples found:  1\nAttribute not found for field email:  hidden\n'

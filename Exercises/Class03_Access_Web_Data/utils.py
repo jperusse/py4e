@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 
 class ExerciseUtils():
     """
-    Test methods common to PY4E exercises
+    Utility methods common to PY4E exercises
     """
     url_prefix = "http:"
     url_base = "data.pr4e.org"
@@ -312,7 +312,7 @@ class ExerciseUtils():
         try:
             mysock.close()
         except:
-            print("Bad Socket Received mysock='" + mysock + "'")
+            print("Bad Socket")
             mysock = None
         return mysock
 
@@ -489,15 +489,15 @@ class ExerciseUtils():
         fhand.close()
         return len(picture)
 
-    def print_element_tree(self, html_field_list, html):
+    def print_element_tree(self, xml_field_list, xml):
         '''
-        Search through html for fields and/or attributes of html 
+        Search through xml for fields and/or attributes of xml 
         '''
-        len_fields = len(html_field_list)
-        tree = ET.fromstring(html)
+        len_fields = len(xml_field_list)
+        tree = ET.fromstring(xml)
         print('Number of tuples found: ', len_fields)
         
-        for tpl in html_field_list:
+        for tpl in xml_field_list:
             if len(tpl) != 4:
                 print("Number of fields incorrect and will be ignored: ", len(tpl))
                 return len_fields
