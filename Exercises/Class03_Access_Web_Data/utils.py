@@ -4,6 +4,7 @@ import socket
 import ssl
 import time
 import urllib.request
+import xml.etree.ElementTree as ET
 
 # import requests  # requests is more advanced than urllib and does automatic decoding
 from bs4 import BeautifulSoup
@@ -489,11 +490,28 @@ class ExerciseUtils():
         return len(picture)
 
     def print_element_tree(self, html_field_list, html):
-        import xml.etree.ElementTree as ET
+        '''
+        Search through html for fields and/or attributes of html 
+        '''
+        len_fields = len(html_field_list)
         tree = ET.fromstring(html)
+        print('Number of tuples found: ', len_fields)
+        
         for tpl in html_field_list:
+            if len(tpl) != 4:
+                print("Number of fields incorrect and will be ignored: ", len(tpl))
+                return len_fields
             title, field, field_type, attr_name = tpl
-            if field_type == 'text':
+
+            if tree.findtext(field) is None:
+                print("Field not found: ", field)
+            elif field_type == 'text':
                 print(title, tree.find(field).text)
             elif field_type == 'attr':
-                print(title, tree.find(field).get(attr_name))
+                if tree.find(field).get(attr_name) is not None:
+                    print(title, tree.find(field).get(attr_name))
+                else:
+                    print("Attribute not found for field " + field + ": ", attr_name)
+
+
+        return len_fields

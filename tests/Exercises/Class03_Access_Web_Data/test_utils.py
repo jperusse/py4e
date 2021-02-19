@@ -429,7 +429,7 @@ class TestExerciseUtils:
         assert len(links) > 0
         assert isinstance(links, type([]))
 
-    def test_print_element_tree(self, capsys):
+    def init_test_html1(self, capsys):
         print()
         # capture all previous print statements
         captured = capsys.readouterr()
@@ -443,11 +443,60 @@ class TestExerciseUtils:
         </phone>
         <email hide="yes" />
         </person>'''
-        self.exu.print_element_tree([("Name:", "name", "text", "")], html)
+        return html
+
+    def test_print_element_tree_text(self, capsys):
+        html = self.init_test_html1(capsys)
+        field_list = [("Name:", "name", "text", "")]
+        count = self.exu.print_element_tree(field_list, html)
+        assert count == 1
         captured = capsys.readouterr()
-        assert captured.out == "Name: James\n"
+        assert captured.out == 'Number of tuples found:  1\nName: James\n'
 
-        self.exu.print_element_tree([("Attr:", "email", "attr", "hide")], html)
-        captured = capsys.readouterr() # capture previous print statements
-        assert captured.out == "Attr: yes\n"
+    def test_print_element_tree_attr(self, capsys):
+        html = self.init_test_html1(capsys)
+        field_list = [("Attr:", "email", "attr", "hide")]
+        count = self.exu.print_element_tree(field_list, html)
+        assert count == 1
+        captured = capsys.readouterr()
+        assert captured.out == 'Number of tuples found:  1\nAttr: yes\n'
 
+    def test_print_element_tree_text_and_attr(self, capsys):
+        html = self.init_test_html1(capsys)
+        field_list = [("Name:", "name", "text", ""), ("Attr:", "email", "attr", "hide")]
+        count = self.exu.print_element_tree(field_list, html)
+        assert count == 2
+        captured = capsys.readouterr()
+        assert captured.out == 'Number of tuples found:  2\nName: James\nAttr: yes\n'
+
+    def test_print_element_tree_bad_field_data(self, capsys):
+        html = self.init_test_html1(capsys)
+        field_list = [("Name:", "name", "text")]
+        count = self.exu.print_element_tree(field_list, html)
+        assert count == 1
+        captured = capsys.readouterr()
+        assert captured.out == 'Number of tuples found:  1\nNumber of fields incorrect and will be ignored:  3\n'
+
+    def test_print_element_tree_field_not_found_text(self, capsys):
+        html = self.init_test_html1(capsys)
+        field_list = [("Name:", "missing", "text", "")]
+        count = self.exu.print_element_tree(field_list, html)
+        assert count == 1
+        captured = capsys.readouterr()
+        assert captured.out == 'Number of tuples found:  1\nField not found:  missing\n'
+
+    def test_print_element_tree_field_not_found_attr(self, capsys):
+        html = self.init_test_html1(capsys)
+        field_list = [("Name:", "missing", "attr", "")]
+        count = self.exu.print_element_tree(field_list, html)
+        assert count == 1
+        captured = capsys.readouterr()
+        assert captured.out == 'Number of tuples found:  1\nField not found:  missing\n'
+
+    def test_print_element_tree_attr_not_found(self, capsys):
+        html = self.init_test_html1(capsys)
+        field_list = [("Name:", "email", "attr", "hidden")]
+        count = self.exu.print_element_tree(field_list, html)
+        assert count == 1
+        captured = capsys.readouterr()
+        assert captured.out == 'Number of tuples found:  1\nAttribute not found for field email:  hidden\n'

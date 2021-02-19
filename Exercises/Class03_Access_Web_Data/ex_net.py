@@ -111,6 +111,24 @@ class AccessWebData():
         exu.print_element_tree([("Name:", "name", "text", "")], data)
         exu.print_element_tree([("Attr:", "email", "attr", "hide")], data)
 
+    def xml2(self):
+        input = '''
+        <stuff>
+            <users>
+                <user x="2">
+                    <id>001</id>
+                    <name>Chuck</name>
+                </user>
+                <user x="7">
+                    <id>009</id>
+                    <name>Brent</name>
+                </user>
+            </users>
+        </stuff>'''
+
+        exu = ExerciseUtils()
+        field_list = [("Name:", "user", "text", ""), ("Attr:", "email", "attr", "hide")]
+        exu.print_element_tree(field_list, input)
 
 
 class3 = AccessWebData()
@@ -124,4 +142,5 @@ class3 = AccessWebData()
 # class3.urlregex()
 # class3.urllinks()
 # class3.urllinks2()
-class3.xml1()
+# class3.xml1()
+class3.xml2()
