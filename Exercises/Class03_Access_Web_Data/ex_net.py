@@ -1,5 +1,6 @@
-from utils import ExerciseUtils
 import xml.etree.ElementTree as ET
+
+from utils import ExerciseUtils
 
 
 class AccessWebData():
@@ -126,10 +127,17 @@ class AccessWebData():
         </stuff>'''
 
         exu = ExerciseUtils()
-        tree = ET.fromstring(input)
+        stuff = ET.fromstring(input)
+        lst = stuff.findall('users/user')
+        print('User count:', len(lst))
 
-        field_list = [("Name:", "user", "text", ""), ("Attr:", "email", "attr", "hide")]
-        exu.print_element_tree(field_list, tree)
+        for tree in lst:
+            field_list = [
+                ("Name:", "name", "text", ""),
+                ("Id:", "id", "text", ""),
+                ("Attribute:", "x", "attr", "x")
+            ]
+            exu.print_element_tree(field_list, tree)
 
 
 class3 = AccessWebData()

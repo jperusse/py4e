@@ -440,12 +440,12 @@ class TestExerciseUtils:
         assert captured.out == "\n"
 
         xml = '''
-        <person>
-        <name>James</name>
-        <phone type="intl">
-            +1 734 303 4456
-        </phone>
-        <email hide="yes" />
+        <person x="999">
+            <name>James</name>
+            <phone type="intl">
+                +1 734 303 4456
+            </phone>
+            <email hide="yes" />
         </person>'''
         return xml
 
@@ -467,6 +467,11 @@ class TestExerciseUtils:
         captured = self.print_elements(capsys, field_list)
         assert captured.out == 'Number of tuples found:  1\nAttr: yes\n'
 
+    def test_print_element_tree_attr_no_field_specified(self, capsys):
+        field_list = [("Attr:", "", "attr", "x")]
+        captured = self.print_elements(capsys, field_list)
+        assert captured.out == 'Number of tuples found:  1\nAttr: 999\n'
+
     def test_print_element_tree_text_and_attr(self, capsys):
         field_list = [("Name:", "name", "text", ""), ("Attr:", "email", "attr", "hide")]
         captured = self.print_elements(capsys, field_list)
@@ -482,12 +487,22 @@ class TestExerciseUtils:
         captured = self.print_elements(capsys, field_list)
         assert captured.out == 'Number of tuples found:  1\nField not found:  missing\n'
 
-    def test_print_element_tree_field_not_found_attr(self, capsys):
-        field_list = [("Name:", "missing", "attr", "")]
+    def test_print_element_tree_attr_name_missing(self, capsys):
+        field_list = [("Attr:", "missing", "attr", "")]
         captured = self.print_elements(capsys, field_list)
-        assert captured.out == 'Number of tuples found:  1\nField not found:  missing\n'
+        assert captured.out == "Number of tuples found:  1\nAttribute name is missing\n"
 
-    def test_print_element_tree_attr_not_found(self, capsys):
-        field_list = [("Name:", "email", "attr", "hidden")]
+    def test_print_element_tree_field_and_attr_name_missing(self, capsys):
+        field_list = [("Attr:", "", "attr", "")]
         captured = self.print_elements(capsys, field_list)
-        assert captured.out == 'Number of tuples found:  1\nAttribute not found for field email:  hidden\n'
+        assert captured.out == "Number of tuples found:  1\nAttribute name is missing\n"
+
+    def test_print_element_tree_attr_not_found1(self, capsys):
+        field_list = [("Attr:", "email", "attr", "hidden")]
+        captured = self.print_elements(capsys, field_list)
+        assert captured.out == "Number of tuples found:  1\nAttribute not found: 'hidden'\n"
+
+    def test_print_element_tree_attr_not_found2(self, capsys):
+        field_list = [("Attr:", "", "attr", "hidden")]
+        captured = self.print_elements(capsys, field_list)
+        assert captured.out == "Number of tuples found:  1\nAttribute not found: 'hidden'\n"

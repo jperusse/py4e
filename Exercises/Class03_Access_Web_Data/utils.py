@@ -503,14 +503,22 @@ class ExerciseUtils():
                 return len_fields
             title, field, field_type, attr_name = tpl
 
-            if tree.findtext(field) is None:
-                print("Field not found: ", field)
-            elif field_type == 'text':
+            if field_type == 'text' and tree.findtext(field) is not None:
                 print(title, tree.find(field).text)
-            elif field_type == 'attr':
-                if tree.find(field).get(attr_name) is not None:
-                    print(title, tree.find(field).get(attr_name))
+            elif field_type == 'attr': 
+                if len(attr_name) > 0:
+                    if tree.findtext(field) is not None:
+                        if tree.find(field).get(attr_name) is not None:
+                            print(title, tree.find(field).get(attr_name))
+                        else:
+                            print("Attribute not found: '" + attr_name + "'")
+                    elif tree.get(attr_name) is not None:
+                        print(title, tree.get(attr_name))
+                    else:
+                        print("Attribute not found: '" + attr_name + "'")
                 else:
-                    print("Attribute not found for field " + field + ": ", attr_name)
+                    print("Attribute name is missing")
+            else:
+                print("Field not found: ", field)
 
         return len_fields
