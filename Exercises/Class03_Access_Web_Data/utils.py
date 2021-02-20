@@ -489,14 +489,14 @@ class ExerciseUtils():
         fhand.close()
         return len(picture)
 
-    def print_element_tree(self, xml_field_list, xml):
+    def print_element_tree(self, xml_field_list, tree):
         '''
-        Search through xml for fields and/or attributes of xml 
+        Search through tree for fields and/or attributes of xml 
         '''
+
         len_fields = len(xml_field_list)
-        tree = ET.fromstring(xml)
         print('Number of tuples found: ', len_fields)
-        
+
         for tpl in xml_field_list:
             if len(tpl) != 4:
                 print("Number of fields incorrect and will be ignored: ", len(tpl))
@@ -512,6 +512,5 @@ class ExerciseUtils():
                     print(title, tree.find(field).get(attr_name))
                 else:
                     print("Attribute not found for field " + field + ": ", attr_name)
-
 
         return len_fields

@@ -1,4 +1,5 @@
 from utils import ExerciseUtils
+import xml.etree.ElementTree as ET
 
 
 class AccessWebData():
@@ -14,23 +15,22 @@ class AccessWebData():
         exu = ExerciseUtils()
         mysock, url = exu.init_socket_and_url(exu.url_prefix, exu.url_base,
                                               exu.url_text_doc)
-
+        assert mysock is not None
         page = exu.get_page(mysock, url)
         assert len(page) == 2
 
         mysock = exu.close_socket(mysock)  # normal socket
-        assert mysock._closed
 
     def urljpeg(self):
         print("urljpeg - get a jpeg document")
         exu = ExerciseUtils()
         mysock, url = exu.init_socket_and_url(exu.url_prefix, exu.url_base,
                                               self.url_jpg)
+        assert mysock is not None
         pic = exu.get_jpeg(mysock, url)
         assert len(pic) == 230608
 
         mysock = exu.close_socket(mysock)  # normal socket
-        assert mysock._closed
 
         piclen = exu.save_picture(pic, self.local_jpg)
         assert piclen > 0
@@ -129,7 +129,7 @@ class AccessWebData():
         tree = ET.fromstring(input)
 
         field_list = [("Name:", "user", "text", ""), ("Attr:", "email", "attr", "hide")]
-        exu.print_element_tree(field_list, input)
+        exu.print_element_tree(field_list, tree)
 
 
 class3 = AccessWebData()

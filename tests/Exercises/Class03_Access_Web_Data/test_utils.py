@@ -1,6 +1,7 @@
 import io
 import os
 import sys
+import xml.etree.ElementTree as ET
 from unittest.mock import MagicMock
 
 import pytest
@@ -448,58 +449,45 @@ class TestExerciseUtils:
         </person>'''
         return xml
 
-    def test_print_element_tree_text(self, capsys):
+    def print_elements(self, capsys, field_list):
         xml = self.init_test_xml1(capsys)
-        field_list = [("Name:", "name", "text", "")]
-        count = self.exu.print_element_tree(field_list, xml)
-        assert count == 1
+        tree = ET.fromstring(xml)
+        count = self.exu.print_element_tree(field_list, tree)
+        assert count == len(field_list)
         captured = capsys.readouterr()
+        return captured
+
+    def test_print_element_tree_text(self, capsys):
+        field_list = [("Name:", "name", "text", "")]
+        captured = self.print_elements(capsys, field_list)
         assert captured.out == 'Number of tuples found:  1\nName: James\n'
 
     def test_print_element_tree_attr(self, capsys):
-        xml = self.init_test_xml1(capsys)
         field_list = [("Attr:", "email", "attr", "hide")]
-        count = self.exu.print_element_tree(field_list, xml)
-        assert count == 1
-        captured = capsys.readouterr()
+        captured = self.print_elements(capsys, field_list)
         assert captured.out == 'Number of tuples found:  1\nAttr: yes\n'
 
     def test_print_element_tree_text_and_attr(self, capsys):
-        xml = self.init_test_xml1(capsys)
         field_list = [("Name:", "name", "text", ""), ("Attr:", "email", "attr", "hide")]
-        count = self.exu.print_element_tree(field_list, xml)
-        assert count == 2
-        captured = capsys.readouterr()
+        captured = self.print_elements(capsys, field_list)
         assert captured.out == 'Number of tuples found:  2\nName: James\nAttr: yes\n'
 
     def test_print_element_tree_bad_field_data(self, capsys):
-        xml = self.init_test_xml1(capsys)
         field_list = [("Name:", "name", "text")]
-        count = self.exu.print_element_tree(field_list, xml)
-        assert count == 1
-        captured = capsys.readouterr()
+        captured = self.print_elements(capsys, field_list)
         assert captured.out == 'Number of tuples found:  1\nNumber of fields incorrect and will be ignored:  3\n'
 
     def test_print_element_tree_field_not_found_text(self, capsys):
-        xml = self.init_test_xml1(capsys)
         field_list = [("Name:", "missing", "text", "")]
-        count = self.exu.print_element_tree(field_list, xml)
-        assert count == 1
-        captured = capsys.readouterr()
+        captured = self.print_elements(capsys, field_list)
         assert captured.out == 'Number of tuples found:  1\nField not found:  missing\n'
 
     def test_print_element_tree_field_not_found_attr(self, capsys):
-        xml = self.init_test_xml1(capsys)
         field_list = [("Name:", "missing", "attr", "")]
-        count = self.exu.print_element_tree(field_list, xml)
-        assert count == 1
-        captured = capsys.readouterr()
+        captured = self.print_elements(capsys, field_list)
         assert captured.out == 'Number of tuples found:  1\nField not found:  missing\n'
 
     def test_print_element_tree_attr_not_found(self, capsys):
-        xml = self.init_test_xml1(capsys)
         field_list = [("Name:", "email", "attr", "hidden")]
-        count = self.exu.print_element_tree(field_list, xml)
-        assert count == 1
-        captured = capsys.readouterr()
+        captured = self.print_elements(capsys, field_list)
         assert captured.out == 'Number of tuples found:  1\nAttribute not found for field email:  hidden\n'
