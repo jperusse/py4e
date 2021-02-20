@@ -135,7 +135,7 @@ class AccessWebData():
             field_list = [
                 ("Name:", "name", "text", ""),
                 ("Id:", "id", "text", ""),
-                ("Attribute:", "x", "attr", "x")
+                ("Attribute:", "", "attr", "x")
             ]
             exu.print_element_tree(field_list, tree)
 
