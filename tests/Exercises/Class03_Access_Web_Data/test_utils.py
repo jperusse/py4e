@@ -1,4 +1,6 @@
+
 import io
+import json
 import os
 import sys
 import xml.etree.ElementTree as ET
@@ -505,4 +507,81 @@ class TestExerciseUtils:
     def test_print_element_tree_attr_not_found2(self, capsys):
         field_list = [("Attr:", "", "attr", "hidden")]
         captured = self.print_elements(capsys, field_list)
+        assert captured.out == "Number of tuples found:  1\nAttribute not found: 'hidden'\n"
+
+    def init_test_json1(self, capsys):
+        print()
+        # capture all previous print statements
+        captured = capsys.readouterr()
+        assert captured.out == "\n"
+        json_fields = '''
+        [
+            {
+                "x" : "999"
+            } ,
+            {
+                "name" : "James",
+                "phone" : "+1 734 303 4456",
+                "phone type" : "intl",
+                "email hide" : "yes"
+            }
+        ]'''
+        return json_fields
+
+    def print_elements_json(self, capsys, field_list):
+        json_fields = self.init_test_json1(capsys)
+        tree = json.loads(json_fields)
+        count = self.exu.print_element_tree_json(field_list, tree)
+        assert count == len(field_list)
+        captured = capsys.readouterr()
+        return captured
+
+    def test_print_element_tree_text_json(self, capsys):
+        field_list = [("Name:", "name", "text", "")]
+        captured = self.print_elements_json(capsys, field_list)
+        assert captured.out == 'Number of tuples found:  1\nName: James\n'
+
+    def test_print_element_tree_attr_json(self, capsys):
+        field_list = [("Attr:", "email", "attr", "hide")]
+        captured = self.print_elements_json(capsys, field_list)
+        assert captured.out == 'Number of tuples found:  1\nAttr: yes\n'
+
+    def test_print_element_tree_attr_no_field_specified_json(self, capsys):
+        field_list = [("Attr:", "", "attr", "x")]
+        captured = self.print_elements_json(capsys, field_list)
+        assert captured.out == 'Number of tuples found:  1\nAttr: 999\n'
+
+    def test_print_element_tree_text_and_attr_json(self, capsys):
+        field_list = [("Name:", "name", "text", ""), ("Attr:", "email", "attr", "hide")]
+        captured = self.print_elements_json(capsys, field_list)
+        assert captured.out == 'Number of tuples found:  2\nName: James\nAttr: yes\n'
+
+    def test_print_element_tree_bad_field_data_json(self, capsys):
+        field_list = [("Name:", "name", "text")]
+        captured = self.print_elements_json(capsys, field_list)
+        assert captured.out == 'Number of tuples found:  1\nNumber of fields incorrect and will be ignored:  3\n'
+
+    def test_print_element_tree_field_not_found_text_json(self, capsys):
+        field_list = [("Name:", "missing", "text", "")]
+        captured = self.print_elements_json(capsys, field_list)
+        assert captured.out == 'Number of tuples found:  1\nField not found:  missing\n'
+
+    def test_print_element_tree_attr_name_missing_json(self, capsys):
+        field_list = [("Attr:", "missing", "attr", "")]
+        captured = self.print_elements_json(capsys, field_list)
+        assert captured.out == "Number of tuples found:  1\nAttribute name is missing\n"
+
+    def test_print_element_tree_field_and_attr_name_missing_json(self, capsys):
+        field_list = [("Attr:", "", "attr", "")]
+        captured = self.print_elements_json(capsys, field_list)
+        assert captured.out == "Number of tuples found:  1\nAttribute name is missing\n"
+
+    def test_print_element_tree_attr_not_found1_json(self, capsys):
+        field_list = [("Attr:", "email", "attr", "hidden")]
+        captured = self.print_elements_json(capsys, field_list)
+        assert captured.out == "Number of tuples found:  1\nAttribute not found: 'hidden'\n"
+
+    def test_print_element_tree_attr_not_found2_json(self, capsys):
+        field_list = [("Attr:", "", "attr", "hidden")]
+        captured = self.print_elements_json(capsys, field_list)
         assert captured.out == "Number of tuples found:  1\nAttribute not found: 'hidden'\n"

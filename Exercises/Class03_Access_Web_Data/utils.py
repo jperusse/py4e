@@ -489,15 +489,49 @@ class ExerciseUtils():
         fhand.close()
         return len(picture)
 
-    def print_element_tree(self, xml_field_list, tree):
+    def print_element_tree(self, field_list, tree):
         '''
-        Search through tree for fields and/or attributes of xml 
+        Search through xml tree for fields and/or attributes of xml 
         '''
 
-        len_fields = len(xml_field_list)
+        len_fields = len(field_list)
         print('Number of tuples found: ', len_fields)
 
-        for tpl in xml_field_list:
+        for tpl in field_list:
+            if len(tpl) != 4:
+                print("Number of fields incorrect and will be ignored: ", len(tpl))
+                return len_fields
+            title, field, field_type, attr_name = tpl
+
+            if field_type == 'text' and tree.findtext(field) is not None:
+                print(title, tree.find(field).text)
+            elif field_type == 'attr': 
+                if len(attr_name) > 0:
+                    if tree.findtext(field) is not None:
+                        if tree.find(field).get(attr_name) is not None:
+                            print(title, tree.find(field).get(attr_name))
+                        else:
+                            print("Attribute not found: '" + attr_name + "'")
+                    elif tree.get(attr_name) is not None:
+                        print(title, tree.get(attr_name))
+                    else:
+                        print("Attribute not found: '" + attr_name + "'")
+                else:
+                    print("Attribute name is missing")
+            else:
+                print("Field not found: ", field)
+
+        return len_fields
+
+    def print_element_tree_json(self, field_list, tree):
+        '''
+        Search through xml tree for fields and/or attributes of xml 
+        '''
+
+        len_fields = len(field_list)
+        print('Number of tuples found: ', len_fields)
+
+        for tpl in field_list:
             if len(tpl) != 4:
                 print("Number of fields incorrect and will be ignored: ", len(tpl))
                 return len_fields

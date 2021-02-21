@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "venv\\Scripts\\python.exe",
+    "python.pythonPath": ".venv\\Scripts\\python.exe",
     // pytest --showlocals # show local variables in tracebacks
     // pytest -l           # show local variables (shortcut)
     // pytest --tb=auto    # (default) 'long' tracebacks for the first and last
