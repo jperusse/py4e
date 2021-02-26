@@ -1,3 +1,4 @@
+import json
 import os
 import re
 import socket
@@ -489,70 +490,95 @@ class ExerciseUtils():
         fhand.close()
         return len(picture)
 
-    def print_element_tree(self, field_list, tree):
-        '''
-        Search through xml tree for fields and/or attributes of xml 
-        '''
+    class InternetTreeJSON():
+        def __init__(self, raw_tree, field_list):
+            self.raw_tree = raw_tree
+            self.field_list = field_list
+            self.tree = json.loads(raw_tree)
 
-        len_fields = len(field_list)
-        print('Number of tuples found: ', len_fields)
+        def print_element_tree(self):
+            '''
+            Search through JSON tree for fields and/or attributes of JSON 
+            '''
 
-        for tpl in field_list:
-            if len(tpl) != 4:
-                print("Number of fields incorrect and will be ignored: ", len(tpl))
-                return len_fields
-            title, field, field_type, attr_name = tpl
+            len_fields = len(self.field_list)
+            print('Number of tuples found: ', len_fields)
 
-            if field_type == 'text' and tree.findtext(field) is not None:
-                print(title, tree.find(field).text)
-            elif field_type == 'attr': 
-                if len(attr_name) > 0:
-                    if tree.findtext(field) is not None:
-                        if tree.find(field).get(attr_name) is not None:
-                            print(title, tree.find(field).get(attr_name))
+            for tpl in self.field_list:
+                if len(tpl) != 4:
+                    print("Number of fields incorrect and will be ignored: ", len(tpl))
+                    return len_fields
+                title, field, field_type, attr_name = tpl
+
+                if field_type == 'text' and self.tree[field] is not None:
+                    print(title, self.tree[field])
+                elif field_type == 'attr':
+                    if len(attr_name) > 0:
+                        if self.tree.findtext(field) is not None:
+                            if self.tree.find(field).get(attr_name) is not None:
+                                print(title, self.tree.find(field).get(attr_name))
+                            else:
+                                print("Attribute not found: '" + attr_name + "'")
+                        elif self.tree.get(attr_name) is not None:
+                            print(title, self.tree.get(attr_name))
                         else:
                             print("Attribute not found: '" + attr_name + "'")
-                    elif tree.get(attr_name) is not None:
-                        print(title, tree.get(attr_name))
                     else:
-                        print("Attribute not found: '" + attr_name + "'")
+                        print("Attribute name is missing")
                 else:
-                    print("Attribute name is missing")
-            else:
-                print("Field not found: ", field)
+                    print("Field not found: ", field)
 
-        return len_fields
+            return len_fields
 
-    def print_element_tree_json(self, field_list, tree):
-        '''
-        Search through xml tree for fields and/or attributes of xml 
-        '''
+    class InternetTreeXML():
+        def __init__(self, raw_tree):
+            self.raw_tree = raw_tree
 
-        len_fields = len(field_list)
-        print('Number of tuples found: ', len_fields)
+        def create_tree(self):
+            self.tree = ET.fromstring(self.raw_tree)
 
-        for tpl in field_list:
-            if len(tpl) != 4:
-                print("Number of fields incorrect and will be ignored: ", len(tpl))
-                return len_fields
-            title, field, field_type, attr_name = tpl
+        def replace_tree(self, tree):
+            self.tree = tree
 
-            if field_type == 'text' and tree.findtext(field) is not None:
-                print(title, tree.find(field).text)
-            elif field_type == 'attr': 
-                if len(attr_name) > 0:
-                    if tree.findtext(field) is not None:
-                        if tree.find(field).get(attr_name) is not None:
-                            print(title, tree.find(field).get(attr_name))
+        def findall_users(self):
+            return self.tree.findall('users/user')
+
+        def print_element_tree(self, field_list):
+            '''
+            Search through xml tree for fields and/or attributes of xml 
+            '''
+
+            len_fields = len(field_list)
+            print('Number of tuples found: ', len_fields)
+
+            for tpl in field_list:
+                if len(tpl) != 4:
+                    print("Number of fields incorrect and will be ignored: ", len(tpl))
+                    return len_fields
+                title, field, field_type, attr_name = tpl
+
+                if field_type == 'text' and self.tree.findtext(field) is not None:
+                    print(title, self.tree.find(field).text)
+                elif field_type == 'attr':
+                    if len(attr_name) > 0:
+                        if self.tree.findtext(field) is not None:
+                            if self.tree.find(field).get(attr_name) is not None:
+                                print(title, self.tree.find(field).get(attr_name))
+                            else:
+                                print("Attribute not found: '" + attr_name + "'")
+                        elif self.tree.get(attr_name) is not None:
+                            print(title, self.tree.get(attr_name))
                         else:
                             print("Attribute not found: '" + attr_name + "'")
-                    elif tree.get(attr_name) is not None:
-                        print(title, tree.get(attr_name))
                     else:
-                        print("Attribute not found: '" + attr_name + "'")
+                        print("Attribute name is missing")
                 else:
-                    print("Attribute name is missing")
-            else:
-                print("Field not found: ", field)
+                    print("Field not found: ", field)
 
-        return len_fields
+            return len_fields
+
+    # class InternetTree():
+    #     def __init__(self, raw_tree, field_list):
+    #         self.raw_tree = raw_tree
+    #         self.field_list = field_list
+    #         self.tree = ''

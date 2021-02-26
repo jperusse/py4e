@@ -19,6 +19,7 @@ class TestExerciseUtils:
     firstline = "words.txt contains 23 copies of the word 'to', the largest count of all words found: to to to"
     next_line = ""
     exu = ExerciseUtils()
+
     mbox_short = "mbox-short.txt"
     mbox_short5 = "mbox-short5.txt"
     mbox_short6 = "mbox-short6.txt"
@@ -435,13 +436,13 @@ class TestExerciseUtils:
         assert len(links) > 0
         assert isinstance(links, type([]))
 
-    def init_test_xml1(self, capsys):
+    def init_test_xml(self, capsys):
         print()
         # capture all previous print statements
         captured = capsys.readouterr()
         assert captured.out == "\n"
 
-        xml = '''
+        xml_tree = '''
         <person x="999">
             <name>James</name>
             <phone type="intl">
@@ -449,12 +450,14 @@ class TestExerciseUtils:
             </phone>
             <email hide="yes" />
         </person>'''
-        return xml
+        intr_tree = self.exu.InternetTreeXML(xml_tree)
+        intr_tree.create_tree()
+
+        return intr_tree
 
     def print_elements_xml(self, capsys, field_list):
-        xml = self.init_test_xml1(capsys)
-        tree = ET.fromstring(xml)
-        count = self.exu.print_element_tree(field_list, tree)
+        intr_tree = self.init_test_xml(capsys)
+        count = intr_tree.print_element_tree(field_list)
         assert count == len(field_list)
         captured = capsys.readouterr()
         return captured
@@ -509,12 +512,12 @@ class TestExerciseUtils:
         captured = self.print_elements_xml(capsys, field_list)
         assert captured.out == "Number of tuples found:  1\nAttribute not found: 'hidden'\n"
 
-    # def init_test_json1(self, capsys):
+    # def init_test_json(self, capsys, field_list):
     #     print()
     #     # capture all previous print statements
     #     captured = capsys.readouterr()
     #     assert captured.out == "\n"
-    #     json_fields = '''
+    #     json_tree = '''
     #     [
     #         {
     #             "x" : "999"
@@ -526,12 +529,13 @@ class TestExerciseUtils:
     #             "email hide" : "yes"
     #         }
     #     ]'''
-    #     return json_fields
+    #     intr_tree = self.exu.InternetTreeJSON(json_tree, field_list)
+
+    #     return intr_tree
 
     # def print_elements_json(self, capsys, field_list):
-    #     json_fields = self.init_test_json1(capsys)
-    #     tree = json.loads(json_fields)
-    #     count = self.exu.print_element_tree_json(field_list, tree)
+    #     intr_tree = self.init_test_json(capsys, field_list)
+    #     count = intr_tree.print_element_tree()
     #     assert count == len(field_list)
     #     captured = capsys.readouterr()
     #     return captured

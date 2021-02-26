@@ -1,3 +1,4 @@
+# %% Facilitate Debugging
 import xml.etree.ElementTree as ET
 
 from utils import ExerciseUtils
@@ -106,10 +107,13 @@ class AccessWebData():
         </phone>
         <email hide="yes" />
         </person>'''
-
         exu = ExerciseUtils()
-        exu.print_element_tree([("Name:", "name", "text", "")], data)
-        exu.print_element_tree([("Attr:", "email", "attr", "hide")], data)
+        inter_tree = exu.InternetTreeXML(data)
+        inter_tree.create_tree()
+        inter_tree.print_element_tree([("Name:", "name", "text", "")])
+        inter_tree.print_element_tree([("Attr:", "email", "attr", "hide")])
+        inter_tree.print_element_tree([("Name:", "name", "text", ""),
+                                       ("Attr:", "email", "attr", "hide")])
 
     def xml2(self):
         input = '''
@@ -127,17 +131,19 @@ class AccessWebData():
         </stuff>'''
 
         exu = ExerciseUtils()
-        stuff = ET.fromstring(input)
-        lst = stuff.findall('users/user')
+        stuff = exu.InternetTreeXML(input)
+        stuff.create_tree()
+        lst = stuff.findall_users()
         print('User count:', len(lst))
 
         for tree in lst:
+            stuff.replace_tree(tree)
             field_list = [
                 ("Name:", "name", "text", ""),
                 ("Id:", "id", "text", ""),
                 ("Attribute:", "", "attr", "x")
             ]
-            exu.print_element_tree(field_list, tree)
+            stuff.print_element_tree(field_list)
 
 
 class3 = AccessWebData()
@@ -153,3 +159,5 @@ class3 = AccessWebData()
 # class3.urllinks2()
 # class3.xml1()
 class3.xml2()
+
+# %%
