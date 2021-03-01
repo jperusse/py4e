@@ -490,45 +490,6 @@ class ExerciseUtils():
         fhand.close()
         return len(picture)
 
-    class InternetTreeJSON():
-        def __init__(self, raw_tree, field_list):
-            self.raw_tree = raw_tree
-            self.field_list = field_list
-            self.tree = json.loads(raw_tree)
-
-        def print_element_tree(self):
-            '''
-            Search through JSON tree for fields and/or attributes of JSON 
-            '''
-
-            len_fields = len(self.field_list)
-            print('Number of tuples found: ', len_fields)
-
-            for tpl in self.field_list:
-                if len(tpl) != 4:
-                    print("Number of fields incorrect and will be ignored: ", len(tpl))
-                    return len_fields
-                title, field, field_type, attr_name = tpl
-
-                if field_type == 'text' and self.tree[field] is not None:
-                    print(title, self.tree[field])
-                elif field_type == 'attr':
-                    if len(attr_name) > 0:
-                        if self.tree.findtext(field) is not None:
-                            if self.tree.find(field).get(attr_name) is not None:
-                                print(title, self.tree.find(field).get(attr_name))
-                            else:
-                                print("Attribute not found: '" + attr_name + "'")
-                        elif self.tree.get(attr_name) is not None:
-                            print(title, self.tree.get(attr_name))
-                        else:
-                            print("Attribute not found: '" + attr_name + "'")
-                    else:
-                        print("Attribute name is missing")
-                else:
-                    print("Field not found: ", field)
-
-            return len_fields
 
     class InternetTreeXML():
         def __init__(self, raw_tree):
@@ -541,15 +502,18 @@ class ExerciseUtils():
             self.tree = tree
 
         def findall_users(self):
+            '''
+            Create list of users from the current tree
+            '''
             return self.tree.findall('users/user')
 
         def print_element_tree(self, field_list):
             '''
             Search through xml tree for fields and/or attributes of xml 
             '''
-
             len_fields = len(field_list)
             print('Number of tuples found: ', len_fields)
+
 
             for tpl in field_list:
                 if len(tpl) != 4:
@@ -577,8 +541,48 @@ class ExerciseUtils():
 
             return len_fields
 
-    # class InternetTree():
-    #     def __init__(self, raw_tree, field_list):
-    #         self.raw_tree = raw_tree
-    #         self.field_list = field_list
-    #         self.tree = ''
+    class InternetTreeJSON(InternetTreeXML):
+        def create_tree_list(self):
+            self.tree_list = json.loads(self.raw_tree)
+
+        def findtext(self, field):
+            for tree in self.tree_list:
+                if field in tree:
+                    self.tree = tree
+                    return tree[field]
+            return None
+
+        def print_element_tree(self, field_list):
+            '''
+            Search through xml tree for fields and/or attributes of xml 
+            '''
+            len_fields = len(field_list)
+            print('Number of tuples found: ', len_fields)
+
+
+            for tpl in field_list:
+                if len(tpl) != 4:
+                    print("Number of fields incorrect and will be ignored: ", len(tpl))
+                    return len_fields
+                title, field, field_type, attr_name = tpl
+
+                text_value = self.findtext(field)
+                if field_type == 'text' and self.findtext(field) is not None:
+                    print(title, self.findtext(field))
+                elif field_type == 'attr':
+                    if len(attr_name) > 0:
+                        if self.findtext(field) is not None:
+                            if  self.findtext(attr_name):
+                                print(title, self.findtext(attr_name))
+                            else:
+                                print("Attribute not found: '" + attr_name + "'")
+                        elif self.findtext(attr_name):
+                            print(title, self.findtext(attr_name))
+                        else:
+                            print("Attribute not found: '" + attr_name + "'")
+                    else:
+                        print("Attribute name is missing")
+                else:
+                    print("Field not found: ", field)
+
+            return len_fields

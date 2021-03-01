@@ -145,6 +145,28 @@ class AccessWebData():
             ]
             stuff.print_element_tree(field_list)
 
+    def json2(self):
+        import json
+
+        data = '''
+        [
+        { "id" : "001",
+            "x" : "2",
+            "name" : "Chuck"
+        } ,
+        { "id" : "009",
+            "x" : "7",
+            "name" : "Brent"
+        }
+        ]'''
+
+        info = json.loads(data)
+        print('User count:', len(info))
+
+        for item in info:
+            print('Name', item['name'])
+            print('Id', item['id'])
+            print('Attribute', item['x'])
 
 class3 = AccessWebData()
 
@@ -158,6 +180,5 @@ class3 = AccessWebData()
 # class3.urllinks()
 # class3.urllinks2()
 # class3.xml1()
-class3.xml2()
-
-# %%
+# class3.xml2()
+class3.json2()
