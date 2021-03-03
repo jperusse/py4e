@@ -136,17 +136,16 @@ class AccessWebData():
         lst = stuff.findall_users()
         print('User count:', len(lst))
 
+        field_list = [
+            ("Name:", "name", "text", ""),
+            ("Id:", "id", "text", ""),
+            ("Attribute:", "", "attr", "x")
+        ]
         for tree in lst:
             stuff.replace_tree(tree)
-            field_list = [
-                ("Name:", "name", "text", ""),
-                ("Id:", "id", "text", ""),
-                ("Attribute:", "", "attr", "x")
-            ]
             stuff.print_element_tree(field_list)
 
     def json2(self):
-        import json
 
         data = '''
         [
@@ -160,13 +159,20 @@ class AccessWebData():
         }
         ]'''
 
-        info = json.loads(data)
-        print('User count:', len(info))
+ 
+        exu = ExerciseUtils()
+        intr_tree = exu.InternetTreeJSON(data)
+        intr_tree.create_tree_list()
+        print('User count:', intr_tree.tree_list_count())
 
-        for item in info:
-            print('Name', item['name'])
-            print('Id', item['id'])
-            print('Attribute', item['x'])
+        field_list = [
+            ("Name:", "name", "text", ""),
+            ("Id:", "id", "text", ""),
+            ("Attribute:", "", "attr", "x")
+        ]
+        for tree in intr_tree.tree_list:
+            intr_tree.replace_tree(tree)
+            intr_tree.print_element_tree(field_list)
 
 class3 = AccessWebData()
 

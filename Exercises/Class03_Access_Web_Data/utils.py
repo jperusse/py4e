@@ -545,7 +545,16 @@ class ExerciseUtils():
         def create_tree_list(self):
             self.tree_list = json.loads(self.raw_tree)
 
+        def tree_list_count(self):
+            return len(self.tree_list)
+
+        def get_tree_list(self):
+            return self.tree_list
+
         def findtext(self, field):
+            if field in self.tree:
+                return self.tree[field]
+                
             for tree in self.tree_list:
                 if field in tree:
                     self.tree = tree
@@ -572,7 +581,7 @@ class ExerciseUtils():
                 elif field_type == 'attr':
                     if len(attr_name) > 0:
                         if self.findtext(field) is not None:
-                            if  self.findtext(attr_name):
+                            if  self.findtext(  attr_name):
                                 print(title, self.findtext(attr_name))
                             else:
                                 print("Attribute not found: '" + attr_name + "'")
