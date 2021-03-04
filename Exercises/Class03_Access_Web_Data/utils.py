@@ -544,6 +544,8 @@ class ExerciseUtils():
     class InternetTreeJSON(InternetTreeXML):
         def create_tree_list(self):
             self.tree_list = json.loads(self.raw_tree)
+            if len(self.tree_list) > 1:
+                self.tree =  self.tree_list[0]
 
         def tree_list_count(self):
             return len(self.tree_list)
@@ -557,7 +559,7 @@ class ExerciseUtils():
                 
             for tree in self.tree_list:
                 if field in tree:
-                    self.tree = tree
+                    self.replace_tree(tree)
                     return tree[field]
             return None
 

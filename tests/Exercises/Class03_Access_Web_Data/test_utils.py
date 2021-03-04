@@ -511,12 +511,7 @@ class TestExerciseUtils:
         captured = self.print_elements_xml(capsys, field_list)
         assert captured.out == "Number of tuples found:  1\nAttribute not found: 'hidden'\n"
 
-    def init_test_json(self, capsys):
-        print()
-        # capture all previous print statements
-        captured = capsys.readouterr()
-        assert captured.out == "\n"
-
+    def init_test_json(self):
         json_tree = '''
         [
             {
@@ -535,7 +530,12 @@ class TestExerciseUtils:
         return intr_tree
 
     def print_elements_json(self, capsys, field_list):
-        intr_tree = self.init_test_json(capsys)
+        intr_tree = self.init_test_json()
+        print()
+        # capture all previous print statements
+        captured = capsys.readouterr()
+        assert captured.out == "\n"
+
         count = intr_tree.print_element_tree(field_list)
         assert count == len(field_list)
         captured = capsys.readouterr()
@@ -580,3 +580,32 @@ class TestExerciseUtils:
         field_list = [("Attr:", "", "text", "")]
         captured = self.print_elements_json(capsys, field_list)
         assert captured.out == "Number of tuples found:  1\nField not found:  \n"
+
+    def test_create_tree_list(self):
+        intr_tree = self.init_test_json()
+        intr_tree.create_tree_list
+        tree_list = intr_tree.tree_list
+        assert type(tree_list) == list
+
+    def test_tree_list_count(self):
+        intr_tree = self.init_test_json()
+        intr_tree.create_tree_list
+        assert intr_tree.tree_list_count() == 2
+
+    def test_get_tree_list(self):
+        intr_tree = self.init_test_json()
+        intr_tree.create_tree_list
+        tree_list = intr_tree.tree_list
+        assert intr_tree.get_tree_list() == tree_list
+
+    def test_findtext_found(self):
+        intr_tree = self.init_test_json()
+        intr_tree.create_tree_list
+        intr_tree.replace_tree(intr_tree.tree_list[0])
+        assert intr_tree.findtext("name") == "James"
+
+    def test_findtext_not_found(self):
+        intr_tree = self.init_test_json()
+        intr_tree.create_tree_list
+        intr_tree.replace_tree(intr_tree.tree_list[0])
+        assert intr_tree.findtext("missing") == None
