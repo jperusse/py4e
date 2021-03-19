@@ -174,6 +174,35 @@ class AccessWebData():
             intr_tree.replace_tree(tree)
             intr_tree.print_element_tree(field_list)
 
+    def geojson(self):
+
+        data = '''
+        [
+        { "id" : "001",
+            "x" : "2",
+            "name" : "Chuck"
+        } ,
+        { "id" : "009",
+            "x" : "7",
+            "name" : "Brent"
+        }
+        ]'''
+
+ 
+        exu = ExerciseUtils()
+        intr_tree = exu.InternetTreeJSON(data)
+        intr_tree.create_tree_list()
+        print('User count:', intr_tree.tree_list_count())
+
+        field_list = [
+            ("Name:", "name", "text", ""),
+            ("Id:", "id", "text", ""),
+            ("Attribute:", "", "attr", "x")
+        ]
+        for tree in intr_tree.tree_list:
+            intr_tree.replace_tree(tree)
+            intr_tree.print_element_tree(field_list)
+
 class3 = AccessWebData()
 
 # class3.socket1()
@@ -187,4 +216,5 @@ class3 = AccessWebData()
 # class3.urllinks2()
 # class3.xml1()
 # class3.xml2()
-class3.json2()
+# class3.json2()
+class3.geojson()
