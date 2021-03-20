@@ -422,7 +422,7 @@ class TestExerciseUtils:
         regex = 'href="(http[s]?://.*?)"'.encode()
         links = self.exu.findall_html(html, regex)
         assert len(links) > 0
-        assert isinstance(links, type([]))
+        assert isinstance(links, list)
 
     def test_findlinks_bs4(self):
         ctx = self.exu.ignore_ssl_errors()
@@ -434,7 +434,7 @@ class TestExerciseUtils:
         regex = 'href="(http[s]?://.*?)"'.encode()
         links = self.exu.findall_html(html, regex)
         assert len(links) > 0
-        assert isinstance(links, type([]))
+        assert isinstance(links, list)
 
     def init_test_xml(self, capsys):
         print()
