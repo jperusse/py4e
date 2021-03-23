@@ -22,5 +22,12 @@
     "python.linting.enabled": false,
     "python.linting.flake8Enabled": false,
     "python.linting.banditEnabled": false,
-    "python.linting.mypyEnabled": false
+    "python.linting.mypyEnabled": false,
+    
+    // Additional import search resolution paths
+	"python.analysis.extraPaths": [
+        "Exercises\\Class03_Access_Web_Data",
+        "Exercises\\Class04_Databases"
+    ],
+
 }
