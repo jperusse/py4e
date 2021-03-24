@@ -1,5 +1,10 @@
 {
     "python.pythonPath": ".venv\\Scripts\\python.exe",
+    // Additional import search resolution paths for Pylance
+	"python.analysis.extraPaths": [
+        "Exercises\\Class03_Access_Web_Data",
+        "Exercises\\Class04_Databases"
+    ],
     // pytest --showlocals # show local variables in tracebacks
     // pytest -l           # show local variables (shortcut)
     // pytest --tb=auto    # (default) 'long' tracebacks for the first and last
@@ -24,10 +29,4 @@
     "python.linting.banditEnabled": false,
     "python.linting.mypyEnabled": false,
     
-    // Additional import search resolution paths
-	"python.analysis.extraPaths": [
-        "Exercises\\Class03_Access_Web_Data",
-        "Exercises\\Class04_Databases"
-    ],
-
 }
