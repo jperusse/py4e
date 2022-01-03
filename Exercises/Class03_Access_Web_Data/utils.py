@@ -375,7 +375,7 @@ class ExerciseUtils():
         cmd = self.encode_get(url)
         try:
             mysock.sendall(cmd)
-        except():
+        except:
             print('SEND failed for ', url)
             return None
 
