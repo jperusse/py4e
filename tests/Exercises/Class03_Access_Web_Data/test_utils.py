@@ -246,7 +246,7 @@ class TestExerciseUtils:
 
     def test_get_html_input_good_url(self):
         html = self.exu.get_html(self.exu.url_default1)
-        assert len(html) == 10056
+        assert len(html) == 13862
 
     def test_get_html_input_good_default_url(self, monkeypatch):
         monkeypatch.setattr("sys.stdin", io.StringIO("\n"))
@@ -275,10 +275,10 @@ class TestExerciseUtils:
     def test_reglinks(self):
         html = self.exu.get_html(self.exu.url_default1)
         links = self.exu.regexlinks(html)
-        assert len(links) == 21
+        assert len(links) == 35
 
     def test_bs4_tags(self):
-        len_a = 49
+        len_a = 68
         html = self.exu.get_html(self.exu.url_default1)
         tags = self.exu.bs4_tags(html, "a", pflags=[False, True, False, False])
         assert len(tags) == len_a

@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 import json
 import os
 import re
@@ -180,15 +181,26 @@ class ExerciseUtils():
         return tags
 
     def tag_func(self, tag, pflags):
+
         # Look at the parts of a tag
         if pflags[0]:
-            print('TAG:', tag)
+            if tag is not None:
+                print('TAG:', tag)
         if pflags[1]:
-            print('URL:', tag.get('href', None))
+            tag_print = tag.get('href', None)
+            if tag_print is not None:
+                print('URL:', tag_print)
         if pflags[2]:
-            print('Contents:', tag.contents[0])
+            tag_print = tag.contents
+            tag_contents_count = tag.contents.count
+            if (tag_print != '\n') or (tag_contents_count == 0):
+                print('Contents:', tag.contents[0])
+            else:
+                print('Contents:')
         if pflags[3]:
-            print('Attrs:', tag.attrs)
+            tag_print = tag.attrs
+            if tag_print is not None:
+                print('Attrs:', tag_print)
 
     def findall_html(self, html, regex):
         # bytes_regex = regex.encode()
@@ -490,7 +502,6 @@ class ExerciseUtils():
         fhand.close()
         return len(picture)
 
-
     class InternetTreeXML():
         def __init__(self, raw_tree):
             self.raw_tree = raw_tree
@@ -514,11 +525,11 @@ class ExerciseUtils():
             len_fields = len(field_list)
             print('Number of tuples found: ', len_fields)
 
-
             for tpl in field_list:
                 if len(tpl) != 4:
                     print("Number of fields incorrect and will be ignored: ", len(tpl))
                     return len_fields
+
                 title, field, field_type, attr_name = tpl
 
                 if field_type == 'text' and self.tree.findtext(field) is not None:
@@ -545,7 +556,7 @@ class ExerciseUtils():
         def create_tree_list(self):
             self.tree_list = json.loads(self.raw_tree)
             if len(self.tree_list) > 1:
-                self.tree =  self.tree_list[0]
+                self.tree = self.tree_list[0]
 
         def tree_list_count(self):
             return len(self.tree_list)
@@ -556,7 +567,7 @@ class ExerciseUtils():
         def findtext(self, field):
             if field in self.tree:
                 return self.tree[field]
-                
+
             for tree in self.tree_list:
                 if field in tree:
                     self.replace_tree(tree)
@@ -570,7 +581,6 @@ class ExerciseUtils():
             len_fields = len(field_list)
             print('Number of tuples found: ', len_fields)
 
-
             for tpl in field_list:
                 if len(tpl) != 4:
                     print("Number of fields incorrect and will be ignored: ", len(tpl))
@@ -583,7 +593,7 @@ class ExerciseUtils():
                 elif field_type == 'attr':
                     if len(attr_name) > 0:
                         if self.findtext(field) is not None:
-                            if  self.findtext(  attr_name):
+                            if self.findtext(attr_name):
                                 print(title, self.findtext(attr_name))
                             else:
                                 print("Attribute not found: '" + attr_name + "'")

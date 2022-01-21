@@ -21,7 +21,7 @@ def set_prefs(prefs):
     # useful when you have scripts inside your project.  Only files
     # ending with ``.py`` are considered to be python files by
     # default.
-    # prefs['python_files'] = ['*.py']
+    prefs['python_files'] = ['*.py']
 
     # Custom source folders:  By default rope searches the project
     # for finding source folders (folders that should be searched
@@ -31,7 +31,7 @@ def set_prefs(prefs):
     # The folders should be relative to project root and use '/' for
     # separating folders regardless of the platform rope is running on.
     # 'src/my_source_folder' for instance.
-    # prefs.add('source_folders', 'src')
+    prefs.add('Exercises', 'src')
 
     # You can extend python path for looking up modules
     # prefs.add('python_path', '~/python/')
