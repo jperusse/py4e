@@ -192,8 +192,8 @@ class ExerciseUtils():
                 print('URL:', tag_print)
         if pflags[2]:
             tag_print = tag.contents
-            tag_contents_count = tag.contents.count
-            if (tag_print != '\n') or (tag_contents_count == 0):
+            tag_contents_count = len(tag.contents)
+            if (tag_contents_count > 0):
                 print('Contents:', tag.contents[0])
             else:
                 print('Contents:')

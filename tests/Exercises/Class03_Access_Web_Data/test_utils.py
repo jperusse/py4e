@@ -293,7 +293,7 @@ class TestExerciseUtils:
 
         html = self.exu.get_html(self.exu.url_default1)
         tags = self.exu.bs4_tags(html, "p")
-        assert len(tags) == 26
+        assert len(tags) == 27
 
         html = self.exu.get_html(self.exu.url_default1)
         tags = self.exu.bs4_tags(html, "z")
