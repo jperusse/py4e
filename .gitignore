@@ -1,7 +1,5 @@
-.venv
 venv
 mbox_trace.txt
 stuff.jpg
 cover3.jpg
 *.pyc
-Exercises/Class03_Access_Web_Data/__pycache__/utils.cpython-39.pyc
