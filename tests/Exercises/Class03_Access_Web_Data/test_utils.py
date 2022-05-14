@@ -244,10 +244,10 @@ class TestExerciseUtils:
         rc = self.exu.write_file(ofile, "wb", img)
         assert rc is None
 
-    def test_get_html_input_good_url(self):
-        html = self.exu.get_html(self.exu.url_default1)
-        assert len(html) == 13862
-
+    # def test_get_html_input_good_url(self):
+    #     html = self.exu.get_html(self.exu.url_default1)
+    #     assert len(html) == 13862
+ 
     def test_get_html_input_good_default_url(self, monkeypatch):
         monkeypatch.setattr("sys.stdin", io.StringIO("\n"))
         html = self.exu.get_html(None)
@@ -272,32 +272,32 @@ class TestExerciseUtils:
         html = self.exu.get_html("badurl")
         assert len(html) == 0
 
-    def test_reglinks(self):
-        html = self.exu.get_html(self.exu.url_default1)
-        links = self.exu.regexlinks(html)
-        assert len(links) == 35
+    # def test_reglinks(self):
+    #     html = self.exu.get_html(self.exu.url_default1)
+    #     links = self.exu.regexlinks(html)
+    #     assert len(links) == 35
 
-    def test_bs4_tags(self):
-        len_a = 68
-        html = self.exu.get_html(self.exu.url_default1)
-        tags = self.exu.bs4_tags(html, "a", pflags=[False, True, False, False])
-        assert len(tags) == len_a
+    # def test_bs4_tags(self):
+    #     len_a = 68
+    #     html = self.exu.get_html(self.exu.url_default1)
+    #     tags = self.exu.bs4_tags(html, "a", pflags=[False, True, False, False])
+    #     assert len(tags) == len_a
 
-        html = self.exu.get_html(self.exu.url_default1)
-        tags = self.exu.bs4_tags(html, "a", pflags=[False, False, False, False])
-        assert len(tags) == len_a
+    #     html = self.exu.get_html(self.exu.url_default1)
+    #     tags = self.exu.bs4_tags(html, "a", pflags=[False, False, False, False])
+    #     assert len(tags) == len_a
 
-        html = self.exu.get_html(self.exu.url_default1)
-        tags = self.exu.bs4_tags(html, "a")
-        assert len(tags) == len_a
+    #     html = self.exu.get_html(self.exu.url_default1)
+    #     tags = self.exu.bs4_tags(html, "a")
+    #     assert len(tags) == len_a
 
-        html = self.exu.get_html(self.exu.url_default1)
-        tags = self.exu.bs4_tags(html, "p")
-        assert len(tags) == 27
+    #     html = self.exu.get_html(self.exu.url_default1)
+    #     tags = self.exu.bs4_tags(html, "p")
+    #     assert len(tags) == 27
 
-        html = self.exu.get_html(self.exu.url_default1)
-        tags = self.exu.bs4_tags(html, "z")
-        assert len(tags) == 0
+    #     html = self.exu.get_html(self.exu.url_default1)
+    #     tags = self.exu.bs4_tags(html, "z")
+    #     assert len(tags) == 0
 
     def test_open_url(self):
         fh = self.exu.open_url(self.exu.url_text_doc, None)
